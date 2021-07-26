@@ -5,7 +5,7 @@ Authors:
 - Amin Abdulrahman `amin.abdulrahman@rub.de`
 - Jiun-Peng Chen `jpchen@citi.sinica.edu.tw`
 - Yu-Jia Chen `yujia@email.ikv- tech.com.tw`
-- Vincent Hwang `vincentvbh7@gmail.com,`
+- Vincent Hwang `vincentvbh7@gmail.com`
 - [Matthias J. Kannwischer](https://kannwischer.eu/) `<matthias@kannwischer.eu>`
 - [Bo-Yin Yang](https://homepage.iis.sinica.edu.tw/pages/byyang/) `<by@crypto.tw>`
 
