@@ -9,7 +9,9 @@ Authors:
 - [Matthias J. Kannwischer](https://kannwischer.eu/) `<matthias@kannwischer.eu>`
 - [Bo-Yin Yang](https://homepage.iis.sinica.edu.tw/pages/byyang/) `<by@crypto.tw>`
 
-Please refer to the `README.md`'s in the folders `masked` and `unmasked`.
+To set up `libopencm3`, execute `sh setup_libopencm3.sh`.
+
+For building implementations, please refer to the `README.md`'s in the folders `masked` and `unmasked`.
 
 ```
 .
