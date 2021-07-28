@@ -1,5 +1,5 @@
 
-This repository accompanies the paper **Multi-moduli NTTs for Saber on Cortex-M3 and Cortex-M4** available at XXX.
+This repository accompanies the paper **Multi-moduli NTTs for Saber on Cortex-M3 and Cortex-M4** available at https://eprint.iacr.org/2021/995.pdf.
 
 Authors:
 - Amin Abdulrahman `amin.abdulrahman@rub.de`
