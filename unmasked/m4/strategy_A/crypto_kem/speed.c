@@ -123,6 +123,12 @@ int main(void){
         hal_send_str("\nCycles for base_mul-related functions\n");
 
         t0 = hal_get_time();
+        NTT_mul_32(buff1_32, buff1_32, buff1_32);
+        t1 = hal_get_time();
+
+        printcycles("32-bit base_mul cycles:", t1 - t0);
+
+        t0 = hal_get_time();
         NTT_mul_32x16_2(buff1_32, buff1_32, buff2_32);
         t1 = hal_get_time();
 

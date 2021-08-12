@@ -44,7 +44,11 @@ void MatrixVectorMulKeyPairNTT(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t 
 
         shake128_inc_squeeze(shake_out, SABER_POLYCOINBYTES, &shake_s_ctx);
         cbd(poly, shake_out);
+#ifdef SABER_COMPRESS_SECRETKEY
         POLmu2BS(sk + i * SABER_POLYSECRETBYTES, poly); // sk <- s
+#else
+        POLq2BS(sk + i * SABER_POLYSECRETBYTES, poly); // sk <- s
+#endif
         NTT_forward_32(s_NTT, poly);
 
         for (j = 0; j < SABER_L; j++) {
@@ -186,7 +190,11 @@ void InnerProdDecNTT(uint8_t m[SABER_KEYBYTES], const uint8_t ciphertext[SABER_B
 
     for (i = 0; i < SABER_L; i++) {
 
+#ifdef SABER_COMPRESS_SECRETKEY
         BS2POLmu(sk + i * SABER_POLYSECRETBYTES, poly);
+#else
+        BS2POLq(sk + i * SABER_POLYSECRETBYTES, poly);
+#endif
 
         NTT_forward_32(poly_NTT, poly);
 
@@ -235,7 +243,11 @@ void InnerProdDecNTT_16(uint8_t m[SABER_KEYBYTES], const uint8_t ciphertext[SABE
         BS2POLp(ciphertext + i * SABER_POLYCOMPRESSEDBYTES, buff3);
         NTT_forward_32(buff1_32, buff3);
 
+#ifdef SABER_COMPRESS_SECRETKEY
         BS2POLmu(sk + i * SABER_POLYSECRETBYTES, buff3);
+#else
+        BS2POLq(sk + i * SABER_POLYSECRETBYTES, buff3);
+#endif
         NTT_forward2(buff3_32, buff3);
 
         if(i == 0){
@@ -247,7 +259,11 @@ void InnerProdDecNTT_16(uint8_t m[SABER_KEYBYTES], const uint8_t ciphertext[SABE
 
         MOD_1(buff1_32, buff1_32);
 
+#ifdef SABER_COMPRESS_SECRETKEY
         BS2POLmu(sk + i * SABER_POLYSECRETBYTES, buff2);
+#else
+        BS2POLq(sk + i * SABER_POLYSECRETBYTES, buff2);
+#endif
         NTT_forward1(buff2_32, buff2);
 
         if(i == 0){
@@ -300,7 +316,11 @@ void MatrixVectorMulKeyPairNTT_16_stack2(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES]
 
         shake128_inc_squeeze(shake_out, SABER_POLYCOINBYTES, &shake_s_ctx);
         cbd(buff2, shake_out);
+#ifdef SABER_COMPRESS_SECRETKEY
         POLmu2BS(sk + i * SABER_POLYSECRETBYTES, buff2); // sk <- s
+#else
+        POLq2BS(sk + i * SABER_POLYSECRETBYTES, buff2); // sk <- s
+#endif
         POLmu2BS(s_buff, buff2);
 
         for (j = 0; j < SABER_L; j++) {
@@ -352,10 +372,8 @@ void MatrixVectorMulKeyPairNTT_16_stack2(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES]
 uint32_t MatrixVectorMulEncNTT_16_stack2(uint8_t ct0[SABER_POLYVECCOMPRESSEDBYTES], uint8_t ct1[SABER_BYTES_CCA_DEC], const uint8_t seed_s[SABER_NOISE_SEEDBYTES], const uint8_t seed_A[SABER_SEEDBYTES], const uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], const uint8_t m[SABER_KEYBYTES], int compare){
 
     uint8_t s_buff[SABER_L * SABER_N / 2];
-
     uint16_t acc[SABER_N];
 
-    // Black magic here, don't change the order of buff1, buff2, and buff3
     uint16_t buff1[SABER_N];
     uint16_t buff2[SABER_N];
     uint16_t buff3[MAX(SABER_N, MAX(SABER_POLYBYTES, SABER_POLYCOINBYTES) / 2)];
@@ -366,10 +384,10 @@ uint32_t MatrixVectorMulEncNTT_16_stack2(uint8_t ct0[SABER_POLYVECCOMPRESSEDBYTE
 
     uint8_t *shake_out = (uint8_t*)buff3;
 
+    uint16_t *mp = buff1;
+
     size_t i, j;
     uint32_t fail = 0;
-
-    uint16_t *mp = buff1;
 
     shake128incctx shake_s_ctx = shake128_absorb_seed(seed_s);
 
