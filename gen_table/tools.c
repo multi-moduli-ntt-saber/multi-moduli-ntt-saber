@@ -43,7 +43,7 @@ void cmod_int64(void *des, void *src, void *mod){
     *(int64_t*)des = t;
 }
 
-void mul_int16(void *des, void *src1, void *src2, void *mod){
+void mulmod_int16(void *des, void *src1, void *src2, void *mod){
 
     int32_t src1_v;
     int32_t src2_v;
@@ -62,7 +62,7 @@ void mul_int16(void *des, void *src1, void *src2, void *mod){
 
 }
 
-void mul_int32(void *des, void *src1, void *src2, void *mod){
+void mulmod_int32(void *des, void *src1, void *src2, void *mod){
 
     int64_t src1_v;
     int64_t src2_v;
@@ -80,6 +80,8 @@ void mul_int32(void *des, void *src1, void *src2, void *mod){
     *(int32_t*)des = (int32_t)des_v;
 
 }
+
+// sync below in the future
 
 int center_mul(int src1, int src2, int mod){
     int t = (int)(((long long)src1 * (long long)src2) % (long long)mod);

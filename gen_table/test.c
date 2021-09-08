@@ -40,22 +40,40 @@ int32_t streamlined_inv_CT_negacyclic_table_Q1Q2[NTT_N << 1];
 
 int main(){
 
-    int16_t a, b, c, mod = 6;
-    a = 3;
-    b = 13;
+    int flag;
 
-    mul_int16((void*)&c, (void*)&a, (void*)&b, (void*)&mod);
+    int int_array[NTT_N >> 1];
+    int16_t int16_array[NTT_N];
+    int16_t scale_int16;
+    int16_t omega_int16;
+    int16_t mod_int16;
 
-    printf("%d\n", c);
+    gen_CT_table(int_array, 1, omegaQ1, Q1);
 
-    int32_t e, f, g, l = 20;
+    scale_int16 = 1;
+    omega_int16 = omegaQ1;
+    mod_int16 = Q1;
+    gen_CT_table_generic(int16_array,
+        (void*)&scale_int16, (void*)&omega_int16, (void*)&mod_int16,
+        sizeof(int16_t),
+        mulmod_int16);
 
-    e = 4;
-    f = 7;
+    int *t = (int*)int16_array;
+    _16_to_32(t, NTT_N >> 1);
+    bitreverse(t, NTT_N >> 1);
 
-    mul_int32((void*)&g, (void*)&e, (void*)&f, (void*)&l);
+    flag = 0;
+    for(int i = 0; i < (NTT_N >> 1); i++){
+        if(int_array[i] != t[i]){
+            flag = 1;
+            printf("%d: %d, %d\n", i, int_array[i], t[i]);
+            printf("Broken generic construction!\n");
+        }
+    }
 
-    printf("%d\n", g);
+    if(flag == 0){
+        printf("Awesome!\n");
+    }
 
 }
 

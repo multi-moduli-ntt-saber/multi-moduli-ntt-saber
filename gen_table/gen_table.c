@@ -1,7 +1,31 @@
+
+#include <stdlib.h>
+#include <memory.h>
+
 #include "NTT_params.h"
 
 #include "tools.h"
 #include "gen_table.h"
+
+void gen_CT_table_generic(void *des, void *scale, void *omega, void *mod,
+    size_t size,
+    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)){
+
+    void *zeta = (void*)malloc(size);
+    void *twiddle = (void*)malloc(size);
+    void *tmp = (void*)malloc(size);
+
+    memcpy(zeta, omega, size);
+
+    memcpy(twiddle, scale, size);
+    for(size_t i = 0; i < (NTT_N >> 1); i++){
+        memcpy(des, twiddle, size);
+        des += size;
+        mulmod(tmp, twiddle, zeta, mod);
+        memcpy(twiddle, tmp, size);
+    }
+
+}
 
 // let y = x^{ARRAY_N / NTT_N}
 
