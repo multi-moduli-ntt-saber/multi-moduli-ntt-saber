@@ -75,24 +75,24 @@ void gen_CT_negacyclic_table_generic(
 
 // generate twiddle factors for NTT over y^NTT_N + 1 with
 // CT butterflies
-void gen_CT_negacyclic_table(int *des, int scale, int omega, int Q){
+// void gen_CT_negacyclic_table(int *des, int scale, int omega, int Q){
 
-    int zeta;
+//     int zeta;
 
-    zeta = omega;
+//     zeta = omega;
 
-    des[0] = scale;
-    for(int j = 1; j < NTT_N; j++){
-        des[j] = center_mul(des[j - 1], zeta, Q);
-    }
+//     des[0] = scale;
+//     for(int j = 1; j < NTT_N; j++){
+//         des[j] = center_mul(des[j - 1], zeta, Q);
+//     }
 
-    bitreverse(des, NTT_N);
+//     bitreverse(des, NTT_N);
 
-    for(int j = 1; j < NTT_N; j++){
-        des[j - 1] = des[j];
-    }
+//     for(int j = 1; j < NTT_N; j++){
+//         des[j - 1] = des[j];
+//     }
 
-}
+// }
 
 // generate twiddle factors for invserse NTT over y^NTT_N - 1 with
 // CT butterflies
@@ -142,15 +142,26 @@ void gen_streamlined_CT_table(int *des, int scale, int omega, int Q, struct comp
 
 }
 
-void gen_streamlined_CT_negacyclic_table(int *des, int scale, int omega, int Q, struct compress_profile *_profile, int pad){
+void gen_streamlined_CT_negacyclic_table(
+    int *des, int scale, int omega, int Q,
+    struct compress_profile *_profile, int pad){
 
     int zeta, factor, start_level;
     int tmp[NTT_N];
     int *level_ptr[LOGNTT_N];
 
+    int scale_v = scale;
+    int Q_v = Q;
+
     zeta = omega;
 
-    gen_CT_negacyclic_table(tmp, scale, zeta, Q);
+    gen_CT_negacyclic_table_generic(
+        (void*)tmp, (void*)&scale_v, (void*)&zeta, (void*)&Q_v,
+        sizeof(int16_t),
+        mulmod_int16);
+
+    _16_to_32(tmp, NTT_N);
+
 
     for(int i = 0; i < LOGNTT_N; i++){
         level_ptr[i] = tmp + ((1 << i) - 1);
