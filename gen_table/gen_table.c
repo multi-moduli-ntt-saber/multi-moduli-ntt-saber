@@ -7,13 +7,14 @@
 #include "tools.h"
 #include "gen_table.h"
 
-void gen_CT_table_generic(void *des, void *scale, void *omega, void *mod,
+void gen_CT_table_generic(
+    void *des, void *scale, void *omega, void *mod,
     size_t size,
-    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)){
+    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)
+    ){
 
     void *zeta = (void*)malloc(size);
     void *twiddle = (void*)malloc(size);
-    void *tmp = (void*)malloc(size);
 
     memcpy(zeta, omega, size);
 
@@ -21,8 +22,7 @@ void gen_CT_table_generic(void *des, void *scale, void *omega, void *mod,
     for(size_t i = 0; i < (NTT_N >> 1); i++){
         memcpy(des, twiddle, size);
         des += size;
-        mulmod(tmp, twiddle, zeta, mod);
-        memcpy(twiddle, tmp, size);
+        mulmod(twiddle, twiddle, zeta, mod);
     }
 
     des -= size * (NTT_N >> 1);
@@ -47,6 +47,29 @@ void gen_CT_table(int *des, int scale, int omega, int Q){
     }
 
     bitreverse(des - (NTT_N >> 1), NTT_N >> 1);
+
+}
+
+void gen_CT_negacyclic_table_generic(
+    void *des, void *scale, void *omega, void *mod,
+    size_t size,
+    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)
+    ){
+
+    void *zeta = (void*)malloc(size);
+
+    memcpy(zeta, omega, size);
+
+    memcpy(des, scale, size);
+    for(size_t i = 1; i < NTT_N; i++){
+        mulmod(des + i * size, des + (i - 1) * size, zeta, mod);
+    }
+
+    bitreverse_generic(des, NTT_N, size);
+
+    for(size_t i = 1; i < NTT_N; i++){
+        memcpy(des + (i - 1) * size, des + i * size, size);
+    }
 
 }
 

@@ -42,24 +42,24 @@ int main(){
 
     int flag;
 
-    int int_array[NTT_N >> 1];
+    int int_array[NTT_N];
     int16_t int16_array[NTT_N];
     int16_t scale_int16;
     int16_t omega_int16;
     int16_t mod_int16;
 
-    gen_CT_table(int_array, 1, omegaQ1, Q1);
+    gen_CT_negacyclic_table(int_array, 1, omegaQ1, Q1);
 
     scale_int16 = 1;
     omega_int16 = omegaQ1;
     mod_int16 = Q1;
-    gen_CT_table_generic(int16_array,
+    gen_CT_negacyclic_table_generic(int16_array,
         (void*)&scale_int16, (void*)&omega_int16, (void*)&mod_int16,
         sizeof(int16_t),
         mulmod_int16);
 
     flag = 0;
-    for(int i = 0; i < (NTT_N >> 1); i++){
+    for(int i = 0; i < NTT_N; i++){
         if(int_array[i] != int16_array[i]){
             flag = 1;
             printf("%d: %d, %d\n", i, int_array[i], int16_array[i]);
