@@ -1,6 +1,11 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
+#include <memory.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
 struct compress_profile{
     int compressed_layers;
     int merged_layers[16];
@@ -12,6 +17,7 @@ void cmod_int32(void *des, void *src, void *mod);
 void mulmod_int16(void *des, void *src1, void *src2, void *mod);
 void mulmod_int32(void *des, void *src1, void *src2, void *mod);
 
+void bitreverse_generic(void *src, size_t len, size_t size);
 
 void _16_to_32(int *des, int len);
 void _32_to_16(int *des, int len);

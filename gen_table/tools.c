@@ -2,10 +2,7 @@
 
 #include "tools.h"
 
-#include <memory.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
+
 
 void cmod_int16(void *des, void *src, void *mod){
     int16_t mod_v = *(int16_t*)mod;
@@ -81,6 +78,22 @@ void mulmod_int32(void *des, void *src1, void *src2, void *mod){
 
 }
 
+void bitreverse_generic(void *src, size_t len, size_t size){
+
+    void *tmp = (void*)malloc(size);
+
+    for(size_t i = 0, j = 0; i < len; i++){
+        if(i < j){
+            memcpy(tmp, src + i * size, size);
+            memcpy(src + i * size, src + j * size, size);
+            memcpy(src + j * size, tmp, size);
+        }
+        for(size_t k = len >> 1; (j ^= k) < k; k >>= 1);
+    }
+
+}
+
+
 // sync below in the future
 
 int center_mul(int src1, int src2, int mod){
@@ -142,6 +155,8 @@ void _32_to_16(int *des, int len){
         ptr[i] = des[i];
     }
 }
+
+
 
 void bitreverse(int *src, int n){
     for(int i = 0, j = 0; i < n; i++){

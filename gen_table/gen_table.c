@@ -25,6 +25,9 @@ void gen_CT_table_generic(void *des, void *scale, void *omega, void *mod,
         memcpy(twiddle, tmp, size);
     }
 
+    des -= size * (NTT_N >> 1);
+    bitreverse_generic(des, NTT_N >> 1, size);
+
 }
 
 // let y = x^{ARRAY_N / NTT_N}

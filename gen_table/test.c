@@ -58,15 +58,11 @@ int main(){
         sizeof(int16_t),
         mulmod_int16);
 
-    int *t = (int*)int16_array;
-    _16_to_32(t, NTT_N >> 1);
-    bitreverse(t, NTT_N >> 1);
-
     flag = 0;
     for(int i = 0; i < (NTT_N >> 1); i++){
-        if(int_array[i] != t[i]){
+        if(int_array[i] != int16_array[i]){
             flag = 1;
-            printf("%d: %d, %d\n", i, int_array[i], t[i]);
+            printf("%d: %d, %d\n", i, int_array[i], int16_array[i]);
             printf("Broken generic construction!\n");
         }
     }
