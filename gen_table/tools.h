@@ -6,6 +6,13 @@ struct compress_profile{
     int merged_layers[16];
 };
 
+void cmod_int16(void *des, void *src, void *mod);
+void cmod_int32(void *des, void *src, void *mod);
+
+void mul_int16(void *des, void *src1, void *src2, void *mod);
+void mul_int32(void *des, void *src1, void *src2, void *mod);
+
+
 void _16_to_32(int *des, int len);
 void _32_to_16(int *des, int len);
 void bitreverse(int *src, int n);

@@ -7,6 +7,80 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+void cmod_int16(void *des, void *src, void *mod){
+    int16_t mod_v = *(int16_t*)mod;
+    int16_t t = (*(int16_t*)src) % mod_v;
+    if(t >= (mod_v >> 1)){
+        t -= mod_v;
+    }
+    if(t < -(mod_v >> 1)){
+        t += mod_v;
+    }
+    *(int16_t*)des = t;
+}
+
+void cmod_int32(void *des, void *src, void *mod){
+    int32_t mod_v = *(int32_t*)mod;
+    int32_t t = (*(int32_t*)src) % mod_v;
+    if(t >= (mod_v >> 1)){
+        t -= mod_v;
+    }
+    if(t < -(mod_v >> 1)){
+        t += mod_v;
+    }
+    *(int32_t*)des = t;
+}
+
+void cmod_int64(void *des, void *src, void *mod){
+    int64_t mod_v = *(int64_t*)mod;
+    int64_t t = (*(int64_t*)src) % mod_v;
+    if(t >= (mod_v >> 1)){
+        t -= mod_v;
+    }
+    if(t < -(mod_v >> 1)){
+        t += mod_v;
+    }
+    *(int64_t*)des = t;
+}
+
+void mul_int16(void *des, void *src1, void *src2, void *mod){
+
+    int32_t src1_v;
+    int32_t src2_v;
+    int32_t tmp_v;
+    int32_t mod_v;
+    int32_t des_v;
+
+    src1_v = (int32_t)(*(int16_t*)src1);
+    src2_v = (int32_t)(*(int16_t*)src2);
+    tmp_v = src1_v * src2_v;
+    mod_v = (int32_t)(*(int16_t*)mod);
+
+    cmod_int32((void*)&des_v, (void*)&tmp_v, (void*)&mod_v);
+
+    *(int16_t*)des = (int16_t)des_v;
+
+}
+
+void mul_int32(void *des, void *src1, void *src2, void *mod){
+
+    int64_t src1_v;
+    int64_t src2_v;
+    int64_t tmp_v;
+    int64_t mod_v;
+    int64_t des_v;
+
+    src1_v = (int64_t)(*(int32_t*)src1);
+    src2_v = (int64_t)(*(int32_t*)src2);
+    tmp_v = src1_v * src2_v;
+    mod_v = (int64_t)(*(int32_t*)mod);
+
+    cmod_int64((void*)&des_v, (void*)&tmp_v, (void*)&mod_v);
+
+    *(int32_t*)des = (int32_t)des_v;
+
+}
+
 int center_mul(int src1, int src2, int mod){
     int t = (int)(((long long)src1 * (long long)src2) % (long long)mod);
     if(t > (mod >> 1)){
