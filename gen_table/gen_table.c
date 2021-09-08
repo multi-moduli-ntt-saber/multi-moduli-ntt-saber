@@ -30,25 +30,6 @@ void gen_CT_table_generic(
 
 }
 
-// let y = x^{ARRAY_N / NTT_N}
-
-// generate twiddle factors for NTT over y^NTT_N - 1 with
-// CT butterflies
-void gen_CT_table(int *des, int scale, int omega, int Q){
-
-    int zeta, factor;
-
-    zeta = omega;
-
-    factor = scale;
-    for(int j = 0; j < (NTT_N >> 1); j++){
-        *(des++) = factor;
-        factor = center_mul(factor, zeta, Q);
-    }
-
-    bitreverse(des - (NTT_N >> 1), NTT_N >> 1);
-
-}
 
 void gen_CT_negacyclic_table_generic(
     void *des, void *scale, void *omega, void *mod,
@@ -73,26 +54,79 @@ void gen_CT_negacyclic_table_generic(
 
 }
 
-// generate twiddle factors for NTT over y^NTT_N + 1 with
+
+void gen_streamlined_CT_negacyclic_table_generic(
+    void *des, void *scale, void *omega, void *mod,
+    size_t size,
+    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod),
+    struct compress_profile *_profile,
+    bool pad)
+    {
+
+    void *zeta = (void*)malloc(size);
+    void *twiddle = (void*)malloc(size);
+
+    size_t start_level;
+
+    void *tmp = (void*)malloc(size * NTT_N);
+    void **level_ptr = (void**)malloc(sizeof(void*) * LOGNTT_N);
+
+    memcpy(zeta, omega, size);
+
+    gen_CT_negacyclic_table_generic(
+        tmp, scale, zeta, mod,
+        size,
+        mulmod
+    );
+
+    for(size_t i = 0; i < LOGNTT_N; i++){
+        *(level_ptr + i * sizeof(void*)) = tmp + size * ((1 << i) - 1);
+    }
+
+    start_level = 0;
+    for(size_t i = 0; i < _profile->compressed_layers; i++){
+        for(size_t j = 0; j < (1 << start_level); j++){
+            if(pad){
+                memset(des, 0, size);
+                des += size;
+            }
+            for(size_t k = 0; k < (_profile->merged_layers[i]); k++){
+                for(size_t h = 0; h < (1 << k); h++){
+                    memcpy(des,
+                        (*
+                            (level_ptr + (start_level + k) * sizeof(void*))
+                        ) + (j * (1 << k) + h) * size,
+                        size);
+                    des += size;
+                }
+            }
+        }
+    start_level += (_profile->merged_layers)[i];
+    }
+
+}
+
+//
+
+// let y = x^{ARRAY_N / NTT_N}
+
+// generate twiddle factors for NTT over y^NTT_N - 1 with
 // CT butterflies
-// void gen_CT_negacyclic_table(int *des, int scale, int omega, int Q){
+void gen_CT_table(int *des, int scale, int omega, int Q){
 
-//     int zeta;
+    int zeta, factor;
 
-//     zeta = omega;
+    zeta = omega;
 
-//     des[0] = scale;
-//     for(int j = 1; j < NTT_N; j++){
-//         des[j] = center_mul(des[j - 1], zeta, Q);
-//     }
+    factor = scale;
+    for(int j = 0; j < (NTT_N >> 1); j++){
+        *(des++) = factor;
+        factor = center_mul(factor, zeta, Q);
+    }
 
-//     bitreverse(des, NTT_N);
+    bitreverse(des - (NTT_N >> 1), NTT_N >> 1);
 
-//     for(int j = 1; j < NTT_N; j++){
-//         des[j - 1] = des[j];
-//     }
-
-// }
+}
 
 // generate twiddle factors for invserse NTT over y^NTT_N - 1 with
 // CT butterflies
@@ -110,6 +144,7 @@ void gen_inv_CT_table(int *des, int scale, int omega, int Q){
     }
 
 }
+
 
 void gen_streamlined_CT_table(int *des, int scale, int omega, int Q, struct compress_profile *_profile, int pad){
 
@@ -142,47 +177,6 @@ void gen_streamlined_CT_table(int *des, int scale, int omega, int Q, struct comp
 
 }
 
-void gen_streamlined_CT_negacyclic_table(
-    int *des, int scale, int omega, int Q,
-    struct compress_profile *_profile, int pad){
-
-    int zeta, factor, start_level;
-    int tmp[NTT_N];
-    int *level_ptr[LOGNTT_N];
-
-    int scale_v = scale;
-    int Q_v = Q;
-
-    zeta = omega;
-
-    gen_CT_negacyclic_table_generic(
-        (void*)tmp, (void*)&scale_v, (void*)&zeta, (void*)&Q_v,
-        sizeof(int16_t),
-        mulmod_int16);
-
-    _16_to_32(tmp, NTT_N);
-
-
-    for(int i = 0; i < LOGNTT_N; i++){
-        level_ptr[i] = tmp + ((1 << i) - 1);
-    }
-
-    start_level = 0;
-    for(int i = 0; i < _profile->compressed_layers; i++){
-        for(int j = 0; j < (1 << start_level); j++){
-            if(pad){
-               *(des++) = 0;
-            }
-            for(int k = 0; k < (_profile->merged_layers[i]); k++){
-                for(int h = 0; h < (1 << k); h++){
-                    *(des++) = level_ptr[start_level + k][j * (1 << k) + h];
-                }
-            }
-        }
-        start_level += (_profile->merged_layers)[i];
-    }
-
-}
 
 void gen_streamlined_inv_CT_table(int *des, int scale, int omega, int Q, struct compress_profile *_profile, int pad){
 
