@@ -78,6 +78,23 @@ void mulmod_int32(void *des, void *src1, void *src2, void *mod){
 
 }
 
+void expmod_int32(void *des, void *src, size_t e, void *mod){
+
+    int32_t src_v = *(int32_t*)src;
+    int32_t tmp_v;
+
+    tmp_v = 1;
+    for(; e; e >>= 1){
+        if(e & 1){
+            mulmod_int32(&tmp_v, &tmp_v, &src_v, mod);
+        }
+        mulmod_int32(&src_v, &src_v, &src_v, mod);
+    }
+
+    memcpy(des, &tmp_v, sizeof(int32_t));
+
+}
+
 void bitreverse_generic(void *src, size_t len, size_t size){
 
     char tmp[size];
@@ -107,22 +124,7 @@ int center_mul(int src1, int src2, int mod){
     return t;
 }
 
-void expmod_int32(void *des, void *src, size_t e, void *mod){
 
-    int32_t src_v = *(int32_t*)src;
-    int32_t tmp_v;
-
-    tmp_v = 1;
-    for(; e; e >>= 1){
-        if(e & 1){
-            mulmod_int32(&tmp_v, &tmp_v, &src_v, mod);
-        }
-        mulmod_int32(&src_v, &src_v, &src_v, mod);
-    }
-
-    memcpy(des, &tmp_v, sizeof(int32_t));
-
-}
 
 int expmod(int a, int b, int mod){
     if(b == 0){

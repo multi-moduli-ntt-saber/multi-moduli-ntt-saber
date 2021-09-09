@@ -80,7 +80,6 @@ void gen_streamlined_CT_negacyclic_table_generic(
 
     for(size_t i = 0; i < LOGNTT_N; i++){
         level_ptr[i] = tmp + size * ((1 << i) - 1);
-        // *(level_ptr + i * sizeof(void*)) = tmp + size * ((1 << i) - 1);
     }
 
     start_level = 0;
@@ -100,6 +99,28 @@ void gen_streamlined_CT_negacyclic_table_generic(
             }
         }
     start_level += (_profile->merged_layers)[i];
+    }
+
+}
+
+void gen_inv_CT_table_generic(
+    void *des, void *scale, void *omega, void *mod,
+    size_t size,
+    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod),
+    void (*expmod_generic) (void *_des, void *_src, size_t _size, void *_mod)
+    ){
+
+    char zeta[size];
+    char twiddle[size];
+
+    for(size_t level = 0; level < LOGNTT_N; level++){
+        expmod_generic(zeta, omega, (1 << LOGNTT_N) >> (level + 1), mod);
+        memcpy(twiddle, scale, size);
+        for(size_t i = 0; i < (1 << level); i++){
+            memcpy(des, twiddle, size);
+            des += size;
+            mulmod(twiddle, twiddle, zeta, mod);
+        }
     }
 
 }
@@ -126,27 +147,7 @@ void gen_CT_table(int *des, int scale, int omega, int Q){
 
 }
 
-void gen_inv_CT_table_generic(
-    void *des, void *scale, void *omega, void *mod,
-    size_t size,
-    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod),
-    void (*expmod_generic) (void *_des, void *_src, size_t _size, void *_mod)
-    ){
 
-    char zeta[size];
-    char twiddle[size];
-
-    for(size_t level = 0; level < LOGNTT_N; level++){
-        expmod_generic(zeta, omega, (1 << LOGNTT_N) >> (level + 1), mod);
-        memcpy(twiddle, scale, size);
-        for(size_t i = 0; i < (1 << level); i++){
-            memcpy(des, twiddle, size);
-            des += size;
-            mulmod(twiddle, twiddle, zeta, mod);
-        }
-    }
-
-}
 
 // generate twiddle factors for invserse NTT over y^NTT_N - 1 with
 // CT butterflies
