@@ -59,6 +59,14 @@ void gen_streamlined_inv_CT_negacyclic_table_generic(
     struct compress_profile *_profile, bool pad
     );
 
+void gen_mul_table_generic(
+    void *des,
+    void *scale, void *omega,
+    void *mod,
+    size_t size,
+    void (*mulmod)(void *_des, void *_src1, void *_src2, void *mod)
+    );
+
 // void gen_CT_table(int *des, int scale, int _omega, int _Q);
 // void gen_inv_CT_table(int *des, int scale, int _omega, int _Q);
 
