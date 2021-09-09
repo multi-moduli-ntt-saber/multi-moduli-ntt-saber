@@ -67,8 +67,8 @@ void gen_streamlined_CT_negacyclic_table_generic(
 
     size_t start_level;
 
-    void *tmp = (void*)malloc(size * NTT_N);
-    void **level_ptr = (void**)malloc(sizeof(void*) * LOGNTT_N);
+    char tmp[size * NTT_N];
+    void *level_ptr[LOGNTT_N];
 
     memcpy(zeta, omega, size);
 
@@ -79,7 +79,8 @@ void gen_streamlined_CT_negacyclic_table_generic(
     );
 
     for(size_t i = 0; i < LOGNTT_N; i++){
-        *(level_ptr + i * sizeof(void*)) = tmp + size * ((1 << i) - 1);
+        level_ptr[i] = tmp + size * ((1 << i) - 1);
+        // *(level_ptr + i * sizeof(void*)) = tmp + size * ((1 << i) - 1);
     }
 
     start_level = 0;
@@ -92,9 +93,7 @@ void gen_streamlined_CT_negacyclic_table_generic(
             for(size_t k = 0; k < (_profile->merged_layers[i]); k++){
                 for(size_t h = 0; h < (1 << k); h++){
                     memcpy(des,
-                        (*
-                            (level_ptr + (start_level + k) * sizeof(void*))
-                        ) + (j * (1 << k) + h) * size,
+                        level_ptr[start_level + k] + (j * (1 << k) + h) * size,
                         size);
                     des += size;
                 }
