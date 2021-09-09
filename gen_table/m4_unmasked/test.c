@@ -10,6 +10,8 @@
 #include "tools.h"
 #include "gen_table.h"
 
+#define BUFF_MAX (NTT_N << 1)
+
 struct compress_profile profile;
 
 // ================
@@ -56,8 +58,8 @@ int main(){
         profile.merged_layers[i]= 3;
     }
 
-    int32_t twiddle_int32[NTT_N << 1];
-    int16_t twiddle_int16[(NTT_N - 1) + (1 << 0) + (1 << 3)];
+    int32_t twiddle_int32[BUFF_MAX];
+    int16_t twiddle_int16[BUFF_MAX];
 
     int32_t scale_int32;
     int32_t omega_int32;
