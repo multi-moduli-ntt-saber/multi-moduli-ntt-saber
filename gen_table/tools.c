@@ -124,8 +124,6 @@ int center_mul(int src1, int src2, int mod){
     return t;
 }
 
-
-
 int expmod(int a, int b, int mod){
     if(b == 0){
         return 1;

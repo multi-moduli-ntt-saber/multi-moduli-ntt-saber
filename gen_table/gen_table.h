@@ -18,6 +18,13 @@ void gen_CT_negacyclic_table_generic(
     void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)
     );
 
+void gen_inv_CT_table_generic(
+    void *des, void *scale, void *omega, void *mod,
+    size_t size,
+    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod),
+    void (*expmod_generic) (void *_des, void *_src, size_t _size, void *_mod)
+    );
+
 void gen_streamlined_CT_negacyclic_table_generic(
     void *des, void *scale, void *omega, void *mod,
     size_t size,
