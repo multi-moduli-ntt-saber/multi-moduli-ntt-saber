@@ -13,8 +13,8 @@ void gen_CT_table_generic(
     void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)
     ){
 
-    void *zeta = (void*)malloc(size);
-    void *twiddle = (void*)malloc(size);
+    char zeta[size];
+    char twiddle[size];
 
     memcpy(zeta, omega, size);
 
@@ -37,7 +37,7 @@ void gen_CT_negacyclic_table_generic(
     void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)
     ){
 
-    void *zeta = (void*)malloc(size);
+    char zeta[size];
 
     memcpy(zeta, omega, size);
 
@@ -63,8 +63,7 @@ void gen_streamlined_CT_negacyclic_table_generic(
     bool pad)
     {
 
-    void *zeta = (void*)malloc(size);
-    void *twiddle = (void*)malloc(size);
+    char zeta[size];
 
     size_t start_level;
 
@@ -135,8 +134,8 @@ void gen_inv_CT_table_generic(
     void (*expmod_generic) (void *_des, void *_src, size_t _size, void *_mod)
     ){
 
-    void *zeta = (void*)malloc(size);
-    void *twiddle = (void*)malloc(size);
+    char zeta[size];
+    char twiddle[size];
 
     for(size_t level = 0; level < LOGNTT_N; level++){
         expmod_generic(zeta, omega, (1 << LOGNTT_N) >> (level + 1), mod);

@@ -80,7 +80,7 @@ void mulmod_int32(void *des, void *src1, void *src2, void *mod){
 
 void bitreverse_generic(void *src, size_t len, size_t size){
 
-    void *tmp = (void*)malloc(size);
+    char tmp[size];
 
     for(size_t i = 0, j = 0; i < len; i++){
         if(i < j){

@@ -13,6 +13,7 @@ struct compress_profile{
 
 void cmod_int16(void *des, void *src, void *mod);
 void cmod_int32(void *des, void *src, void *mod);
+void cmod_int64(void *des, void *src, void *mod);
 
 void mulmod_int16(void *des, void *src1, void *src2, void *mod);
 void mulmod_int32(void *des, void *src1, void *src2, void *mod);
