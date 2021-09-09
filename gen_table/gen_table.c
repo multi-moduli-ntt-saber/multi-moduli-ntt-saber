@@ -128,6 +128,28 @@ void gen_CT_table(int *des, int scale, int omega, int Q){
 
 }
 
+void gen_inv_CT_table_generic(
+    void *des, void *scale, void *omega, void *mod,
+    size_t size,
+    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod),
+    void (*expmod_generic) (void *_des, void *_src, size_t _size, void *_mod)
+    ){
+
+    void *zeta = (void*)malloc(size);
+    void *twiddle = (void*)malloc(size);
+
+    for(size_t level = 0; level < LOGNTT_N; level++){
+        expmod_generic(zeta, omega, (1 << LOGNTT_N) >> (level + 1), mod);
+        memcpy(twiddle, scale, size);
+        for(size_t i = 0; i < (1 << level); i++){
+            memcpy(des, twiddle, size);
+            des += size;
+            mulmod(twiddle, twiddle, zeta, mod);
+        }
+    }
+
+}
+
 // generate twiddle factors for invserse NTT over y^NTT_N - 1 with
 // CT butterflies
 void gen_inv_CT_table(int *des, int scale, int omega, int Q){
@@ -217,7 +239,21 @@ void gen_streamlined_inv_CT_negacyclic_table(int *des, int scale1, int omega, in
 
     zeta = omega;
 
-    gen_inv_CT_table(tmp, scale1, zeta, Q);
+// ================
+
+    int scale1_v = scale1;
+    int mod = Q;
+
+    gen_inv_CT_table_generic(
+        tmp, &scale1_v, &zeta, &mod,
+        sizeof(int32_t),
+        mulmod_int32,
+        expmod_int32
+    );
+
+// ================
+
+    // gen_inv_CT_table(tmp, scale1, zeta, Q);
 
     for(int i = 0; i < LOGNTT_N; i++){
         level_ptr[i] = tmp + ((1 << i) - 1);

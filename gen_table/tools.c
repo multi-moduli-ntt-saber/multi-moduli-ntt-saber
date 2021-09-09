@@ -1,8 +1,8 @@
+
+
 #include "NTT_params.h"
 
 #include "tools.h"
-
-
 
 void cmod_int16(void *des, void *src, void *mod){
     int16_t mod_v = *(int16_t*)mod;
@@ -105,6 +105,23 @@ int center_mul(int src1, int src2, int mod){
         return t + mod;
     }
     return t;
+}
+
+void expmod_int32(void *des, void *src, size_t e, void *mod){
+
+    int32_t src_v = *(int32_t*)src;
+    int32_t tmp_v;
+
+    tmp_v = 1;
+    for(; e; e >>= 1){
+        if(e & 1){
+            mulmod_int32(&tmp_v, &tmp_v, &src_v, mod);
+        }
+        mulmod_int32(&src_v, &src_v, &src_v, mod);
+    }
+
+    memcpy(des, &tmp_v, sizeof(int32_t));
+
 }
 
 int expmod(int a, int b, int mod){

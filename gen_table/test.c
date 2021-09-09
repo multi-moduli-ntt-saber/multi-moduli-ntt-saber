@@ -62,7 +62,7 @@ int main(){
         profile.merged_layers[i]= 3;
     }
 
-    int32_t twiddle_int32[NTT_N];
+    int32_t twiddle_int32[NTT_N << 1];
     int16_t twiddle_int16[(NTT_N - 1) + (1 << 0) + (1 << 3)];
 
     int32_t scale_int32;
@@ -107,9 +107,31 @@ int main(){
         mulmod_int32,
         &profile, 0);
 
-    for(int i = 0; i < NTT_N; i++){
+    for(int i = 0; i < (NTT_N - 1); i++){
         assert(streamlined_CT_negacyclic_table_Q1Q2[i] == twiddle_int32[i]);
     }
+
+    // gen_streamlined_inv_CT_negacyclic_table(
+    //     int *des,
+    //     int scale1, int _omega,
+    //     int scale2, int twist_omega,
+    //     int _Q,
+    //     struct compress_profile *_profile, int pad);
+
+
+    gen_streamlined_inv_CT_negacyclic_table(
+        twiddle_int32,
+        RmodQ1Q2, expmod(invomegaQ1Q2, 2, Q1Q2),
+        center_mul(expmod(RmodQ1Q2, 2, Q1Q2), invNQ1Q2, Q1Q2), invomegaQ1Q2,
+        Q1Q2,
+        &profile, 0);
+
+    for(int i = 0; i < (NTT_N << 1); i++){
+        if(streamlined_inv_CT_negacyclic_table_Q1Q2[i] != twiddle_int32[i]){
+            printf("%d: %d, %d\n", i, streamlined_inv_CT_negacyclic_table_Q1Q2[i], twiddle_int32[i]);
+        }
+    }
+
 
     printf("We are all good!\n");
 
