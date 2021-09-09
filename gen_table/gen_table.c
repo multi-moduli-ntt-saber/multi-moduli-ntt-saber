@@ -125,6 +125,26 @@ void gen_inv_CT_table_generic(
 
 }
 
+void gen_twist_table_generic(
+    void *des, void *scale, void *omega, void *mod,
+    size_t size,
+    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)
+    ){
+
+    char zeta[size];
+    char twiddle[size];
+
+    memcpy(zeta, omega, size);
+
+    memcpy(twiddle, scale, size);
+    for(size_t i = 0; i < NTT_N; i++){
+        memcpy(des, twiddle, size);
+        des += size;
+        mulmod(twiddle, twiddle, zeta, mod);
+    }
+
+}
+
 //
 
 // let y = x^{ARRAY_N / NTT_N}
@@ -250,9 +270,10 @@ void gen_streamlined_inv_CT_negacyclic_table(int *des, int scale1, int omega, in
         expmod_int32
     );
 
+    // gen_inv_CT_table(tmp, scale1, zeta, Q);
+
 // ================
 
-    // gen_inv_CT_table(tmp, scale1, zeta, Q);
 
     for(int i = 0; i < LOGNTT_N; i++){
         level_ptr[i] = tmp + ((1 << i) - 1);
@@ -260,7 +281,18 @@ void gen_streamlined_inv_CT_negacyclic_table(int *des, int scale1, int omega, in
 
     zeta = twist_omega;
 
-    gen_twist_table(tmp2, scale2, zeta, Q);
+// ================
+
+    int scale2_v = scale2;
+    gen_twist_table_generic(
+        tmp2, &scale2_v, &zeta, &mod,
+        sizeof(int32_t),
+        mulmod_int32
+    );
+
+    // gen_twist_table(tmp2, scale2, zeta, Q);
+
+// ================
 
     twist_ptr = tmp2;
 
