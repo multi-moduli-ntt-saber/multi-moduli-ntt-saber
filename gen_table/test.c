@@ -79,7 +79,8 @@ int main(){
     mod_int16 = Q1;
     gen_streamlined_CT_negacyclic_table_generic(
         twiddle_int16,
-        &scale_int16, &omega_int16, &mod_int16,
+        &scale_int16, &omega_int16,
+        &mod_int16,
         sizeof(int16_t),
         mulmod_int16,
         &profile, 1
@@ -94,7 +95,8 @@ int main(){
     mod_int16 = Q2;
     gen_streamlined_CT_negacyclic_table_generic(
         twiddle_int16,
-        &scale_int16, &omega_int16, &mod_int16,
+        &scale_int16, &omega_int16,
+        &mod_int16,
         sizeof(int16_t),
         mulmod_int16,
         &profile, 1
@@ -109,7 +111,8 @@ int main(){
     mod_int32 = Q1Q2;
     gen_streamlined_CT_negacyclic_table_generic(
         twiddle_int32,
-        &scale_int32, &omega_int32, &mod_int32,
+        &scale_int32, &omega_int32,
+        &mod_int32,
         sizeof(int32_t),
         mulmod_int32,
         &profile, 0
@@ -130,7 +133,9 @@ int main(){
 
     gen_streamlined_inv_CT_negacyclic_table_generic(
         twiddle_int32,
-        &scale_int32, &omega_int32, &scale2_int32, &twist_omega_int32, &mod_int32,
+        &scale_int32, &omega_int32,
+        &scale2_int32, &twist_omega_int32,
+        &mod_int32,
         sizeof(int32_t),
         mulmod_int32,
         expmod_int32,
