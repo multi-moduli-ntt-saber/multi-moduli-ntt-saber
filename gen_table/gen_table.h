@@ -72,8 +72,8 @@ void gen_mul_table_generic(
 
 // void gen_twist_table(int *des, int scale, int _omega, int _Q);
 
-void gen_mul_table(int *des, int scale, int _omega, int _Q);
-void gen_all_mul_table(int *des, int scale, int _omega, int _Q);
+// void gen_mul_table(int *des, int scale, int _omega, int _Q);
+// void gen_all_mul_table(int *des, int scale, int _omega, int _Q);
 
 // void gen_streamlined_CT_table(int *des, int scale, int _omega, int _Q, struct compress_profile *_profile, int pad);
 // void gen_streamlined_inv_CT_table(int *des, int scale, int _omega, int _Q, struct compress_profile *_profile, int pad);

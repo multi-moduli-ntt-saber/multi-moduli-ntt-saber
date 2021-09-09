@@ -53,7 +53,7 @@ void mulmod_int16(void *des, void *src1, void *src2, void *mod){
     tmp_v = src1_v * src2_v;
     mod_v = (int32_t)(*(int16_t*)mod);
 
-    cmod_int32((void*)&des_v, (void*)&tmp_v, (void*)&mod_v);
+    cmod_int32(&des_v, &tmp_v, &mod_v);
 
     *(int16_t*)des = (int16_t)des_v;
 
@@ -72,9 +72,26 @@ void mulmod_int32(void *des, void *src1, void *src2, void *mod){
     tmp_v = src1_v * src2_v;
     mod_v = (int64_t)(*(int32_t*)mod);
 
-    cmod_int64((void*)&des_v, (void*)&tmp_v, (void*)&mod_v);
+    cmod_int64(&des_v, &tmp_v, &mod_v);
 
     *(int32_t*)des = (int32_t)des_v;
+
+}
+
+void expmod_int16(void *des, void *src, size_t e, void *mod){
+
+    int16_t src_v = *(int16_t*)src;
+    int16_t tmp_v;
+
+    tmp_v = 1;
+    for(; e; e >>= 1){
+        if(e & 1){
+            mulmod_int16(&tmp_v, &tmp_v, &src_v, mod);
+        }
+        mulmod_int16(&src_v, &src_v, &src_v, mod);
+    }
+
+    memcpy(des, &tmp_v, sizeof(int16_t));
 
 }
 

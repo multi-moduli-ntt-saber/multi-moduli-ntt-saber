@@ -156,6 +156,7 @@ void gen_twist_table_generic(
 
 }
 
+
 void gen_streamlined_inv_CT_negacyclic_table_generic(
     void *des,
     void *scale1, void *omega,
@@ -227,6 +228,33 @@ void gen_streamlined_inv_CT_negacyclic_table_generic(
         }
         start_level += (_profile->merged_layers)[i];
     }
+
+}
+
+
+void gen_mul_table_generic(
+    void *des,
+    void *scale, void *omega,
+    void *mod,
+    size_t size,
+    void (*mulmod)(void *_des, void *_src1, void *_src2, void *mod)
+    ){
+
+    char zeta[size];
+    char twiddle[size];
+
+    memcpy(zeta, omega, size);
+
+    memcpy(twiddle, scale, size);
+    for(size_t i = 0; i < (NTT_N >> 1); i++){
+        memcpy(des, twiddle, size);
+        des += size;
+        mulmod(twiddle, twiddle, zeta, mod);
+    }
+
+    des -= (NTT_N >> 1) * size;
+
+    bitreverse_generic(des, NTT_N >> 1, size);
 
 }
 
@@ -426,31 +454,7 @@ void gen_streamlined_inv_CT_negacyclic_table_generic(
 
 // }
 
-void gen_mul_table_generic(
-    void *des,
-    void *scale, void *omega,
-    void *mod,
-    size_t size,
-    void (*mulmod)(void *_des, void *_src1, void *_src2, void *mod)
-    ){
 
-    char zeta[size];
-    char twiddle[size];
-
-    memcpy(zeta, omega, size);
-
-    memcpy(twiddle, scale, size);
-    for(size_t i = 0; i < (NTT_N >> 1); i++){
-        memcpy(des, twiddle, size);
-        des += size;
-        mulmod(twiddle, twiddle, zeta, mod);
-    }
-
-    des -= (NTT_N >> 1) * size;
-
-    bitreverse_generic(des, NTT_N >> 1, size);
-
-}
 
 // generate twiddle factors for rings
 // (y^{omega^0} - 1, y^{omega^0} + 1),
@@ -459,21 +463,21 @@ void gen_mul_table_generic(
 // (y^{omega^{NTT_N - 1}} - 1, y^{omega^{NTT_N - 1}} + 1)
 // in bit-reversed order;
 // finally, the table is multiplied by scale
-void gen_mul_table(int *des, int scale, int omega, int Q){
+// void gen_mul_table(int *des, int scale, int omega, int Q){
 
-    int zeta, factor;
+//     int zeta, factor;
 
-    zeta = omega;
+//     zeta = omega;
 
-    factor = scale;
-    for(int j = 0; j < (NTT_N >> 1); j++){
-        *(des++) = factor;
-        factor = center_mul(factor, zeta, Q);
-    }
+//     factor = scale;
+//     for(int j = 0; j < (NTT_N >> 1); j++){
+//         *(des++) = factor;
+//         factor = center_mul(factor, zeta, Q);
+//     }
 
-    bitreverse(des - (NTT_N >> 1), NTT_N >> 1);
+//     bitreverse(des - (NTT_N >> 1), NTT_N >> 1);
 
-}
+// }
 
 // generate twiddle factors for rings
 // y^{omega^0} - 1,
