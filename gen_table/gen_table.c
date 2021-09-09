@@ -8,7 +8,9 @@
 #include "gen_table.h"
 
 void gen_CT_table_generic(
-    void *des, void *scale, void *omega, void *mod,
+    void *des,
+    void *scale, void *omega,
+    void *mod,
     size_t size,
     void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)
     ){
@@ -32,7 +34,9 @@ void gen_CT_table_generic(
 
 
 void gen_CT_negacyclic_table_generic(
-    void *des, void *scale, void *omega, void *mod,
+    void *des,
+    void *scale, void *omega,
+    void *mod,
     size_t size,
     void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)
     ){
@@ -55,8 +59,35 @@ void gen_CT_negacyclic_table_generic(
 }
 
 
+void gen_inv_CT_table_generic(
+    void *des,
+    void *scale, void *omega,
+    void *mod,
+    size_t size,
+    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod),
+    void (*expmod_f) (void *_des, void *_src, size_t _size, void *_mod)
+    ){
+
+    char zeta[size];
+    char twiddle[size];
+
+    for(size_t level = 0; level < LOGNTT_N; level++){
+        expmod_f(zeta, omega, (1 << LOGNTT_N) >> (level + 1), mod);
+        memcpy(twiddle, scale, size);
+        for(size_t i = 0; i < (1 << level); i++){
+            memcpy(des, twiddle, size);
+            des += size;
+            mulmod(twiddle, twiddle, zeta, mod);
+        }
+    }
+
+}
+
+
 void gen_streamlined_CT_negacyclic_table_generic(
-    void *des, void *scale, void *omega, void *mod,
+    void *des,
+    void *scale, void *omega,
+    void *mod,
     size_t size,
     void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod),
     struct compress_profile *_profile, bool pad)
@@ -66,7 +97,7 @@ void gen_streamlined_CT_negacyclic_table_generic(
 
     size_t start_level;
 
-    char tmp[size * NTT_N];
+    char tmp[NTT_N * size];
     void *level_ptr[LOGNTT_N];
 
     memcpy(zeta, omega, size);
@@ -102,30 +133,11 @@ void gen_streamlined_CT_negacyclic_table_generic(
 
 }
 
-void gen_inv_CT_table_generic(
-    void *des, void *scale, void *omega, void *mod,
-    size_t size,
-    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod),
-    void (*expmod_f) (void *_des, void *_src, size_t _size, void *_mod)
-    ){
-
-    char zeta[size];
-    char twiddle[size];
-
-    for(size_t level = 0; level < LOGNTT_N; level++){
-        expmod_f(zeta, omega, (1 << LOGNTT_N) >> (level + 1), mod);
-        memcpy(twiddle, scale, size);
-        for(size_t i = 0; i < (1 << level); i++){
-            memcpy(des, twiddle, size);
-            des += size;
-            mulmod(twiddle, twiddle, zeta, mod);
-        }
-    }
-
-}
 
 void gen_twist_table_generic(
-    void *des, void *scale, void *omega, void *mod,
+    void *des,
+    void *scale, void *omega,
+    void *mod,
     size_t size,
     void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)
     ){
@@ -158,8 +170,8 @@ void gen_streamlined_inv_CT_negacyclic_table_generic(
     char zeta[size];
     size_t start_level;
 
-    char tmp[size * NTT_N];
-    char tmp2[size * NTT_N];
+    char tmp[NTT_N * size];
+    char tmp2[NTT_N * size];
 
     void *level_ptr[LOGNTT_N];
     char *twist_ptr;

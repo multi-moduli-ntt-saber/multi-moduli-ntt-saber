@@ -128,7 +128,6 @@ int main(){
     mulmod_int32(&scale2_int32, &scale2_int32, &scale_int32, &mod_int32);
     mulmod_int32(&scale2_int32, &scale2_int32, &scale_int32, &mod_int32);
 
-
     gen_streamlined_inv_CT_negacyclic_table_generic(
         twiddle_int32,
         &scale_int32, &omega_int32, &scale2_int32, &twist_omega_int32, &mod_int32,

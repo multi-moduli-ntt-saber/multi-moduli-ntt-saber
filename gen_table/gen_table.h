@@ -7,35 +7,45 @@
 #include "tools.h"
 
 void gen_CT_table_generic(
-    void *des, void *scale, void *omega, void *mod,
+    void *des,
+    void *scale, void *omega,
+    void *mod,
     size_t size,
     void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)
     );
 
 void gen_CT_negacyclic_table_generic(
-    void *des, void *scale, void *omega, void *mod,
+    void *des,
+    void *scale, void *omega,
+    void *mod,
     size_t size,
     void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)
     );
 
 void gen_inv_CT_table_generic(
-    void *des, void *scale, void *omega, void *mod,
+    void *des,
+    void *scale, void *omega,
+    void *mod,
     size_t size,
     void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod),
     void (*expmod_f) (void *_des, void *_src, size_t _size, void *_mod)
     );
 
+void gen_twist_table_generic(
+    void *des,
+    void *scale, void *omega,
+    void *mod,
+    size_t size,
+    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)
+    );
+
 void gen_streamlined_CT_negacyclic_table_generic(
-    void *des, void *scale, void *omega, void *mod,
+    void *des,
+    void *scale, void *omega,
+    void *mod,
     size_t size,
     void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod),
     struct compress_profile *_profile, bool pad
-    );
-
-void gen_twist_table_generic(
-    void *des, void *scale, void *omega, void *mod,
-    size_t size,
-    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)
     );
 
 void gen_streamlined_inv_CT_negacyclic_table_generic(
