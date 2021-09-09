@@ -58,7 +58,7 @@ static const int32_t streamlined_inv_CT_negacyclic_table_Q1Q2[NTT_N << 1] = {
 int main(){
 
     profile.compressed_layers = 2;
-    for(int i = 0; i < profile.compressed_layers; i++){
+    for(size_t i = 0; i < profile.compressed_layers; i++){
         profile.merged_layers[i]= 3;
     }
 
@@ -131,6 +131,10 @@ int main(){
             printf("%d: %d, %d\n", i, streamlined_inv_CT_negacyclic_table_Q1Q2[i], twiddle_int32[i]);
         }
     }
+
+    (void)mul_Rmod_table_Q1Q2;
+    (void)mul_Rmod_table_Q1;
+    (void)mul_Rmod_table_Q2;
 
 
     printf("We are all good!\n");

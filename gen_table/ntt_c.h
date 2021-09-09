@@ -12,3 +12,4 @@ void compressed_CT_NTT(int *src, int start_level, int end_level, int *_root_tabl
 void compressed_inv_CT_NTT(int *src, int start_level, int end_level, int *_root_table, int _Q, struct compress_profile *_profile);
 
 #endif
+

@@ -7,8 +7,8 @@
 #include <stdint.h>
 
 struct compress_profile{
-    int compressed_layers;
-    int merged_layers[16];
+    size_t compressed_layers;
+    size_t merged_layers[16];
 };
 
 void cmod_int16(void *des, void *src, void *mod);
@@ -35,3 +35,4 @@ void school_book(int *src1, int *src2, int *_mul_table, int _Q);
 void print_table(int *table, int table_len);
 
 #endif
+
