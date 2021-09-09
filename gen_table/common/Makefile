@@ -10,6 +10,5 @@ all: $(HEADERS) $(SRCs) test.c
 
 .PHONY: clean
 clean:
-	rm -f *.h.gch
 	rm -f gen_table
 
