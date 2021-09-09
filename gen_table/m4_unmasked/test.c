@@ -9,7 +9,6 @@
 
 #include "tools.h"
 #include "gen_table.h"
-#include "ntt_c.h"
 
 struct compress_profile profile;
 
