@@ -10,7 +10,7 @@
 #include "tools.h"
 #include "gen_table.h"
 
-#define BUFF_MAX (NTT_N << 1)
+#define BUFF_MAX (NTT_N << 3)
 
 struct compress_profile profile;
 

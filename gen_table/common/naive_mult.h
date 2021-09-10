@@ -1,8 +1,9 @@
 #ifndef NAIVE_MULT
 #define NAIVE_MULT
 
-// don't use this file now, there are collision of function names
-// TODO: turn the following into generic ones
+// don't use this file with the generation of tables now,
+// there are collision of function names
+// the renaming will be done in the future
 
 int center_mul(int src1, int src2, int mod);
 int expmod(int a, int b, int mod);

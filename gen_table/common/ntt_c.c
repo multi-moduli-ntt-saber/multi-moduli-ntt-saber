@@ -1,12 +1,22 @@
 #include "NTT_params.h"
 
 #include "tools.h"
-#include "ntt_c.h"
+
+static int _center_mul(int src1, int src2, int mod){
+    int t = (int)(((long long)src1 * (long long)src2) % (long long)mod);
+    if(t > (mod >> 1)){
+        return t - mod;
+    }
+    if(t < - (mod >> 1)){
+        return t + mod;
+    }
+    return t;
+}
 
 void CT_butterfly(int *src, int indx_a, int indx_b, int twiddle, int _Q){
-    src[indx_b] = center_mul(src[indx_b], twiddle, _Q);
-    src[indx_a] = center_mul(src[indx_a] + src[indx_b], 1, _Q);
-    src[indx_b] = center_mul(src[indx_a] - (src[indx_b] << 1), 1, _Q);
+    src[indx_b] = _center_mul(src[indx_b], twiddle, _Q);
+    src[indx_a] = _center_mul(src[indx_a] + src[indx_b], 1, _Q);
+    src[indx_b] = _center_mul(src[indx_a] - (src[indx_b] << 1), 1, _Q);
 }
 
 void _m_layer_CT_butterfly(int *src, int layers, int step, int *_root_table, int Q){
