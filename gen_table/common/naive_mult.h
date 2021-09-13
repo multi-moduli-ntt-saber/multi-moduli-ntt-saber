@@ -1,16 +1,26 @@
 #ifndef NAIVE_MULT
 #define NAIVE_MULT
 
-// don't use this file with the generation of tables now,
-// there are collision of function names
-// the renaming will be done in the future
+#include <stddef.h>
 
-int center_mul(int src1, int src2, int mod);
-int expmod(int a, int b, int mod);
-void naive_mulR(int *des, int *src1, int *src2, int len, int twiddle, int mod);
-void point_mul(int *src1, int *src2, int len, int jump, int mod);
-void school_book(int *src1, int *src2, int *_mul_table, int Q);
-void print_table(int *table, int table_len);
+void naive_mulR(
+    void *des,
+    void *src1, void *src2,
+    size_t len, void *twiddle,
+    void *mod,
+    size_t size,
+    void (*addmod)(void *_des, void *_src1, void *_src2, void *_mod),
+    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)
+    );
+
+void point_mul(
+    void *des,
+    void *src1, void *src2,
+    size_t len, size_t jump,
+    void *mod,
+    size_t size,
+    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)
+    );
 
 #endif
 

@@ -84,7 +84,7 @@ int main(){
         sizeof(int32_t),
         mulmod_int32,
         &profile, 0
-    );
+        );
 
     for(int i = 0; i < (NTT_N - 1); i++){
         assert(streamlined_CT_negacyclic_table_Q1[i] == twiddle_int32[i]);
@@ -104,7 +104,7 @@ int main(){
         sizeof(int32_t),
         mulmod_int32,
         &profile, 0
-    );
+        );
 
     for(int i = 0; i < (NTT_N - 1); i++){
         assert(streamlined_CT_negacyclic_table_Q2[i] == twiddle_int32[i]);
@@ -130,7 +130,7 @@ int main(){
         mulmod_int32,
         expmod_int32,
         &profile, 0
-    );
+        );
 
     for(int i = 0; i < (NTT_N << 1) - 1; i++){
         assert(streamlined_inv_CT_negacyclic_table_Q1[i] == twiddle_int32[i]);
@@ -156,7 +156,7 @@ int main(){
         mulmod_int32,
         expmod_int32,
         &profile, 0
-    );
+        );
 
     for(int i = 0; i < (NTT_N << 1) - 1; i++){
         assert(streamlined_inv_CT_negacyclic_table_Q2[i] == twiddle_int32[i]);
