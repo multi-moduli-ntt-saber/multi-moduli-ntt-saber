@@ -58,7 +58,6 @@ void gen_CT_negacyclic_table_generic(
 
 }
 
-
 void gen_inv_CT_table_generic(
     void *des,
     void *scale, void *omega,
@@ -83,6 +82,54 @@ void gen_inv_CT_table_generic(
 
 }
 
+void gen_streamlined_CT_table_generic(
+    void *des,
+    void *scale, void *omega,
+    void *mod,
+    size_t size,
+    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod),
+    struct compress_profile *_profile, bool pad
+    ){
+
+    char zeta[size];
+
+    size_t start_level;
+
+    char tmp[NTT_N * size];
+    void *level_ptr[LOGNTT_N];
+
+    memcpy(zeta, omega, size);
+
+    gen_CT_table_generic(
+        tmp, scale, zeta, mod,
+        size,
+        mulmod
+    );
+
+    for(size_t i = 0; i < LOGNTT_N; i++){
+        level_ptr[i] = tmp;
+    }
+
+    start_level = 0;
+    for(size_t i = 0; i < _profile->compressed_layers; i++){
+        for(size_t j = 0; j < (1 << start_level); j++){
+            if(pad){
+                memset(des, 0, size);
+                des += size;
+            }
+            for(size_t k = 0; k < (_profile->merged_layers[i]); k++){
+                for(size_t h = 0; h < (1 << k); h++){
+                    memcpy(des,
+                        level_ptr[start_level + k] + (j * (1 << k) + h) * size,
+                        size);
+                    des += size;
+                }
+            }
+        }
+    start_level += (_profile->merged_layers)[i];
+    }
+
+}
 
 void gen_streamlined_CT_negacyclic_table_generic(
     void *des,
@@ -90,8 +137,8 @@ void gen_streamlined_CT_negacyclic_table_generic(
     void *mod,
     size_t size,
     void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod),
-    struct compress_profile *_profile, bool pad)
-    {
+    struct compress_profile *_profile, bool pad
+    ){
 
     char zeta[size];
 
@@ -152,6 +199,58 @@ void gen_twist_table_generic(
         memcpy(des, twiddle, size);
         des += size;
         mulmod(twiddle, twiddle, zeta, mod);
+    }
+
+}
+
+void gen_streamlined_inv_CT_table_generic(
+    void *des,
+    void *scale, void *omega,
+    void *mod,
+    size_t size,
+    void (*mulmod) (void *_des, void *_src1, void *_src2, void *_mod),
+    void (*expmod) (void *_des, void *_src, size_t e, void *_mod),
+    struct compress_profile *_profile, bool pad
+    ){
+
+    char zeta[size];
+    size_t start_level;
+
+    char tmp[NTT_N * size];
+
+    void *level_ptr[LOGNTT_N];
+
+    memcpy(zeta, omega, size);
+
+    gen_inv_CT_table_generic(
+        tmp, scale, zeta, mod,
+        size,
+        mulmod,
+        expmod
+    );
+
+    for(size_t i = 0; i < LOGNTT_N; i++){
+        level_ptr[i] = tmp + size * ((1 << i) - 1);
+    }
+
+    start_level = 0;
+    for(size_t i = 0; i < _profile->compressed_layers; i++){
+        for(size_t j = 0; j < (1 << start_level); j++){
+            if(pad){
+                memset(des, 0, size);
+                des += size;
+            }
+            for(size_t k = 0; k < (_profile->merged_layers[i]); k++){
+                for(size_t h = 0; h < (1 << k); h++){
+                    memcpy(
+                        des,
+                        level_ptr[start_level + k] + (j + (h << start_level)) * size,
+                        size);
+                    des += size;
+                }
+            }
+        }
+        start_level += (_profile->merged_layers)[i];
     }
 
 }
