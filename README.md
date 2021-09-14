@@ -9,7 +9,8 @@ Authors:
 - [Matthias J. Kannwischer](https://kannwischer.eu/) `<matthias@kannwischer.eu>`
 - [Bo-Yin Yang](https://homepage.iis.sinica.edu.tw/pages/byyang/) `<by@crypto.tw>`
 
-To set up `libopencm3`, execute `sh setup_libopencm3.sh`.
+<s>To set up `libopencm3`, execute `sh setup_libopencm3.sh`.<s>
+Previously, this file is used for cloning libopencm3. But now in the repository, they are just soft links. So please remove the cloned libopencm3 in the corresponding folders and pull for the change.
 
 For building implementations, please refer to the `README.md`'s in the folders `masked` and `unmasked`.
 
