@@ -1,33 +1,13 @@
+
+#include <string.h>
+#include <stdlib.h>
+
 #include "SABER_indcpa.h"
 #include "randombytes.h"
 #include "fips202.h"
 #include "poly.h"
-#include <string.h>
-#include <stdlib.h>
+#include "opt_mask.h"
 
-#define STACK
-
-#ifdef STACK
-
-#if SABER_L == 2
-    #define MASK 0x8884
-#elif SABER_L == 3
-    #define MASK 0x8882
-#elif SABER_L == 4
-    #define MASK 0x8882
-#endif
-
-#else
-
-#if SABER_L == 2
-    #define MASK 0x1111
-#elif SABER_L == 3
-    #define MASK 0x1111
-#elif SABER_L == 4
-    #define MASK 0x1111
-#endif
-
-#endif
 
 #define KEYPAIR_MASK ((MASK >> 12) & 0xf)
 #define ENC_MASK ((MASK >> 8) & 0xf)

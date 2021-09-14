@@ -1,7 +1,7 @@
 #ifndef OPT_MASK
 #define OPT_MASK
 
-// #define STACK
+#define STACK
 
 #ifdef STACK
 
