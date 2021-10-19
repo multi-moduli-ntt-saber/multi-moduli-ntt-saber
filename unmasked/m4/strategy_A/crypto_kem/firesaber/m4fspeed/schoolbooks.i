@@ -1,1 +1,1 @@
-../../saber/m4f/schoolbooks.i
+../../saber/m4fspeed/schoolbooks.i

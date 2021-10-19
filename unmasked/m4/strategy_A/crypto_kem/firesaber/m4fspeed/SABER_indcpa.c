@@ -1,1 +1,1 @@
-../../saber/m4f/SABER_indcpa.c
+../../saber/m4fspeed/SABER_indcpa.c

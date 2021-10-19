@@ -1,1 +1,1 @@
-../../saber/m4f/NTT.S
+../../saber/m4fspeed/NTT.S

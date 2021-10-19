@@ -1,15 +1,27 @@
 
 
 
-make IMPLEMENTATION_PATH=crypto_kem/lightsaber/m4f bin/crypto_kem_lightsaber_m4f_test.bin
-make IMPLEMENTATION_PATH=crypto_kem/lightsaber/m4f bin/crypto_kem_lightsaber_m4f_speed.bin
-make IMPLEMENTATION_PATH=crypto_kem/lightsaber/m4f bin/crypto_kem_lightsaber_m4f_stack.bin
+make IMPLEMENTATION_PATH=crypto_kem/lightsaber/m4fspeed bin/crypto_kem_lightsaber_m4fspeed_test.bin
+make IMPLEMENTATION_PATH=crypto_kem/lightsaber/m4fspeed bin/crypto_kem_lightsaber_m4fspeed_speed.bin
+make IMPLEMENTATION_PATH=crypto_kem/lightsaber/m4fspeed bin/crypto_kem_lightsaber_m4fspeed_stack.bin
 
-make IMPLEMENTATION_PATH=crypto_kem/saber/m4f bin/crypto_kem_saber_m4f_test.bin
-make IMPLEMENTATION_PATH=crypto_kem/saber/m4f bin/crypto_kem_saber_m4f_speed.bin
-make IMPLEMENTATION_PATH=crypto_kem/saber/m4f bin/crypto_kem_saber_m4f_stack.bin
+make IMPLEMENTATION_PATH=crypto_kem/saber/m4fspeed bin/crypto_kem_saber_m4fspeed_test.bin
+make IMPLEMENTATION_PATH=crypto_kem/saber/m4fspeed bin/crypto_kem_saber_m4fspeed_speed.bin
+make IMPLEMENTATION_PATH=crypto_kem/saber/m4fspeed bin/crypto_kem_saber_m4fspeed_stack.bin
 
-make IMPLEMENTATION_PATH=crypto_kem/firesaber/m4f bin/crypto_kem_firesaber_m4f_test.bin
-make IMPLEMENTATION_PATH=crypto_kem/firesaber/m4f bin/crypto_kem_firesaber_m4f_speed.bin
-make IMPLEMENTATION_PATH=crypto_kem/firesaber/m4f bin/crypto_kem_firesaber_m4f_stack.bin
+make IMPLEMENTATION_PATH=crypto_kem/firesaber/m4fspeed bin/crypto_kem_firesaber_m4fspeed_test.bin
+make IMPLEMENTATION_PATH=crypto_kem/firesaber/m4fspeed bin/crypto_kem_firesaber_m4fspeed_speed.bin
+make IMPLEMENTATION_PATH=crypto_kem/firesaber/m4fspeed bin/crypto_kem_firesaber_m4fspeed_stack.bin
+
+make IMPLEMENTATION_PATH=crypto_kem/lightsaber/m4fstack bin/crypto_kem_lightsaber_m4fstack_test.bin
+make IMPLEMENTATION_PATH=crypto_kem/lightsaber/m4fstack bin/crypto_kem_lightsaber_m4fstack_speed.bin
+make IMPLEMENTATION_PATH=crypto_kem/lightsaber/m4fstack bin/crypto_kem_lightsaber_m4fstack_stack.bin
+
+make IMPLEMENTATION_PATH=crypto_kem/saber/m4fstack bin/crypto_kem_saber_m4fstack_test.bin
+make IMPLEMENTATION_PATH=crypto_kem/saber/m4fstack bin/crypto_kem_saber_m4fstack_speed.bin
+make IMPLEMENTATION_PATH=crypto_kem/saber/m4fstack bin/crypto_kem_saber_m4fstack_stack.bin
+
+make IMPLEMENTATION_PATH=crypto_kem/firesaber/m4fstack bin/crypto_kem_firesaber_m4fstack_test.bin
+make IMPLEMENTATION_PATH=crypto_kem/firesaber/m4fstack bin/crypto_kem_firesaber_m4fstack_speed.bin
+make IMPLEMENTATION_PATH=crypto_kem/firesaber/m4fstack bin/crypto_kem_firesaber_m4fstack_stack.bin
 

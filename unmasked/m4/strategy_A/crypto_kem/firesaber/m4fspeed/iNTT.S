@@ -1,1 +1,1 @@
-../../saber/m4f/iNTT.S
+../../saber/m4fspeed/iNTT.S

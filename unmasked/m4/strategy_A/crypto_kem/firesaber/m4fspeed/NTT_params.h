@@ -1,1 +1,1 @@
-../../saber/m4f/NTT_params.h
+../../saber/m4fspeed/NTT_params.h
