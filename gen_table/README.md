@@ -33,6 +33,43 @@ void expmod(void*, void*, size_t, void*);
 
 > Can be interleaved freely with assembly functions for testing units.
 
+```
+.
+├── README.md
+├── common
+│   ├── gen_table.c
+│   ├── gen_table.h
+│   ├── naive_mult.c
+│   ├── naive_mult.h
+│   ├── ntt_c.c
+│   ├── ntt_c.h
+│   ├── tools.c
+│   └── tools.h
+├── m3_unmasked
+│   ├── Makefile
+│   ├── NTT_params.h
+│   ├── call_gen.c
+│   ├── gen_table.c -> ../common/gen_table.c
+│   ├── gen_table.h -> ../common/gen_table.h
+│   ├── tools.c -> ../common/tools.c
+│   └── tools.h -> ../common/tools.h
+├── m4_masked
+│   ├── Makefile
+│   ├── NTT_params.h
+│   ├── call_gen.c
+│   ├── gen_table.c -> ../common/gen_table.c
+│   ├── gen_table.h -> ../common/gen_table.h
+│   ├── tools.c -> ../common/tools.c
+│   └── tools.h -> ../common/tools.h
+└── m4_unmasked
+    ├── Makefile
+    ├── NTT_params.h
+    ├── call_gen.c
+    ├── gen_table.c -> ../common/gen_table.c
+    ├── gen_table.h -> ../common/gen_table.h
+    ├── tools.c -> ../common/tools.c
+    └── tools.h -> ../common/tools.h
+```
 
 
 

@@ -125,15 +125,15 @@ The second part is the numbers for each of the functionalities. They can be cate
         - `16-bit`: 16-bit base multiplication.
     - auxiliary. There are two numbers as follows.
         - `16x16 CRT`: Solving CRT from the moduli `3329` and `7681`. The result is a 32-bit number over the modulus `3329 x 7681`.
-        - `One mod`: One modular reduction reducing the coefficients a polynomial over the modulus `3329 x 7681` to one of the modulus `3329` or `7681`.
+        - `One mod`: One modular reduction reducing the coefficients a polynomial over the modulus `3329 x 7681` to one of the moduli `3329` or `7681`.
 
 - Saber's `MatrixVectorMul` and `InnerProd`: These numbers depend only on the chosen security level.
-    - `MatrixVectorMul`: There are two numbers as follows.
+    - `MatrixVectorMul`. There are two numbers as follows.
         - `MatrixVectorMul speed`: `MatrixVectorMul` with the most speed-optimized strategy -- A.
         - `MatrixVectorMul stack`: `MatrixVectorMul` with the most stack-optimized strategy -- D.
     - `InnerProd`. There are three numbers as follows.
         - `InnerProd (Encrypt) speed`: `InnerProd` for encryption with the most speed-optimized strategy -- A. Note that one of the vectors is already transformed.
-        - `InnerProd (Decrypt) speed`: `InnerProd` for decryption with the most speed-optimized strategy -- A. Note that one of the vectors is already transformed.
+        - `InnerProd (Decrypt) speed`: `InnerProd` for decryption with the most speed-optimized strategy -- A.
         - `InnerProd stack`: `InnerProd` with the most stack-optimized strategy -- D. Note that such strategy results in the same implementation for `InnerProd` used in encryption and decryption.
 
 ## Stack
