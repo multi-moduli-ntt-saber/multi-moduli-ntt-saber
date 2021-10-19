@@ -1,7 +1,4 @@
 
-# TODO
-finish the readme
-
 # How to compile
 ```
 sh makeAll.sh
@@ -116,11 +113,47 @@ The first part is the numbers for the each of key generation, encapsulation, and
 
 The second part is the numbers for each of the functionalities. They can be categorized into two groups:
 
-- Basic building blocks:
+- Basic building blocks: These numbers are independent from the chosen security level and optimization strategy.
+    - NTT-related. There are four numbers as follows.
+        - `32-bit NTT`: 32-bit NTT defined over the modulus `3329 x 7681`
+        - `16-bit NTT`: 16-bit NTT defined over the modulus `7681`
+        - `16-bit NTT light`: 16-bit NTT defined over the modulus `3329`
+        - `32-bit NTT inverse`: 32-bit iNTT defined over the modulus `3329 x 7681` followed by reduction to signed `mod 8192`
+    - base_mul-related. There are three numbers as follows.
+        - `32-bit`: 32-bit base multiplication
+        - `32x16-bit`: 16-bit base multiplication, but one of the multiplicand is over the modulus `3329 x 7681`. One modular reduction to a 16-bit prime is performed before the base multiplication.
+        - `16-bit`: 16-bit base multiplication.
+    - auxiliary. There are two numbers as follows.
+        - `16x16 CRT`: Solving CRT from the moduli `3329` and `7681`. The result is a 32-bit number over the modulus `3329 x 7681`.
+        - `One mod`: One modular reduction reducing the coefficients a polynomial over the modulus `3329 x 7681` to one of the modulus `3329` or `7681`.
 
-- Saber's `MatrixVectorMul` and `InnerProd`:
+- Saber's `MatrixVectorMul` and `InnerProd`: These numbers depend only on the chosen security level.
+    - `MatrixVectorMul`: There are two numbers as follows.
+        - `MatrixVectorMul speed`: `MatrixVectorMul` with the most speed-optimized strategy -- A.
+        - `MatrixVectorMul stack`: `MatrixVectorMul` with the most stack-optimized strategy -- D.
+    - `InnerProd`. There are three numbers as follows.
+        - `InnerProd (Encrypt) speed`: `InnerProd` for encryption with the most speed-optimized strategy -- A. Note that one of the vectors is already transformed.
+        - `InnerProd (Decrypt) speed`: `InnerProd` for decryption with the most speed-optimized strategy -- A. Note that one of the vectors is already transformed.
+        - `InnerProd stack`: `InnerProd` with the most stack-optimized strategy -- D. Note that such strategy results in the same implementation for `InnerProd` used in encryption and decryption.
 
 ## Stack
+### Sample output
+After flashing with `st-flash write bin/crypto_kem_saber_m4fspeed_stack.bin 0x8000000`, we'll get something close to the following.
+
+```
+==========================
+keypair stack usage:
+6780
+encaps stack usage:
+7444
+decaps stack usage:
+7452
+OK KEYS
+
+#
+```
+
+The three numbers correspond to the stack usage of key generation, encapsulation, and decapsulation.
 
 # Structure of this folder
 ```
