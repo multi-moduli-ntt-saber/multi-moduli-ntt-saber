@@ -5,29 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-// #define STACK
-
-#ifdef STACK
-
-#if SABER_L == 2
-    #define MASK 0x8882
-#elif SABER_L == 3
-    #define MASK 0x8882
-#elif SABER_L == 4
-    #define MASK 0x8882
-#endif
-
-#else
-
-#if SABER_L == 2
-    #define MASK 0x1111
-#elif SABER_L == 3
-    #define MASK 0x1111
-#elif SABER_L == 4
-    #define MASK 0x1111
-#endif
-
-#endif
+#include "opt_mask.h"
 
 #define KEYPAIR_MASK ((MASK >> 12) & 0xf)
 #define ENC_MASK ((MASK >> 8) & 0xf)
@@ -47,10 +25,8 @@ void indcpa_kem_keypair(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABE
     MatrixVectorMulKeyPairNTT(pk, sk);
 #elif KEYPAIR_MASK == 2
 #error "KEYPAIR_MASK not supported"
-    // MatrixVectorMulKeyPairNTT_16(pk, sk);
 #elif KEYPAIR_MASK == 4
 #error "KEYPAIR_MASK not supported"
-    // MatrixVectorMulKeyPairNTT_16_stack(pk, sk);
 #elif KEYPAIR_MASK == 8
     MatrixVectorMulKeyPairNTT_16_stack2(pk, sk);
 #else
@@ -70,10 +46,8 @@ void indcpa_kem_enc(const uint8_t m[SABER_KEYBYTES], const uint8_t seed_s[SABER_
     MatrixVectorMulEncNTT(ct0, ct1, seed_s, seed_A, pk, m, 0);
 #elif ENC_MASK == 2
 #error "ENC_MASK not supported"
-    // MatrixVectorMulEncNTT_16(ct0, ct1, seed_s, seed_A, pk, m, 0);
 #elif ENC_MASK == 4
 #error "ENC_MASK not supported"
-    // MatrixVectorMulEncNTT_16_stack(ct0, ct1, seed_s, seed_A, pk, m, 0);
 #elif ENC_MASK == 8
     MatrixVectorMulEncNTT_16_stack2(ct0, ct1, seed_s, seed_A, pk, m, 0);
 #else
@@ -93,10 +67,8 @@ uint8_t indcpa_kem_enc_cmp(const uint8_t m[SABER_KEYBYTES], const uint8_t seed_s
     fail |= MatrixVectorMulEncNTT((uint8_t*)ct0, (uint8_t*)ct1, seed_s, seed_A, pk, m, 1);
 #elif ENCCMP_MASK == 2
 #error "ENC_MASK not supported"
-    // fail |= MatrixVectorMulEncNTT_16((uint8_t*)ct0, (uint8_t*)ct1, seed_s, seed_A, pk, m, 1);
 #elif ENCCMP_MASK == 4
 #error "ENC_MASK not supported"
-    // fail |= MatrixVectorMulEncNTT_16_stack((uint8_t*)ct0, (uint8_t*)ct1, seed_s, seed_A, pk, m, 1);
 #elif ENCCMP_MASK == 8
     fail |= MatrixVectorMulEncNTT_16_stack2((uint8_t*)ct0, (uint8_t*)ct1, seed_s, seed_A, pk, m, 1);
 #else
@@ -117,7 +89,6 @@ void indcpa_kem_dec(const uint8_t sk[SABER_INDCPA_SECRETKEYBYTES], const uint8_t
     InnerProdDecNTT_16(m, ciphertext, sk); // m <- Pack(Round(b'*s - cm))
 #elif DEC_MASK == 4
 #error "DEC_MASK not supported"
-    // InnerProdDecNTT_16_stack(m, ciphertext, sk); // m <- Pack(Round(b'*s - cm))
 #else
 #error "Invalid DEC_MASK"
 #endif

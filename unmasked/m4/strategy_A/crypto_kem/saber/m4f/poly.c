@@ -223,7 +223,6 @@ void InnerProdDecNTT(uint8_t m[SABER_KEYBYTES], const uint8_t ciphertext[SABER_B
 
 void InnerProdDecNTT_16(uint8_t m[SABER_KEYBYTES], const uint8_t ciphertext[SABER_BYTES_CCA_DEC], const uint8_t sk[SABER_INDCPA_SECRETKEYBYTES]){
 
-    // Black magic here, don't change the order of buff1, buff2, and buff3
     uint16_t buff1[SABER_N];
     uint16_t buff2[SABER_N];
     uint16_t buff3[SABER_N];
@@ -293,7 +292,6 @@ void MatrixVectorMulKeyPairNTT_16_stack2(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES]
     uint8_t s_buff[SABER_N / 2];
     uint16_t acc[SABER_L * SABER_N];
 
-    // Black magic here, don't change the order of buff1, buff2, and buff3
     uint16_t buff1[SABER_N];
     uint16_t buff2[SABER_N];;
     uint16_t buff3[MAX(SABER_N, MAX(SABER_POLYCOINBYTES, SABER_POLYBYTES) / 2)];
