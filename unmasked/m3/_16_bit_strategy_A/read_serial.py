@@ -4,7 +4,7 @@ import serial
 import sys
 
 if platform.system() == "Darwin":
-    dev = serial.Serial("/dev/tty.usbmodem14103", 9600)
+    dev = serial.Serial("/dev/tty.usbmodem12303", 9600)
 else:
     dev = serial.Serial("/dev/ttyACM0", 9600)
 
