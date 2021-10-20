@@ -1,1 +1,0 @@
-../../saber/m3/NTT_params.h

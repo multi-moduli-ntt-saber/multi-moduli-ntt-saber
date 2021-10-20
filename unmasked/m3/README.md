@@ -1,5 +1,45 @@
 
-Please refer to the `README.md`'s in folders `_16_bit_strategy_A`, `_16_bit_strategy_D`, and `_32_bit_strategy_A` .
 
 # TODO
-Merge implementations if possible.
+Merge 32-bit NTT implementation
+
+# How to Compile
+
+```
+make -j4
+```
+
+# How to produce benchmark
+
+## One terminal reading from board
+```
+python3 read_serial.py
+```
+
+## One terminal flashing as follows
+```
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3speed_test.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3stack_test.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3speed_test.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3stack_test.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3speed_test.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3stack_test.elf reset exit"
+
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3speed_speed.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3stack_speed.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3speed_speed.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3stack_speed.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3speed_speed.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3stack_speed.elf reset exit"
+
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3speed_stack.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3stack_stack.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3speed_stack.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3stack_stack.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3speed_stack.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3stack_stack.elf reset exit"
+```
+
+
+
+
