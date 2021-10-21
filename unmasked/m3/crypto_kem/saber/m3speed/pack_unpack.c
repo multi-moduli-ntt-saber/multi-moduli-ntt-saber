@@ -214,10 +214,8 @@ void BS2POLVECq(const uint8_t bytes[SABER_POLYVECBYTES], uint16_t data[SABER_L][
 /// The following functions are for compressed secret. Secrets are stored with their 4-bit value in [-SABER_MU/2, SABER_MU/2]. ///
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef SABER_COMPRESS_SECRETKEY
-
 /* This function reduces its input mod 2**4 */
-void POLmu2BS(uint8_t bytes[SABER_POLYSECRETBYTES], const uint16_t data[SABER_N])
+void POLmu2BS(uint8_t bytes[SABER_N / 2], const uint16_t data[SABER_N])
 {
     size_t j;
     const uint16_t *in = data;
@@ -228,22 +226,3 @@ void POLmu2BS(uint8_t bytes[SABER_POLYSECRETBYTES], const uint16_t data[SABER_N]
         out += 1;
     }
 }
-
-void POLVECmu2BS(uint8_t bytes[SABER_INDCPA_SECRETKEYBYTES], const uint16_t data[SABER_L][SABER_N])
-{
-    size_t i;
-    for (i = 0; i < SABER_L; i++) {
-        POLmu2BS(bytes + i * SABER_POLYSECRETBYTES, data[i]);
-    }
-}
-
-void BS2POLVECmu(const uint8_t bytes[SABER_INDCPA_SECRETKEYBYTES], uint16_t data[SABER_L][SABER_N])
-{
-    size_t i;
-    for (i = 0; i < SABER_L; i++) {
-        /* This function sign-extends its output from 4-bit to 16-bit */
-        BS2POLmu(bytes + i * SABER_POLYSECRETBYTES, data[i]);
-    }
-}
-
-#endif
