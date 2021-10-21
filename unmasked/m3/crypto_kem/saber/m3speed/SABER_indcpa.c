@@ -90,6 +90,8 @@ void indcpa_kem_dec(const uint8_t sk[SABER_INDCPA_SECRETKEYBYTES], const uint8_t
 #elif DEC_MASK == 2
 #error "DEC_MASK not supported"
 #elif DEC_MASK == 4
+#error "DEC_MASK not supported"
+#elif DEC_MASK == 8
     InnerProdDecNTT_stack(m, ciphertext, sk); // m <- Pack(Round(b'*s - cm))
 #else
 #error "Invalid DEC_MASK"
