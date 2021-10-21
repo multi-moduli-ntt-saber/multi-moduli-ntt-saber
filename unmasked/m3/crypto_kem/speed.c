@@ -3,19 +3,13 @@
 #include "sendfn.h"
 
 #include "NTT.h"
+#include "opt_mask.h"
 #include "pack_unpack.h"
 
 #include <stdint.h>
 #include <string.h>
 
-extern void __asm_1_to_16(uint16_t*, const uint8_t*);
-extern void __asm_3_to_16(uint16_t*, const uint8_t*);
-extern void __asm_4_to_16(uint16_t*, const uint8_t*);
-extern void __asm_6_to_16(uint16_t*, const uint8_t*);
-extern void __asm_10_to_16(uint16_t*, const uint8_t*);
-extern void __asm_13_to_16(uint16_t*, const uint8_t*);
 extern void __asm_poly_add(uint16_t*, uint16_t*, uint16_t*);
-
 
 #define MAX(a,b) (((a)>(b))?(a):(b))
 
@@ -28,7 +22,7 @@ int main(void)
   unsigned char pk[CRYPTO_PUBLICKEYBYTES];
   unsigned char ct[CRYPTO_CIPHERTEXTBYTES];
   unsigned long long t0, t1;
-  int i, j, k;
+  int i, j;
   int crypto_i;
 
   hal_setup(CLOCK_BENCHMARK);
@@ -57,6 +51,8 @@ int main(void)
 
 //
 
+#ifdef _16_bit
+
     uint32_t s_NTT[SABER_N];
     uint32_t acc_NTT[SABER_L * SABER_N];
     uint32_t A_NTT[SABER_N];
@@ -69,25 +65,19 @@ int main(void)
     uint16_t s[SABER_N];
 
     t0 = hal_get_time();
-    for (j = 0; j < SABER_L; j++) {
-
+    for (i = 0; i < SABER_L; i++) {
         NTT_forward(s_NTT, poly);
-
-        for (k = 0; k < SABER_L; k++) {
-
+        for (j = 0; j < SABER_L; j++) {
             NTT_forward(A_NTT, poly);
-
             if (j == 0) {
-                NTT_mul(acc_NTT + k * SABER_N, s_NTT, A_NTT);
+                NTT_mul(acc_NTT + j * SABER_N, s_NTT, A_NTT);
             } else {
-                NTT_mul_acc(acc_NTT + k * SABER_N, s_NTT, A_NTT);
+                NTT_mul_acc(acc_NTT + j * SABER_N, s_NTT, A_NTT);
             }
-
         }
     }
-
-    for (j = 0; j < SABER_L; j++) {
-        NTT_inv(poly, acc_NTT + j * SABER_N);
+    for (i = 0; i < SABER_L; i++) {
+        NTT_inv(poly, acc_NTT + i * SABER_N);
     }
     t1 = hal_get_time();
     printcycles("16-bit MatrixVectorMul speed opt cycles:", t1 - t0);
@@ -95,53 +85,38 @@ int main(void)
 //
 
     t0 = hal_get_time();
-
     for (i = 0; i < SABER_L; i++) {
-
         for (j = 0; j < SABER_L; j++) {
-
             NTT_forward1(buff_NTT, buff);
-
             NTT_forward1(s_NTT, s);
-
             NTT_mul1(buff_NTT, s_NTT, buff_NTT);
             NTT_inv1(buff_NTT);
-
             NTT_forward2(poly_NTT, poly);
-
             NTT_forward2(s_NTT, s);
-
             NTT_mul2(poly_NTT, s_NTT, poly_NTT);
             NTT_inv2(poly_NTT);
-
             if(j == 0){
                 solv_CRT(acc, buff_NTT, poly_NTT);
             }else{
                 solv_CRT(poly, buff_NTT, poly_NTT);
                 __asm_poly_add(acc, acc, poly);
             }
-
         }
     }
-
     t1 = hal_get_time();
     printcycles("16-bit MatrixVectorMul stack opt cycles:", t1 - t0);
 
 //
 
     t0 = hal_get_time();
-    for(j = 0; j < SABER_L; j++){
-
+    for(i = 0; i < SABER_L; i++){
         NTT_forward(A_NTT, poly);
-
-        if(j == 0){
+        if(i == 0){
             NTT_mul(acc_NTT, s_NTT, A_NTT);
         }else{
             NTT_mul_acc(acc_NTT, s_NTT, A_NTT);
         }
-
     }
-
     NTT_inv(acc, acc_NTT);
     t1 = hal_get_time();
     printcycles("16-bit InnderProd(Encrypt) speed opt cycles:", t1-t0);
@@ -149,19 +124,15 @@ int main(void)
 //
 
     t0 = hal_get_time();
-    for (j = 0; j < SABER_L; j++) {
-
+    for (i = 0; i < SABER_L; i++) {
         NTT_forward(A_NTT, poly);
-
         NTT_forward(s_NTT, poly);
-
-        if (j == 0) {
+        if (i == 0) {
             NTT_mul(acc_NTT, A_NTT, s_NTT);
         } else {
             NTT_mul_acc(acc_NTT, A_NTT, s_NTT);
         }
     }
-
     NTT_inv(poly, acc_NTT);
     t1 = hal_get_time();
     printcycles("16-bit InnderProd(Decrypt) speed opt cycles:", t1-t0);
@@ -169,32 +140,22 @@ int main(void)
 //
 
     t0 = hal_get_time();
-
-    for(j = 0; j < SABER_L; j++){
-
+    for(i = 0; i < SABER_L; i++){
         NTT_forward1(poly_NTT, poly);
-
         NTT_forward1(s_NTT, s);
-
         NTT_mul1(buff_NTT, poly_NTT, s_NTT);
         NTT_inv1(buff_NTT);
-
         NTT_forward2(poly_NTT, poly);
-
         NTT_forward2(s_NTT, s);
-
         NTT_mul2(poly_NTT, poly_NTT, s_NTT);
         NTT_inv2(poly_NTT);
-
-        if(j == 0){
+        if(i == 0){
             solv_CRT(acc, buff_NTT, poly_NTT);
         }else{
             solv_CRT(buff, buff_NTT, poly_NTT);
             __asm_poly_add(acc, acc, buff);
         }
-
     }
-
     t1 = hal_get_time();
     printcycles("16-bit InnderProd stack opt cycles:", t1 - t0);
 
@@ -221,6 +182,92 @@ int main(void)
     t1 = hal_get_time();
     printcycles("16x16 CRT cycles:", t1-t0);
 
+#elif defined _32_bit
+
+    int32_t s_NTT[SABER_N];
+    int32_t acc_NTT[SABER_L * SABER_N];
+    int32_t A_NTT[SABER_N];
+
+    t0 = hal_get_time();
+    for (i = 0; i < SABER_L; i++)
+    {
+      ntt_asm_const(s_NTT, twiddles);
+      for (j = 0; j < SABER_L; j++)
+      {
+        ntt_asm_leak(A_NTT, twiddles_reord);
+        if (i == 0)
+        {
+          NTT_mul(acc_NTT + j * SABER_N, s_NTT, A_NTT);
+        }
+        else
+        {
+          NTT_mul_acc(acc_NTT + j * SABER_N, s_NTT, A_NTT);
+        }
+      }
+    }
+    for (i = 0; i < SABER_L; i++)
+    {
+      intt_asm_const(acc_NTT + i * SABER_N, twiddles_inv_RinvN);
+    }
+    t1 = hal_get_time();
+    printcycles("32-bit MatrixVectorMul cycles:", t1 - t0);
+
+    t0 = hal_get_time();
+    for (i = 0; i < SABER_L; i++)
+    {
+      ntt_asm_leak(A_NTT, twiddles_reord);
+      if (i == 0)
+      {
+        NTT_mul(acc_NTT, s_NTT, A_NTT);
+      }
+      else
+      {
+        NTT_mul_acc(acc_NTT, s_NTT, A_NTT);
+      }
+    }
+    intt_asm_const(acc_NTT, twiddles_inv_RinvN);
+    t1 = hal_get_time();
+    printcycles("32-bit InnderProd(Encrypt) cycles:", t1 - t0);
+
+    t0 = hal_get_time();
+    for (i = 0; i < SABER_L; i++)
+    {
+      ntt_asm_leak(A_NTT, twiddles);
+      ntt_asm_const(s_NTT, twiddles_reord);
+      if (i == 0)
+      {
+        NTT_mul(acc_NTT, A_NTT, s_NTT);
+      }
+      else
+      {
+        NTT_mul_acc(acc_NTT, A_NTT, s_NTT);
+      }
+    }
+    intt_asm_const(acc_NTT, twiddles_inv_RinvN);
+    t1 = hal_get_time();
+    printcycles("32-bit InnderProd(Decrypt) cycles:", t1 - t0);
+
+    t0 = hal_get_time();
+    ntt_asm_const(s_NTT, twiddles);
+    t1 = hal_get_time();
+    printcycles("32-bit NTT cycles:", t1 - t0);
+
+    t0 = hal_get_time();
+    ntt_asm_leak(s_NTT, twiddles_reord);
+    t1 = hal_get_time();
+    printcycles("32-bit NTT_leak cycles:", t1 - t0);
+
+    t0 = hal_get_time();
+    intt_asm_const(s_NTT, twiddles_inv_RinvN);
+    t1 = hal_get_time();
+    printcycles("32-bit iNTT cycles:", t1 - t0);
+
+    t0 = hal_get_time();
+    NTT_mul(s_NTT, A_NTT, s_NTT);
+    t1 = hal_get_time();
+    printcycles("32-bit basemul cycles:", t1 - t0);
+
+#endif
 
     if (memcmp(key_a, key_b, CRYPTO_BYTES)) {
       hal_send_str("ERROR KEYS\n");

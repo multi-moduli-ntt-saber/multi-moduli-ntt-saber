@@ -233,25 +233,3 @@ void POLmu2BS(uint8_t bytes[SABER_POLYSECRETBYTES], const uint16_t data[SABER_N]
         out += 1;
     }
 }
-
-// #ifdef SABER_COMPRESS_SECRETKEY
-
-
-// void POLVECmu2BS(uint8_t bytes[SABER_INDCPA_SECRETKEYBYTES], const uint16_t data[SABER_L][SABER_N])
-// {
-//     size_t i;
-//     for (i = 0; i < SABER_L; i++) {
-//         POLmu2BS(bytes + i * SABER_POLYSECRETBYTES, data[i]);
-//     }
-// }
-
-// void BS2POLVECmu(const uint8_t bytes[SABER_INDCPA_SECRETKEYBYTES], uint16_t data[SABER_L][SABER_N])
-// {
-//     size_t i;
-//     for (i = 0; i < SABER_L; i++) {
-//         /* This function sign-extends its output from 4-bit to 16-bit */
-//         BS2POLmu(bytes + i * SABER_POLYSECRETBYTES, data[i]);
-//     }
-// }
-
-// #endif

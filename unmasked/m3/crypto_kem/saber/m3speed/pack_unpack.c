@@ -1,6 +1,8 @@
 #include "pack_unpack.h"
 #include <stddef.h>
 
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///                                 Polynomial to bit-string                                 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -151,9 +153,13 @@ uint32_t POLT2BS_cmp(const uint8_t bytes[SABER_SCALEBYTES_KEM], const uint16_t d
     return fail;
 }
 
+
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///                             Polynomial vector to bit-string                              ///
 ////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 void POLVECp2BS(uint8_t bytes[SABER_POLYVECCOMPRESSEDBYTES], const uint16_t data[SABER_L][SABER_N])
 {
@@ -177,6 +183,7 @@ uint32_t POLVECp2BS_cmp(const uint8_t bytes[SABER_POLYVECCOMPRESSEDBYTES], const
 
     return fail;
 }
+
 
 void POLVECq2BS(uint8_t bytes[SABER_POLYVECBYTES], const uint16_t data[SABER_L][SABER_N])
 {
@@ -215,7 +222,7 @@ void BS2POLVECq(const uint8_t bytes[SABER_POLYVECBYTES], uint16_t data[SABER_L][
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /* This function reduces its input mod 2**4 */
-void POLmu2BS(uint8_t bytes[SABER_N / 2], const uint16_t data[SABER_N])
+void POLmu2BS(uint8_t bytes[SABER_POLYSECRETBYTES], const uint16_t data[SABER_N])
 {
     size_t j;
     const uint16_t *in = data;

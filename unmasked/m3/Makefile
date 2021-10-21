@@ -233,12 +233,15 @@ IMPLEMENTATION_PATH = \
 	crypto_kem/saber/m3speed \
 	crypto_kem/saber/m3speedstack \
 	crypto_kem/saber/m3stack \
+	crypto_kem/saber/m3_32bit \
 	crypto_kem/lightsaber/m3speed \
 	crypto_kem/lightsaber/m3speedstack \
 	crypto_kem/lightsaber/m3stack \
+	crypto_kem/lightsaber/m3_32bit \
 	crypto_kem/firesaber/m3speed \
 	crypto_kem/firesaber/m3speedstack \
-	crypto_kem/firesaber/m3stack
+	crypto_kem/firesaber/m3stack \
+	crypto_kem/firesaber/m3_32bit
 
 # If, however, the IMPLEMENTAION_PATH is defined, only the path it points to
 # will be added to the {KEM,SIGN}_SCHEMES lists. Since the python scripts for
