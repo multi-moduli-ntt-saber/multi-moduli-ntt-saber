@@ -231,11 +231,13 @@ obj-host/%.S.o: %.S $(CONFIG)
 
 IMPLEMENTATION_PATH = \
 	crypto_kem/saber/m3speed \
-	crypto_kem/saber/m3stack \
 	crypto_kem/saber/m3speedstack \
+	crypto_kem/saber/m3stack \
 	crypto_kem/lightsaber/m3speed \
+	crypto_kem/lightsaber/m3speedstack \
 	crypto_kem/lightsaber/m3stack \
 	crypto_kem/firesaber/m3speed \
+	crypto_kem/firesaber/m3speedstack \
 	crypto_kem/firesaber/m3stack
 
 # If, however, the IMPLEMENTAION_PATH is defined, only the path it points to

@@ -84,6 +84,145 @@ void MatrixVectorMulKeyPairNTT_A( uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8
 
 }
 
+void MatrixVectorMulKeyPairNTT_B( uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABER_INDCPA_SECRETKEYBYTES]){
+
+    uint32_t s_NTT[SABER_N];
+    uint32_t A_NTT[SABER_N];
+
+    uint16_t poly[SABER_N];
+    uint16_t acc[SABER_L * SABER_N];
+
+    uint8_t shake_out[MAX(SABER_POLYBYTES, SABER_POLYCOINBYTES)];
+
+    uint8_t *seed_A = pk + SABER_POLYVECCOMPRESSEDBYTES;
+    uint8_t *seed_s = sk;
+
+    size_t i, j;
+
+    shake128incctx shake_s_ctx = shake128_absorb_seed(seed_s);
+    shake128incctx shake_A_ctx = shake128_absorb_seed(seed_A);
+
+    for (i = 0; i < SABER_L; i++) {
+
+        shake128_inc_squeeze(shake_out, SABER_POLYCOINBYTES, &shake_s_ctx);
+        cbd(poly, shake_out);
+#ifdef SABER_COMPRESS_SECRETKEY
+        POLmu2BS(sk + i * SABER_POLYSECRETBYTES, poly); // sk <- s
+#else
+        POLq2BS(sk + i * SABER_POLYSECRETBYTES, poly);
+#endif
+        NTT_forward(s_NTT, poly);
+
+        for (j = 0; j < SABER_L; j++) {
+
+            shake128_inc_squeeze(shake_out, SABER_POLYBYTES, &shake_A_ctx);
+            BS2POLq(shake_out, poly);
+
+            NTT_forward(A_NTT, poly);
+
+            NTT_mul(A_NTT, s_NTT, A_NTT);
+
+            if(i == 0){
+                NTT_inv(acc + j * SABER_N, A_NTT);
+            }else{
+                NTT_inv(poly, A_NTT);
+                __asm_poly_add(acc + j * SABER_N, acc + j * SABER_N, poly);
+            }
+
+        }
+    }
+
+    shake128_inc_ctx_release(&shake_A_ctx);
+    shake128_inc_ctx_release(&shake_s_ctx);
+
+    for (i = 0; i < SABER_L; i++) {
+
+        for (j = 0; j < SABER_N; j++) {
+            poly[j] = ((acc[i * SABER_N + j] + h1) >> (SABER_EQ - SABER_EP));
+        }
+
+        POLp2BS(pk + i * SABER_POLYCOMPRESSEDBYTES, poly);
+    }
+
+}
+
+void MatrixVectorMulKeyPairNTT_D(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABER_INDCPA_SECRETKEYBYTES]){
+
+    uint16_t poly[MAX(SABER_N, MAX(SABER_POLYCOINBYTES, SABER_POLYBYTES) / 2)];
+    uint16_t s[SABER_N];
+    uint16_t buff[SABER_N];
+    uint16_t acc[SABER_L * SABER_N];
+    uint8_t s_buff[SABER_N / 2];
+
+    uint8_t *shake_out = (uint8_t*)poly;
+    uint32_t *poly_NTT = (uint32_t*)poly;
+    uint32_t *s_NTT = (uint32_t*)s;
+    uint32_t *buff_NTT = (uint32_t*)buff;
+
+    uint8_t *seed_A = pk + SABER_POLYVECCOMPRESSEDBYTES;
+    uint8_t *seed_s = sk;
+
+    size_t i, j;
+
+    shake128incctx shake_s_ctx = shake128_absorb_seed(seed_s);
+    shake128incctx shake_A_ctx = shake128_absorb_seed(seed_A);
+
+    for (i = 0; i < SABER_L; i++) {
+
+        shake128_inc_squeeze(shake_out, SABER_POLYCOINBYTES, &shake_s_ctx);
+        cbd(s, shake_out);
+#ifdef SABER_COMPRESS_SECRETKEY
+        POLmu2BS(sk + i * SABER_POLYSECRETBYTES, s); // sk <- s
+#else
+        POLq2BS(sk + i * SABER_POLYSECRETBYTES, s);
+#endif
+        POLmu2BS(s_buff, s);
+
+        for (j = 0; j < SABER_L; j++) {
+
+            shake128_inc_squeeze(shake_out, SABER_POLYBYTES, &shake_A_ctx);
+
+            BS2POLq(shake_out, buff);
+            NTT_forward1(buff_NTT, buff);
+
+            BS2POLmu(s_buff, s);
+            NTT_forward1(s_NTT, s);
+
+            NTT_mul1(buff_NTT, buff_NTT, s_NTT);
+            NTT_inv1(buff_NTT);
+
+            BS2POLq(shake_out, poly);
+            NTT_forward2(poly_NTT, poly);
+
+            BS2POLmu(s_buff, s);
+            NTT_forward2(s_NTT, s);
+
+            NTT_mul2(poly_NTT, poly_NTT, s_NTT);
+            NTT_inv2(poly_NTT);
+
+            if(i == 0){
+                solv_CRT(acc + j * SABER_N, buff_NTT, poly_NTT);
+            }else{
+                solv_CRT(poly, buff_NTT, poly_NTT);
+                __asm_poly_add(acc + j * SABER_N, acc + j * SABER_N, poly);
+            }
+
+        }
+    }
+
+    shake128_inc_ctx_release(&shake_A_ctx);
+    shake128_inc_ctx_release(&shake_s_ctx);
+
+    for (i = 0; i < SABER_L; i++) {
+
+        for (j = 0; j < SABER_N; j++) {
+            acc[i * SABER_N + j] = ((acc[i * SABER_N + j] + h1) >> (SABER_EQ - SABER_EP));
+        }
+
+        POLp2BS(pk + i * SABER_POLYCOMPRESSEDBYTES, acc + i * SABER_N);
+    }
+
+}
 
 uint32_t MatrixVectorMulEncNTT_A(uint8_t ct0[SABER_POLYVECCOMPRESSEDBYTES], uint8_t ct1[SABER_SCALEBYTES_KEM], const uint8_t seed_s[SABER_NOISE_SEEDBYTES], const uint8_t seed_A[SABER_SEEDBYTES], const uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], const uint8_t m[SABER_KEYBYTES], int compare){
 
@@ -172,120 +311,6 @@ uint32_t MatrixVectorMulEncNTT_A(uint8_t ct0[SABER_POLYVECCOMPRESSEDBYTES], uint
     }
 
     return fail;
-
-}
-
-void InnerProdDecNTT(uint8_t m[SABER_KEYBYTES], const uint8_t ciphertext[SABER_BYTES_CCA_DEC], const uint8_t sk[SABER_INDCPA_SECRETKEYBYTES]){
-
-    uint32_t poly_NTT[SABER_N / 2];
-    uint32_t buff_NTT[SABER_N / 2];
-    uint32_t acc_NTT[SABER_N];
-    uint16_t poly[SABER_N];
-    uint16_t buff[SABER_N];
-
-    size_t i;
-
-    for (i = 0; i < SABER_L; i++) {
-
-#ifdef SABER_COMPRESS_SECRETKEY
-        BS2POLmu(sk + i * SABER_POLYSECRETBYTES, buff);
-#else
-        BS2POLq(sk + i * SABER_POLYSECRETBYTES, buff);
-#endif
-        BS2POLp(ciphertext + i * SABER_POLYCOMPRESSEDBYTES, poly);
-
-        NTT_forward1(buff_NTT, buff);
-        NTT_forward1(poly_NTT, poly);
-
-        if(i == 0){
-            NTT_mul1(acc_NTT, buff_NTT, poly_NTT);
-        }else{
-            NTT_mul_acc1(acc_NTT, buff_NTT, poly_NTT);
-        }
-
-        NTT_forward2(buff_NTT, buff);
-        NTT_forward2(poly_NTT, poly);
-
-        if(i == 0){
-            NTT_mul2(acc_NTT + SABER_N / 2, buff_NTT, poly_NTT);
-        }else{
-            NTT_mul_acc2(acc_NTT + SABER_N / 2, buff_NTT, poly_NTT);
-        }
-
-    }
-
-    NTT_inv(poly, acc_NTT);
-
-    BS2POLT(ciphertext + SABER_POLYVECCOMPRESSEDBYTES, buff);
-
-    for (i = 0; i < SABER_N; i++) {
-        poly[i] = (poly[i] + h2 - (buff[i] << (SABER_EP - SABER_ET))) >> (SABER_EP - 1);
-    }
-
-    POLmsg2BS(m, poly);
-
-}
-
-
-void MatrixVectorMulKeyPairNTT_B( uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABER_INDCPA_SECRETKEYBYTES]){
-
-    uint32_t s_NTT[SABER_N];
-    uint32_t A_NTT[SABER_N];
-
-    uint16_t poly[SABER_N];
-    uint16_t acc[SABER_L * SABER_N];
-
-    uint8_t shake_out[MAX(SABER_POLYBYTES, SABER_POLYCOINBYTES)];
-
-    uint8_t *seed_A = pk + SABER_POLYVECCOMPRESSEDBYTES;
-    uint8_t *seed_s = sk;
-
-    size_t i, j;
-
-    shake128incctx shake_s_ctx = shake128_absorb_seed(seed_s);
-    shake128incctx shake_A_ctx = shake128_absorb_seed(seed_A);
-
-    for (i = 0; i < SABER_L; i++) {
-
-        shake128_inc_squeeze(shake_out, SABER_POLYCOINBYTES, &shake_s_ctx);
-        cbd(poly, shake_out);
-#ifdef SABER_COMPRESS_SECRETKEY
-        POLmu2BS(sk + i * SABER_POLYSECRETBYTES, poly); // sk <- s
-#else
-        POLq2BS(sk + i * SABER_POLYSECRETBYTES, poly);
-#endif
-        NTT_forward(s_NTT, poly);
-
-        for (j = 0; j < SABER_L; j++) {
-
-            shake128_inc_squeeze(shake_out, SABER_POLYBYTES, &shake_A_ctx);
-            BS2POLq(shake_out, poly);
-
-            NTT_forward(A_NTT, poly);
-
-            NTT_mul(A_NTT, s_NTT, A_NTT);
-
-            if(i == 0){
-                NTT_inv(acc + j * SABER_N, A_NTT);
-            }else{
-                NTT_inv(poly, A_NTT);
-                __asm_poly_add(acc + j * SABER_N, acc + j * SABER_N, poly);
-            }
-
-        }
-    }
-
-    shake128_inc_ctx_release(&shake_A_ctx);
-    shake128_inc_ctx_release(&shake_s_ctx);
-
-    for (i = 0; i < SABER_L; i++) {
-
-        for (j = 0; j < SABER_N; j++) {
-            poly[j] = ((acc[i * SABER_N + j] + h1) >> (SABER_EQ - SABER_EP));
-        }
-
-        POLp2BS(pk + i * SABER_POLYCOMPRESSEDBYTES, poly);
-    }
 
 }
 
@@ -412,134 +437,6 @@ uint32_t MatrixVectorMulEncNTT_C(uint8_t ct0[SABER_POLYVECCOMPRESSEDBYTES], uint
 
 }
 
-void InnerProdDecNTT_16_stack(uint8_t m[SABER_KEYBYTES], const uint8_t ciphertext[SABER_BYTES_CCA_DEC], const uint8_t sk[SABER_INDCPA_SECRETKEYBYTES]){
-
-    uint32_t poly_NTT[SABER_N / 2];
-    uint32_t buff_NTT[SABER_N / 2];
-    uint32_t acc_NTT[SABER_N];
-    uint16_t poly[SABER_N];
-
-    uint16_t *buff = (uint16_t*)buff_NTT;
-
-    size_t i;
-
-    for (i = 0; i < SABER_L; i++) {
-
-        BS2POLmu(sk + i * SABER_POLYSECRETBYTES, buff);
-        BS2POLp(ciphertext + i * SABER_POLYCOMPRESSEDBYTES, poly);
-
-        NTT_forward1(buff_NTT, buff);
-        NTT_forward1(poly_NTT, poly);
-
-        if(i == 0){
-            NTT_mul1(acc_NTT, buff_NTT, poly_NTT);
-        }else{
-            NTT_mul_acc1(acc_NTT, buff_NTT, poly_NTT);
-        }
-
-        BS2POLmu(sk + i * SABER_POLYSECRETBYTES, buff);
-
-        NTT_forward2(buff_NTT, buff);
-        NTT_forward2(poly_NTT, poly);
-
-        if(i == 0){
-            NTT_mul2(acc_NTT + SABER_N / 2, buff_NTT, poly_NTT);
-        }else{
-            NTT_mul_acc2(acc_NTT + SABER_N / 2, buff_NTT, poly_NTT);
-        }
-
-    }
-
-    NTT_inv(poly, acc_NTT);
-
-    BS2POLT(ciphertext + SABER_POLYVECCOMPRESSEDBYTES, buff);
-
-    for (i = 0; i < SABER_N; i++) {
-        poly[i] = (poly[i] + h2 - (buff[i] << (SABER_EP - SABER_ET))) >> (SABER_EP - 1);
-    }
-
-    POLmsg2BS(m, poly);
-
-}
-
-void MatrixVectorMulKeyPairNTT_D(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABER_INDCPA_SECRETKEYBYTES]){
-
-    uint16_t poly[MAX(SABER_N, MAX(SABER_POLYCOINBYTES, SABER_POLYBYTES) / 2)];
-    uint16_t s[SABER_N];
-    uint16_t buff[SABER_N];
-    uint16_t acc[SABER_L * SABER_N];
-    uint8_t s_buff[SABER_N / 2];
-
-    uint8_t *shake_out = (uint8_t*)poly;
-    uint32_t *poly_NTT = (uint32_t*)poly;
-    uint32_t *s_NTT = (uint32_t*)s;
-    uint32_t *buff_NTT = (uint32_t*)buff;
-
-    uint8_t *seed_A = pk + SABER_POLYVECCOMPRESSEDBYTES;
-    uint8_t *seed_s = sk;
-
-    size_t i, j;
-
-    shake128incctx shake_s_ctx = shake128_absorb_seed(seed_s);
-    shake128incctx shake_A_ctx = shake128_absorb_seed(seed_A);
-
-    for (i = 0; i < SABER_L; i++) {
-
-        shake128_inc_squeeze(shake_out, SABER_POLYCOINBYTES, &shake_s_ctx);
-        cbd(s, shake_out);
-#ifdef SABER_COMPRESS_SECRETKEY
-        POLmu2BS(sk + i * SABER_POLYSECRETBYTES, s); // sk <- s
-#else
-        POLq2BS(sk + i * SABER_POLYSECRETBYTES, s);
-#endif
-        POLmu2BS(s_buff, s);
-
-        for (j = 0; j < SABER_L; j++) {
-
-            shake128_inc_squeeze(shake_out, SABER_POLYBYTES, &shake_A_ctx);
-
-            BS2POLq(shake_out, buff);
-            NTT_forward1(buff_NTT, buff);
-
-            BS2POLmu(s_buff, s);
-            NTT_forward1(s_NTT, s);
-
-            NTT_mul1(buff_NTT, buff_NTT, s_NTT);
-            NTT_inv1(buff_NTT);
-
-            BS2POLq(shake_out, poly);
-            NTT_forward2(poly_NTT, poly);
-
-            BS2POLmu(s_buff, s);
-            NTT_forward2(s_NTT, s);
-
-            NTT_mul2(poly_NTT, poly_NTT, s_NTT);
-            NTT_inv2(poly_NTT);
-
-            if(i == 0){
-                solv_CRT(acc + j * SABER_N, buff_NTT, poly_NTT);
-            }else{
-                solv_CRT(poly, buff_NTT, poly_NTT);
-                __asm_poly_add(acc + j * SABER_N, acc + j * SABER_N, poly);
-            }
-
-        }
-    }
-
-    shake128_inc_ctx_release(&shake_A_ctx);
-    shake128_inc_ctx_release(&shake_s_ctx);
-
-    for (i = 0; i < SABER_L; i++) {
-
-        for (j = 0; j < SABER_N; j++) {
-            acc[i * SABER_N + j] = ((acc[i * SABER_N + j] + h1) >> (SABER_EQ - SABER_EP));
-        }
-
-        POLp2BS(pk + i * SABER_POLYCOMPRESSEDBYTES, acc + i * SABER_N);
-    }
-
-}
-
 uint32_t MatrixVectorMulEncNTT_D(uint8_t ct0[SABER_POLYVECCOMPRESSEDBYTES], uint8_t ct1[SABER_SCALEBYTES_KEM], const uint8_t seed_s[SABER_NOISE_SEEDBYTES], const uint8_t seed_A[SABER_SEEDBYTES], const uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], const uint8_t m[SABER_KEYBYTES], int compare){
 
     uint16_t s[SABER_N];
@@ -660,6 +557,57 @@ uint32_t MatrixVectorMulEncNTT_D(uint8_t ct0[SABER_POLYVECCOMPRESSEDBYTES], uint
     }
 
     return fail;
+
+}
+
+void InnerProdDecNTT(uint8_t m[SABER_KEYBYTES], const uint8_t ciphertext[SABER_BYTES_CCA_DEC], const uint8_t sk[SABER_INDCPA_SECRETKEYBYTES]){
+
+    uint32_t poly_NTT[SABER_N / 2];
+    uint32_t buff_NTT[SABER_N / 2];
+    uint32_t acc_NTT[SABER_N];
+    uint16_t poly[SABER_N];
+    uint16_t buff[SABER_N];
+
+    size_t i;
+
+    for (i = 0; i < SABER_L; i++) {
+
+#ifdef SABER_COMPRESS_SECRETKEY
+        BS2POLmu(sk + i * SABER_POLYSECRETBYTES, buff);
+#else
+        BS2POLq(sk + i * SABER_POLYSECRETBYTES, buff);
+#endif
+        BS2POLp(ciphertext + i * SABER_POLYCOMPRESSEDBYTES, poly);
+
+        NTT_forward1(buff_NTT, buff);
+        NTT_forward1(poly_NTT, poly);
+
+        if(i == 0){
+            NTT_mul1(acc_NTT, buff_NTT, poly_NTT);
+        }else{
+            NTT_mul_acc1(acc_NTT, buff_NTT, poly_NTT);
+        }
+
+        NTT_forward2(buff_NTT, buff);
+        NTT_forward2(poly_NTT, poly);
+
+        if(i == 0){
+            NTT_mul2(acc_NTT + SABER_N / 2, buff_NTT, poly_NTT);
+        }else{
+            NTT_mul_acc2(acc_NTT + SABER_N / 2, buff_NTT, poly_NTT);
+        }
+
+    }
+
+    NTT_inv(poly, acc_NTT);
+
+    BS2POLT(ciphertext + SABER_POLYVECCOMPRESSEDBYTES, buff);
+
+    for (i = 0; i < SABER_N; i++) {
+        poly[i] = (poly[i] + h2 - (buff[i] << (SABER_EP - SABER_ET))) >> (SABER_EP - 1);
+    }
+
+    POLmsg2BS(m, poly);
 
 }
 
