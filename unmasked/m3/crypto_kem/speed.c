@@ -119,7 +119,7 @@ int main(void)
     }
     NTT_inv(acc, acc_NTT);
     t1 = hal_get_time();
-    printcycles("16-bit InnderProd(Encrypt) speed opt cycles:", t1-t0);
+    printcycles("16-bit InnderProd (Encrypt) speed opt cycles:", t1 - t0);
 
 //
 
@@ -135,7 +135,7 @@ int main(void)
     }
     NTT_inv(poly, acc_NTT);
     t1 = hal_get_time();
-    printcycles("16-bit InnderProd(Decrypt) speed opt cycles:", t1-t0);
+    printcycles("16-bit InnderProd (Decrypt) speed opt cycles:", t1 - t0);
 
 //
 
@@ -164,23 +164,23 @@ int main(void)
     t0 = hal_get_time();
     NTT_forward(s_NTT, poly);
     t1 = hal_get_time();
-    printcycles("two 16-bit NTTs cycles:", t1-t0);
+    printcycles("two 16-bit NTTs cycles:", t1 - t0);
 
     t0 = hal_get_time();
     NTT_mul(s_NTT, acc_NTT + 0 * SABER_N / 2, acc_NTT + 1 * SABER_N / 2);
     t1 = hal_get_time();
-    printcycles("two 16-bit base_mul cycles:", t1-t0);
+    printcycles("two 16-bit base_mul cycles:", t1 - t0);
 
     t0 = hal_get_time();
     NTT_inv1(s_NTT);
     NTT_inv2(s_NTT);
     t1 = hal_get_time();
-    printcycles("two 16-bit iNTT cycles:", t1-t0);
+    printcycles("two 16-bit iNTT cycles:", t1 - t0);
 
     t0 = hal_get_time();
     solv_CRT(poly, acc_NTT + 0 * SABER_N / 2, acc_NTT + 1 * SABER_N);
     t1 = hal_get_time();
-    printcycles("16x16 CRT cycles:", t1-t0);
+    printcycles("16x16 CRT cycles:", t1 - t0);
 
 #elif defined _32_bit
 
@@ -227,7 +227,7 @@ int main(void)
     }
     intt_asm_const(acc_NTT, twiddles_inv_RinvN);
     t1 = hal_get_time();
-    printcycles("32-bit InnderProd(Encrypt) cycles:", t1 - t0);
+    printcycles("32-bit InnderProd (Encrypt) cycles:", t1 - t0);
 
     t0 = hal_get_time();
     for (i = 0; i < SABER_L; i++)
@@ -245,7 +245,7 @@ int main(void)
     }
     intt_asm_const(acc_NTT, twiddles_inv_RinvN);
     t1 = hal_get_time();
-    printcycles("32-bit InnderProd(Decrypt) cycles:", t1 - t0);
+    printcycles("32-bit InnderProd (Decrypt) cycles:", t1 - t0);
 
     t0 = hal_get_time();
     ntt_asm_const(s_NTT, twiddles);

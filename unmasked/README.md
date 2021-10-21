@@ -5,10 +5,14 @@ Please refer to the `README.md`'s in folders `m3` and `m4`.
 .
 ├── README.md
 ├── m3
+│   ├── Makefile
 │   ├── README.md
-│   ├── _16_bit_strategy_A
-│   ├── _16_bit_strategy_D
-│   └── _32_bit_strategy_A
+│   ├── common
+│   ├── crypto_kem
+│   ├── libopencm3 -> ../../libopencm3/
+│   ├── mk
+│   ├── nucleo-f2.cfg
+│   └── read_serial.py
 └── m4
     ├── Makefile
     ├── README.md

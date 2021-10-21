@@ -46,7 +46,7 @@ st-flash write bin/crypto_kem_saber_m4fstack_stack.bin 0x8000000
 st-flash write bin/crypto_kem_firesaber_m4fstack_stack.bin 0x8000000
 ```
 
-# Meaning of the numbers
+# Interpretation of the numbers
 
 ## Speed
 ### Sample output
@@ -161,9 +161,6 @@ The three numbers correspond to the stack usage of key generation, encapsulation
 ├── Makefile
 ├── README.md
 ├── common
-│   ├── crypto_hashblocks_sha512.c
-│   ├── crypto_hashblocks_sha512.h
-│   ├── crypto_hashblocks_sha512_inner32.s
 │   ├── fips202.c
 │   ├── fips202.h
 │   ├── hal-stm32f4.c
@@ -172,9 +169,7 @@ The three numbers correspond to the stack usage of key generation, encapsulation
 │   ├── keccakf1600.h
 │   ├── randombytes.c
 │   ├── randombytes.h
-│   ├── sendfn.h
-│   ├── sha2.c
-│   └── sha2.h
+│   └── sendfn.h
 ├── crypto_kem
 │   ├── firesaber
 │   │   ├── m4fspeed
