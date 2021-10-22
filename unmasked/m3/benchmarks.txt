@@ -1,0 +1,62 @@
+% Benchmarking measurements written on 2021-10-22 10:23:15.582486+00:00; iterations=100
+
+M3 results for lightsaber (impl=m3speed)
+lightsaberm3speedkeygen: 539k
+lightsaberm3speedencaps: 715k
+lightsaberm3speeddecaps: 749k
+
+M3 results for lightsaber (impl=m3speedstack)
+lightsaberm3speedstackkeygen: 585k
+lightsaberm3speedstackencaps: 812k
+lightsaberm3speedstackdecaps: 845k
+
+M3 results for lightsaber (impl=m3stack)
+lightsaberm3stackkeygen: 632k
+lightsaberm3stackencaps: 888k
+lightsaberm3stackdecaps: 921k
+
+M3 results for lightsaber (impl=m3_32bit)
+lightsaberm3_32bitkeygen: 594k
+lightsaberm3_32bitencaps: 799k
+lightsaberm3_32bitdecaps: 875k
+
+M3 results for saber (impl=m3speed)
+saberm3speedkeygen: 938k
+saberm3speedencaps: 1193k
+saberm3speeddecaps: 1236k
+
+M3 results for saber (impl=m3speedstack)
+saberm3speedstackkeygen: 1082k
+saberm3speedstackencaps: 1424k
+saberm3speedstackdecaps: 1465k
+
+M3 results for saber (impl=m3stack)
+saberm3stackkeygen: 1253k
+saberm3stackencaps: 1615k
+saberm3stackdecaps: 1657k
+
+M3 results for saber (impl=m3_32bit)
+saberm3_32bitkeygen: 1057k
+saberm3_32bitencaps: 1330k
+saberm3_32bitdecaps: 1427k
+
+M3 results for firesaber (impl=m3speed)
+firesaberm3speedkeygen: 1440k
+firesaberm3speedencaps: 1752k
+firesaberm3speeddecaps: 1810k
+
+M3 results for firesaber (impl=m3speedstack)
+firesaberm3speedstackkeygen: 1714k
+firesaberm3speedstackencaps: 2066k
+firesaberm3speedstackdecaps: 2125k
+
+M3 results for firesaber (impl=m3stack)
+firesaberm3stackkeygen: 1956k
+firesaberm3stackencaps: 2428k
+firesaberm3stackdecaps: 2486k
+
+M3 results for firesaber (impl=m3_32bit)
+firesaberm3_32bitkeygen: 1554k
+firesaberm3_32bitencaps: 1883k
+firesaberm3_32bitdecaps: 2015k
+

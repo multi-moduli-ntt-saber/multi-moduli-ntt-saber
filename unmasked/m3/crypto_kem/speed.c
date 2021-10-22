@@ -27,7 +27,9 @@ int main(void)
 
   hal_setup(CLOCK_BENCHMARK);
 
-  hal_send_str("==========================");
+  for(i = 0; i < 40; i++){
+    hal_send_str("==========================");
+  }
 
   for(crypto_i=0;crypto_i<ITERATIONS; crypto_i++)
   {
