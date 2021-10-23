@@ -1,19 +1,34 @@
 
-
 # TODO
-Documentation
+Interpretation of the numbers.
 
-Describe the port for the board `nucleo-f207zg`
-
-Possibly split the strategies.
+We use the board `nucleo-f207zg`.
+Please check the name of the device that is recognized by your computer.
+Our setting is in the file `config.py`.
+If you're using a macOS, the prefix of the name name will be `/dev/tty.usbmodem`.
 
 # How to Compile
-
 ```
 make -j4
 ```
 
-# How to produce benchmark
+# Scripts
+We provide scripts for producing the benchmarks.
+
+## Scripts for the schemes
+```
+python3 benchmarks.py
+```
+The numbers will be in the file `benchmarks.txt`.
+
+## Scripts for individual functions
+```
+python3 f_16_benchmarks.py
+python3 f_32_benchmarks.py
+```
+The numbers will be in the file `f_16_benchmarks.txt` and `f_32_benchmarks.txt`.
+
+# How to test and produce benchmarks manually
 
 ## One terminal reading from board
 ```
@@ -24,50 +39,17 @@ python3 read_serial.py
 
 ### Test for successful key exchange
 ```
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3speed_test.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3speedstack_test.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3stack_test.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3_32bit_test.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3speed_test.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3speedstack_test.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3stack_test.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3_32bit_test.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3speed_test.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3speedstack_test.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3stack_test.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3_32bit_test.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_{lightsaber, saber, firesaber}_{m3speed, m3speedstack, m3stack, m3_32bit}_test.elf reset exit"
 ```
 
 ### Benchmark for speed
 ```
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3speed_speed.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3speedstack_speed.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3stack_speed.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3_32bit_speed.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3speed_speed.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3speedstack_speed.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3stack_speed.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3_32bit_speed.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3speed_speed.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3speedstack_speed.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3stack_speed.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3_32bit_speed.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_{lightsaber, saber, firesaber}_{m3speed, m3speedstack, m3stack, m3_32bit}_speed.elf reset exit"
 ```
 
 ### Benchmark for stack
 ```
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3speed_stack.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3speedstack_stack.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3stack_stack.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_lightsaber_m3_32bit_stack.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3speed_stack.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3speedstack_stack.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3stack_stack.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_saber_m3_32bit_stack.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3speed_stack.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3speedstack_stack.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3stack_stack.elf reset exit"
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_firesaber_m3_32bit_stack.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_{lightsaber, saber, firesaber}_{m3speed, m3speedstack, m3stack, m3_32bit}_stack.elf reset exit"
 ```
 
 # Interpretation of the numbers
@@ -77,6 +59,8 @@ TBA
 .
 ├── Makefile
 ├── README.md
+├── benchmarks.py
+├── benchmarks.txt
 ├── common
 │   ├── fips202.c
 │   ├── fips202.h
@@ -89,7 +73,9 @@ TBA
 │   ├── randombytes.h
 │   ├── sendfn.h
 │   └── test.c
+├── config.py
 ├── crypto_kem
+│   ├── f_speed.c
 │   ├── firesaber
 │   │   ├── m3_32bit
 │   │   ├── m3speed
@@ -108,6 +94,10 @@ TBA
 │   ├── speed.c
 │   ├── stack.c
 │   └── test.c
+├── f_16_benchmarks.py
+├── f_16_benchmarks.txt
+├── f_32_benchmarks.py
+├── f_32_benchmarks.txt
 ├── libopencm3 -> ../../libopencm3/
 ├── mk
 │   ├── nucleo-f207zg.mk

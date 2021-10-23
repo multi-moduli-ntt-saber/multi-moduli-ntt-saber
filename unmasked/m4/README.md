@@ -1,4 +1,8 @@
 
+# TODO
+Possibly add some scripts.
+Double check the name of the strategies.
+
 # How to compile
 ```
 sh makeAll.sh
@@ -15,35 +19,17 @@ python3 read_serial.py
 
 ### Test for successful key exchange
 ```
-st-flash write bin/crypto_kem_lightsaber_m4fspeed_test.bin 0x8000000
-st-flash write bin/crypto_kem_saber_m4fspeed_test.bin 0x8000000
-st-flash write bin/crypto_kem_firesaber_m4fspeed_test.bin 0x8000000
-
-st-flash write bin/crypto_kem_lightsaber_m4fstack_test.bin 0x8000000
-st-flash write bin/crypto_kem_saber_m4fstack_test.bin 0x8000000
-st-flash write bin/crypto_kem_firesaber_m4fstack_test.bin 0x8000000
+st-flash write bin/crypto_kem_{lightsaber, saber, firesaber}_{m4fspeed, m4fstack}_test.bin 0x8000000
 ```
 
 ### Benchmark for speed
 ```
-st-flash write bin/crypto_kem_lightsaber_m4fspeed_speed.bin 0x8000000
-st-flash write bin/crypto_kem_saber_m4fspeed_speed.bin 0x8000000
-st-flash write bin/crypto_kem_firesaber_m4fspeed_speed.bin 0x8000000
-
-st-flash write bin/crypto_kem_lightsaber_m4fstack_speed.bin 0x8000000
-st-flash write bin/crypto_kem_saber_m4fstack_speed.bin 0x8000000
-st-flash write bin/crypto_kem_firesaber_m4fstack_speed.bin 0x8000000
+st-flash write bin/crypto_kem_{lightsaber, saber, firesaber}_{m4fspeed, m4fstack}_speed.bin 0x8000000
 ```
 
 ### Benchmark for stack
 ```
-st-flash write bin/crypto_kem_lightsaber_m4fspeed_stack.bin 0x8000000
-st-flash write bin/crypto_kem_saber_m4fspeed_stack.bin 0x8000000
-st-flash write bin/crypto_kem_firesaber_m4fspeed_stack.bin 0x8000000
-
-st-flash write bin/crypto_kem_lightsaber_m4fstack_stack.bin 0x8000000
-st-flash write bin/crypto_kem_saber_m4fstack_stack.bin 0x8000000
-st-flash write bin/crypto_kem_firesaber_m4fstack_stack.bin 0x8000000
+st-flash write bin/crypto_kem_{lightsaber, saber, firesaber}_{m4fspeed, m4fstack}_stack.bin 0x8000000
 ```
 
 # Interpretation of the numbers
