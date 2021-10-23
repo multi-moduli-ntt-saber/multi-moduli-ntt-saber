@@ -17,7 +17,7 @@ def toLog(name, value, k=None):
   return f"{name}: {value}\n"
 
 def run_bench(scheme, impl, iterations):
-    binary = f"elf/crypto_kem_{scheme}_{impl}_speed.elf"
+    binary = f"elf/crypto_kem_{scheme}_{impl}_f_speed.elf"
 
     try:
         subprocess.check_call(f"openocd -f nucleo-f2.cfg -c \"program {binary} reset exit\" ", shell=True)
@@ -65,10 +65,18 @@ def parseLogSpeed(log, ignoreErrors):
         }
 
     return cleanNullTerms({
-        f"keygen":  get(lines, "keypair cycles:"),
-        f"encaps":  get(lines, "encaps cycles:"),
-        f"decaps":  get(lines, "decaps cycles:"),
+        f"MatrixVectorMul_A": get(lines, "16-bit MatrixVectorMul speed opt cycles:"),
+        f"MatrixVectorMul_D": get(lines, "16-bit MatrixVectorMul stack opt cycles:"),
+        f"InnerProd (Encrypt)": get(lines, "16-bit InnderProd (Encrypt) speed opt cycles:"),
+        f"InnerProd (Decrypt)": get(lines, "16-bit InnderProd (Decrypt) speed opt cycles:"),
+        f"InnerProd stack": get(lines, "16-bit InnderProd stack opt cycles:"),
+        f"two 16-bit NTTs": get(lines, "two 16-bit NTTs cycles:"),
+        f"two 16-bit base_mul": get(lines, "two 16-bit base_mul cycles:"),
+        f"two 16-bit iNTTs": get(lines, "two 16-bit iNTT cycles:"),
+        f"16-bit by 16-bit CRT": get(lines, "16x16 CRT cycles:"),
     })
+
+
 
 def average(results):
     avgs = dict()
@@ -93,7 +101,7 @@ def bench(scheme, texName, impl, iterations, outfile, ignoreErrors=False):
     print(f"M3 results for {scheme} (impl={impl})", file=outfile)
 
     for key, value in avgResults.items():
-        macro = toLog(f"{texName}{key}", value)
+        macro = toLog(f"{key}", value)
         print(macro.strip())
         print(macro, end='', file=outfile)
     print('', file=outfile, flush=True)
@@ -103,7 +111,7 @@ def makeAll(iterations):
     subprocess.check_call(f"make -j4 ITERATIONS={iterations}", shell=True)
 
 
-with open(f"benchmarks.txt", "w") as outfile:
+with open(f"f_16_benchmarks.txt", "w") as outfile:
     iterations = 100
 
     now = datetime.datetime.now(datetime.timezone.utc)
@@ -112,8 +120,8 @@ with open(f"benchmarks.txt", "w") as outfile:
     makeAll(iterations)
 
     for scheme in ["lightsaber", "saber", "firesaber"]:
-        for imple in ["speed", "speedstack", "stack", "_32bit"]:
-            bench(scheme, scheme + "m3" + imple, "m3" + imple, iterations, outfile)
+        for imple in ["speed"]:
+            bench(scheme, scheme, "m3" + imple, iterations, outfile)
 
 
 

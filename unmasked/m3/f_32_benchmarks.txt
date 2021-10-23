@@ -1,0 +1,29 @@
+% Benchmarking measurements written on 2021-10-23 06:16:56.346849+00:00; iterations=100
+
+M3 results for lightsaber (impl=m3_32bit)
+MatrixVectorMul_A: 249k
+InnerProd (Encrypt): 93k
+InnerProd (Decrypt): 155k
+32-bit NTT: 31k
+32-bit NTT_leak: 19357
+32-bit iNTT: 37k
+32-bit base_mul: 8526
+
+M3 results for saber (impl=m3_32bit)
+MatrixVectorMul_A: 458k
+InnerProd (Encrypt): 122k
+InnerProd (Decrypt): 215k
+32-bit NTT: 31k
+32-bit NTT_leak: 19357
+32-bit iNTT: 37k
+32-bit base_mul: 8525
+
+M3 results for firesaber (impl=m3_32bit)
+MatrixVectorMul_A: 724k
+InnerProd (Encrypt): 150k
+InnerProd (Decrypt): 274k
+32-bit NTT: 31k
+32-bit NTT_leak: 19356
+32-bit iNTT: 37k
+32-bit base_mul: 8525
+

@@ -287,9 +287,9 @@ elf/$(2)_%.elf: crypto_$(3)/%.c obj/lib$(2).a $$(LINKDEPS) $$(CONFIG)
 	$$(compiletest)
 
 # Add the elf,bin and hex files to the tests target.
-tests: elf/$(2)_test.elf elf/$(2)_speed.elf elf/$(2)_stack.elf
-tests-bin: bin/$(2)_test.bin bin/$(2)_speed.bin bin/$(2)_stack.bin
-tests-hex: bin/$(2)_test.hex bin/$(2)_speed.hex bin/$(2)_stack.hex
+tests: elf/$(2)_test.elf elf/$(2)_speed.elf elf/$(2)_stack.elf elf/$(2)_f_speed.elf
+tests-bin: bin/$(2)_test.bin bin/$(2)_speed.bin bin/$(2)_stack.bin bin/$(2)_f_speed.bin
+tests-hex: bin/$(2)_test.hex bin/$(2)_speed.hex bin/$(2)_stack.hex bin/$(2)_f_speed.hex
 
 endef
 
