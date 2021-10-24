@@ -1,5 +1,6 @@
 
 # TODO
+Sync the presentation of interpretations.
 Possibly add some scripts.
 Double check the name of the strategies.
 

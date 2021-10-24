@@ -239,14 +239,14 @@ int main(void)
     printcycles("32-bit NTT_leak cycles:", t1 - t0);
 
     t0 = hal_get_time();
-    intt_asm_const(s_NTT, twiddles_inv_RinvN);
-    t1 = hal_get_time();
-    printcycles("32-bit iNTT cycles:", t1 - t0);
-
-    t0 = hal_get_time();
     NTT_mul(s_NTT, A_NTT, s_NTT);
     t1 = hal_get_time();
     printcycles("32-bit basemul cycles:", t1 - t0);
+
+    t0 = hal_get_time();
+    intt_asm_const(s_NTT, twiddles_inv_RinvN);
+    t1 = hal_get_time();
+    printcycles("32-bit iNTT cycles:", t1 - t0);
 
 #endif
 

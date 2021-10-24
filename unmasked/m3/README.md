@@ -1,9 +1,9 @@
 
 # TODO
-Interpretation of the numbers.
+Add benchmarks for `MatrixVectorMul_B` and `MatrixVectorMul_C` for 16-bit.
 
 We use the board `nucleo-f207zg`.
-Please check the name of the device that is recognized by your computer.
+Please check the name of the device recognized by your computer.
 Our setting is in the file `config.py`.
 If you're using a macOS, the prefix of the name name will be `/dev/tty.usbmodem`.
 
@@ -29,6 +29,7 @@ python3 f_32_benchmarks.py
 The numbers will be in the file `f_16_benchmarks.txt` and `f_32_benchmarks.txt`.
 
 # How to test and produce benchmarks manually
+You can also produce the benchmark manually.
 
 ## One terminal reading from board
 ```
@@ -44,7 +45,7 @@ openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_{lightsaber, saber, firesabe
 
 ### Benchmark for speed
 ```
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_{lightsaber, saber, firesaber}_{m3speed, m3speedstack, m3stack, m3_32bit}_speed.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_{lightsaber, saber, firesaber}_{m3speed, m3speedstack, m3stack, m3_32bit}_{speed, f_speed}.elf reset exit"
 ```
 
 ### Benchmark for stack
@@ -53,7 +54,59 @@ openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_{lightsaber, saber, firesabe
 ```
 
 # Interpretation of the numbers
-TBA
+
+## `benchmarks.py`
+Running `python3 benchmarks.py` will produce benchmarks for the implementations. The result is written to the file `benchmarks.txt`. For each of the parameters `lightsaber`, `saber`, and `firesaber`, we report four different implementations. They are distinguished by the chosen strategy and the size of the arithmetic (16-bit or 32-bit). Each implementation is reported as the following:
+```
+M3 results for {scheme} (impl={impl})
+{scheme}{impl}keygen: XXXk
+{scheme}{impl}encaps: XXXk
+{scheme}{impl}decaps: XXXk
+```
+where `scheme` is one of the following:
+- `lightsaber`
+- `saber`
+- `firesaber`
+and `impl` is one of the following:
+- `m3speed`
+- `m3speedstack`
+- `m3stack`
+- `m3_32bit`
+Note that in our paper, we only report `m3speed`, `m3stack`, `m3_32bit`. Implementations tagged with `m3speedstack` are benchmarked for illustrating a better resolution of time-memory trade-offs.
+
+## `f_16_benchmarks.py`
+Running `python3 f_16_benchmarks.py` will prduce the benchmarks for `MatrixVectorMul`, `InnerProd`, and NTT-related functions used in the implementations `m3speed`, `m3speedstack`, and `m3stack`. The numbers are written into the file `f_16_benchmarks.txt`.
+
+The numbers are categorized into two groups:
+- Saber's `MatrixVectorMul` and `InnerProd`. These numbers are dependent on the chosen security level and optimization strategy.
+    - `MatrixVectorMul_A`: `MatrixVectorMul` with the most speed-optimized strategy -- A.
+    - `MatrixVectorMul_B`: TBA. `MatrixVectorMul` with strategy B for key generation.
+    - `MatrixVectorMul_C`: TBA. `MatrixVectorMul` with strategy C for encryption.
+    - `MatrixVectorMul_D`: `MatrixVectorMul` with the most stack-optimized strategy -- D.
+    - `InnerProd (Encrypt)`: `InnerProd` for encryption with the most speed-optimized strategy.
+    - `InnerProd (Decrypt)`: `InnerProd` for decryption with the most speed-optimized strategy.
+    - `InnerProd stack`: `InnerProd` with the most stack-optimized strategy.
+- NTT-related.
+    - `two 16-bit NTTs`: The cycles of applying two NTTs, one over `3329` and one over `7681`.
+    - `two 16-bit base_mul`: The cycles of applying two `base_mul`'s.
+    - `two 16-bit iNTTs`: The cycles of applying two iNTTs.
+    - `16-bit by 16-bit CRT`: The cycles of solving `CRT` from `3329` and `7681`. The 16-bit results in signed `mod 8192` are derived.
+
+
+## `f_32_benchmarks.py`
+Running `python3 f_32_benchmarks.py` will produce the benchmarks for `MatrixVectorMul`, `InnerProd`, and NTT-related functions used in the implementation `m3_32bit`. The numbers are written into the file `f_32_benchmarks.txt`.
+
+The numbers are categorized into two groups:
+- Saber's `MatrixVectorMul` and `InnerProd`. These numbers are dependent on the chosen security level and optimization strategy.
+    - `MatrixVectorMul_A`: `MatrixVectorMul` with the most speed-optimized strategy -- A.
+    - `InnerProd (Encrypt)`: `InnerProd` for encryption with the most speed-optimized strategy.
+    - `InnerProd (Decrypt)`: `InnerProd` for decryption with the most speed-optimized strategy.
+- NTT-related.
+    - `32-bit NTT`: The cycles of applying one NTT with constant time emulation for 32-bit arithmetic.
+    - `32-bit NTT_leak`: The cycles of applying one NTT with variable time 32-bit arithmetic.
+    - `32-bit base_mul`: The cycles of applying one `base_mul` with constant time emulation for 32-bit arithmetic.
+    - `32-bit iNTT`: The cycles of applying oen iNTT with constant time emulation for 32-bit arithmetic.
+
 
 ```
 .
