@@ -1,8 +1,8 @@
 
 # TODO
-Sync the presentation of interpretations.
-Possibly add some scripts.
-Double check the name of the strategies.
+- Sync the presentation of interpretations.
+- Possibly add some scripts.
+- Double check the name of the strategies.
 
 # How to compile
 ```
@@ -100,6 +100,15 @@ The first part is the numbers for the each of key generation, encapsulation, and
 
 The second part is the numbers for each of the functionalities. They can be categorized into two groups:
 
+- Saber's `MatrixVectorMul` and `InnerProd`: These numbers depend only on the chosen security level.
+    - `MatrixVectorMul`. There are two numbers as follows.
+        - `MatrixVectorMul speed`: `MatrixVectorMul` with the most speed-optimized strategy -- A.
+        - `MatrixVectorMul stack`: `MatrixVectorMul` with the most stack-optimized strategy -- D.
+    - `InnerProd`. There are three numbers as follows.
+        - `InnerProd (Encrypt) speed`: `InnerProd` for encryption with the most speed-optimized strategy -- A. Note that one of the vectors is already transformed.
+        - `InnerProd (Decrypt) speed`: `InnerProd` for decryption with the most speed-optimized strategy -- A.
+        - `InnerProd stack`: `InnerProd` with the most stack-optimized strategy -- D. Note that such strategy results in the same implementation for `InnerProd` used in encryption and decryption.
+
 - Basic building blocks: These numbers are independent from the chosen security level and optimization strategy.
     - NTT-related. There are four numbers as follows.
         - `32-bit NTT`: 32-bit NTT defined over the modulus `3329 x 7681`
@@ -114,14 +123,6 @@ The second part is the numbers for each of the functionalities. They can be cate
         - `16x16 CRT`: Solving CRT from the moduli `3329` and `7681`. The result is a 32-bit number over the modulus `3329 x 7681`.
         - `One mod`: One modular reduction reducing the coefficients a polynomial over the modulus `3329 x 7681` to one of the moduli `3329` or `7681`.
 
-- Saber's `MatrixVectorMul` and `InnerProd`: These numbers depend only on the chosen security level.
-    - `MatrixVectorMul`. There are two numbers as follows.
-        - `MatrixVectorMul speed`: `MatrixVectorMul` with the most speed-optimized strategy -- A.
-        - `MatrixVectorMul stack`: `MatrixVectorMul` with the most stack-optimized strategy -- D.
-    - `InnerProd`. There are three numbers as follows.
-        - `InnerProd (Encrypt) speed`: `InnerProd` for encryption with the most speed-optimized strategy -- A. Note that one of the vectors is already transformed.
-        - `InnerProd (Decrypt) speed`: `InnerProd` for decryption with the most speed-optimized strategy -- A.
-        - `InnerProd stack`: `InnerProd` with the most stack-optimized strategy -- D. Note that such strategy results in the same implementation for `InnerProd` used in encryption and decryption.
 
 ## Stack
 ### Sample output
