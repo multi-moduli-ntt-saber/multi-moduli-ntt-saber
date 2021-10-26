@@ -32,17 +32,11 @@ int main(void){
 
     hal_setup(CLOCK_BENCHMARK);
 
-    for(i = 0; i < 50; i++){
+    for(i = 0; i < 60; i++){
         hal_send_str("==========================");
     }
 
     for(crypto_i = 0; crypto_i < CRYPTO_ITERATIONS; crypto_i++){
-
-        memset(key_a, 0, sizeof key_a);
-        memset(key_b, 0, sizeof key_a);
-        memset(sk, 0, sizeof sk);
-        memset(pk, 0, sizeof pk);
-        memset(ct, 0, sizeof ct);
 
         // Key-pair generation
         t0 = hal_get_time();
@@ -71,6 +65,8 @@ int main(void){
 
         hal_send_str("#");
     }
+
+    while(1);
 
     return 0;
 }

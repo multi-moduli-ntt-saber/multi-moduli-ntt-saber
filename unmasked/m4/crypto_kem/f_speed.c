@@ -27,24 +27,16 @@ int main(void){
 
     hal_setup(CLOCK_BENCHMARK);
 
-    for(i = 0; i < 50; i++){
+    for(i = 0; i < 60; i++){
         hal_send_str("==========================");
     }
 
     for(crypto_i = 0; crypto_i < CRYPTO_ITERATIONS; crypto_i++){
 
-
-
-// arrays for speed opt
-
         uint32_t s_NTT[SABER_N];
         uint32_t acc_NTT[SABER_L * SABER_N];
         uint32_t A_NTT[SABER_N];
-
         uint16_t poly[SABER_N];
-
-// arrays for stack opt
-
         uint16_t acc[SABER_L * SABER_N];
 
         // Don't change the order of buff1, buff2, and buff3
@@ -197,5 +189,6 @@ int main(void){
         hal_send_str("#");
     }
 
+    while(1);
     return 0;
 }
