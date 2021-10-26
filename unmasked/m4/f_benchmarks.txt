@@ -1,0 +1,50 @@
+% Benchmarking measurements written on 2021-10-26 05:10:29.884389+00:00; iterations=100
+
+M4 results for lightsaber (impl=m4fspeed)
+lightsaberm4fspeedMatrixVectorMul_A: 68k
+lightsaberm4fspeedMatrixVectorMul_D: 130k
+lightsaberm4fspeedInnerProd (Encrypt): 28k
+lightsaberm4fspeedInnerProd (Decrypt): 40k
+lightsaberm4fspeedInnerProd stack: 65k
+lightsaberm4fspeed32-bit NTT: 5854
+lightsaberm4fspeed16-bit NTT: 4819
+lightsaberm4fspeed16-bit NTT light: 4373
+lightsaberm4fspeed32-bit iNTT: 7138
+lightsaberm4fspeed32-bit base_mul: 4182
+lightsaberm4fspeed32x16-bit base_mul: 3733
+lightsaberm4fspeed16-bit base_mul: 2963
+lightsaberm4fspeed16x16 CRT: 2437
+lightsaberm4fspeedOne mod: 1171
+
+M4 results for saber (impl=m4fspeed)
+saberm4fspeedMatrixVectorMul_A: 136k
+saberm4fspeedMatrixVectorMul_D: 293k
+saberm4fspeedInnerProd (Encrypt): 39k
+saberm4fspeedInnerProd (Decrypt): 57k
+saberm4fspeedInnerProd stack: 98k
+saberm4fspeed32-bit NTT: 5854
+saberm4fspeed16-bit NTT: 4820
+saberm4fspeed16-bit NTT light: 4374
+saberm4fspeed32-bit iNTT: 7139
+saberm4fspeed32-bit base_mul: 4182
+saberm4fspeed32x16-bit base_mul: 3732
+saberm4fspeed16-bit base_mul: 2964
+saberm4fspeed16x16 CRT: 2437
+saberm4fspeedOne mod: 1171
+
+M4 results for firesaber (impl=m4fspeed)
+firesaberm4fspeedMatrixVectorMul_A: 225k
+firesaberm4fspeedMatrixVectorMul_D: 522k
+firesaberm4fspeedInnerProd (Encrypt): 51k
+firesaberm4fspeedInnerProd (Decrypt): 74k
+firesaberm4fspeedInnerProd stack: 130k
+firesaberm4fspeed32-bit NTT: 5855
+firesaberm4fspeed16-bit NTT: 4819
+firesaberm4fspeed16-bit NTT light: 4372
+firesaberm4fspeed32-bit iNTT: 7138
+firesaberm4fspeed32-bit base_mul: 4183
+firesaberm4fspeed32x16-bit base_mul: 3732
+firesaberm4fspeed16-bit base_mul: 2964
+firesaberm4fspeed16x16 CRT: 2436
+firesaberm4fspeedOne mod: 1171
+

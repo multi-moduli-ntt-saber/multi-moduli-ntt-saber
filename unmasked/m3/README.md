@@ -1,7 +1,7 @@
 
 # TODO
 - Add benchmarks for `MatrixVectorMul_B` and `MatrixVectorMul_C` for 16-bit.
-- Add sample output for `test` and `stack`.
+- Add sample output for `stack`.
 
 We use the board `nucleo-f207zg`.
 Please check the name of the device recognized by your computer.
@@ -14,7 +14,7 @@ make -j4
 ```
 
 # How to test and produce benchmarks manually
-You can also produce the benchmark manually.
+You can produce the benchmark manually.
 
 ## One terminal reading from board
 ```
@@ -28,14 +28,12 @@ python3 read_serial.py
 openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_{lightsaber, saber, firesaber}_{m3speed, m3speedstack, m3stack, m3_32bit}_test.elf reset exit"
 ```
 
-TODO: Add sample output
-
 ### Benchmark for speed
 ```
 openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_{lightsaber, saber, firesaber}_{m3speed, m3speedstack, m3stack, m3_32bit}_{speed, f_speed}.elf reset exit"
 ```
 
-For the interpretations of the numbers, please go to the Section `Interpretation of the numbers (cycles)`.
+For the interpretations of the numbers, please go to the Section Interpretation of the numbers (`speed` and `f_speed`).
 
 ### Benchmark for stack
 ```
@@ -45,7 +43,7 @@ openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_{lightsaber, saber, firesabe
 TODO: Add sample output
 
 # Scripts
-We provide scripts for producing the benchmarks of cycles.
+We also provide scripts for producing the benchmarks of cycles.
 
 ## Scripts for the schemes
 ```
@@ -60,7 +58,7 @@ python3 f_32_benchmarks.py
 ```
 The numbers will be in the files `f_16_benchmarks.txt` for `f_16_benchmarks.py` and `f_32_benchmarks.txt` for `f_32_benchmarks.py`.
 
-# Interpretation of the numbers (cycles)
+# Interpretation of the numbers (`speed` and `f_speed`)
 
 ## `benchmarks.py`
 Running `python3 benchmarks.py` will produce benchmarks for the implementations. For each of the parameters `lightsaber`, `saber`, and `firesaber`, we report four different implementations. They are distinguished by the chosen strategy and the size of the arithmetic (16-bit or 32-bit). Each implementation is reported as the following:

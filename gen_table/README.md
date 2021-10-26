@@ -1,11 +1,10 @@
 
 This folder is about how to generate the tables of twiddle factors.
-The codes are currently functioning as expected and samples for generating tables for our implementations are in the corresponding folders. Documentation will be added in the future.
+The codes are currently functioning as expected and samples for generating tables for our implementations are in the corresponding folders.
 
 # Supported features
 
-The C functions are much stronger than the ones in our paper.
-In particular, the followings are supported.
+The C functions support the follows.
 
 > Customized coefficient ring.
 

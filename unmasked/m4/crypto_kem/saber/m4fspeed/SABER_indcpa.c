@@ -22,13 +22,13 @@ void indcpa_kem_keypair(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABE
     shake128(seed_A, SABER_SEEDBYTES, seed_A, SABER_SEEDBYTES); // for not revealing system RNG state
 
 #if KEYPAIR_MASK == 1
-    MatrixVectorMulKeyPairNTT(pk, sk);
+    MatrixVectorMulKeyPairNTT_A(pk, sk);
 #elif KEYPAIR_MASK == 2
 #error "KEYPAIR_MASK not supported"
 #elif KEYPAIR_MASK == 4
 #error "KEYPAIR_MASK not supported"
 #elif KEYPAIR_MASK == 8
-    MatrixVectorMulKeyPairNTT_16_stack2(pk, sk);
+    MatrixVectorMulKeyPairNTT_D(pk, sk);
 #else
 #error "Invalid KEYPAIR_MASK"
 #endif
@@ -43,13 +43,13 @@ void indcpa_kem_enc(const uint8_t m[SABER_KEYBYTES], const uint8_t seed_s[SABER_
     uint8_t *ct1 = ciphertext + SABER_POLYVECCOMPRESSEDBYTES;
 
 #if ENC_MASK == 1
-    MatrixVectorMulEncNTT(ct0, ct1, seed_s, seed_A, pk, m, 0);
+    MatrixVectorMulEncNTT_A(ct0, ct1, seed_s, seed_A, pk, m, 0);
 #elif ENC_MASK == 2
 #error "ENC_MASK not supported"
 #elif ENC_MASK == 4
 #error "ENC_MASK not supported"
 #elif ENC_MASK == 8
-    MatrixVectorMulEncNTT_16_stack2(ct0, ct1, seed_s, seed_A, pk, m, 0);
+    MatrixVectorMulEncNTT_D(ct0, ct1, seed_s, seed_A, pk, m, 0);
 #else
 #error "Invalid ENC_MASK"
 #endif
@@ -64,13 +64,13 @@ uint8_t indcpa_kem_enc_cmp(const uint8_t m[SABER_KEYBYTES], const uint8_t seed_s
     const uint8_t *ct1 = ciphertext + SABER_POLYVECCOMPRESSEDBYTES;
 
 #if ENCCMP_MASK == 1
-    fail |= MatrixVectorMulEncNTT((uint8_t*)ct0, (uint8_t*)ct1, seed_s, seed_A, pk, m, 1);
+    fail |= MatrixVectorMulEncNTT_A((uint8_t*)ct0, (uint8_t*)ct1, seed_s, seed_A, pk, m, 1);
 #elif ENCCMP_MASK == 2
 #error "ENC_MASK not supported"
 #elif ENCCMP_MASK == 4
 #error "ENC_MASK not supported"
 #elif ENCCMP_MASK == 8
-    fail |= MatrixVectorMulEncNTT_16_stack2((uint8_t*)ct0, (uint8_t*)ct1, seed_s, seed_A, pk, m, 1);
+    fail |= MatrixVectorMulEncNTT_D((uint8_t*)ct0, (uint8_t*)ct1, seed_s, seed_A, pk, m, 1);
 #else
 #error "Invalid ENCCMP_MASK"
 #endif
@@ -86,8 +86,10 @@ void indcpa_kem_dec(const uint8_t sk[SABER_INDCPA_SECRETKEYBYTES], const uint8_t
 #if DEC_MASK == 1
     InnerProdDecNTT(m, ciphertext, sk); // m <- Pack(Round(b'*s - cm))
 #elif DEC_MASK == 2
-    InnerProdDecNTT_16(m, ciphertext, sk); // m <- Pack(Round(b'*s - cm))
+    InnerProdDecNTT_stack(m, ciphertext, sk); // m <- Pack(Round(b'*s - cm))
 #elif DEC_MASK == 4
+#error "DEC_MASK not supported"
+#elif DEC_MASK == 8
 #error "DEC_MASK not supported"
 #else
 #error "Invalid DEC_MASK"
