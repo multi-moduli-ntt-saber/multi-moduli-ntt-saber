@@ -30,6 +30,7 @@ We also provide C functions that are used for developing the assembly code and g
 
 # Requirements
 
+- `libopencm3`. You can just `sh setup_libopencm3.sh`
 - `arm-none-eabi-gcc` with version 10.2.0
 - `python3` with `pyserial`
 - For Cortex-M3:
