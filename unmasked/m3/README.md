@@ -1,7 +1,5 @@
 
 # TODO
-- Add benchmarks for `MatrixVectorMul_B` and `MatrixVectorMul_C` for 16-bit.
-- Add sample output for `stack`.
 
 We use the board `nucleo-f207zg`.
 Please check the name of the device recognized by your computer.
@@ -39,8 +37,6 @@ For the interpretations of the numbers, please go to the Section Interpretation 
 ```
 openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_{lightsaber, saber, firesaber}_{m3speed, m3speedstack, m3stack, m3_32bit}_stack.elf reset exit"
 ```
-
-TODO: Add sample output
 
 # Scripts
 We also provide scripts for producing the benchmarks of cycles.
@@ -87,8 +83,6 @@ Running `python3 f_16_benchmarks.py` will prduce the benchmarks for `MatrixVecto
 The numbers are categorized into two groups:
 - Saber's `MatrixVectorMul` and `InnerProd`. These numbers are dependent on the chosen security level and optimization strategy.
     - `MatrixVectorMul_A`: `MatrixVectorMul` with the most speed-optimized strategy -- A.
-    - `MatrixVectorMul_B`: TBA. `MatrixVectorMul` with strategy B for key generation.
-    - `MatrixVectorMul_C`: TBA. `MatrixVectorMul` with strategy C for encryption.
     - `MatrixVectorMul_D`: `MatrixVectorMul` with the most stack-optimized strategy -- D.
     - `InnerProd (Encrypt)`: `InnerProd` for encryption with the most speed-optimized strategy.
     - `InnerProd (Decrypt)`: `InnerProd` for decryption with the most speed-optimized strategy.

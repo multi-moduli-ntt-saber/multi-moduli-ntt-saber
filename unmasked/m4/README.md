@@ -1,6 +1,8 @@
 
-# TODO
-Add requirement
+We use the board `stm32f4discovery`.
+Please check the name of the device recognized by your computer.
+Our setting is in the file `config.py`.
+If you're using a macOS, the prefix of the name name will be `/dev/tty.usbserial`.
 
 # How to compile
 ```
