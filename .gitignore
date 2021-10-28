@@ -1,0 +1,11 @@
+
+__pycache__
+
+*.bin
+*.elf
+*.o
+*.d
+
+.DS_Store
+
+

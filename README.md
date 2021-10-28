@@ -11,13 +11,5 @@ Authors:
 
 For building implementations, please refer to the `README.md`'s in the folders `masked` and `unmasked`.
 
-```
-.
-├── LICENSE
-├── README.md
-├── gen_table
-├── libopencm3
-├── masked
-└── unmasked
-```
+
 
