@@ -1,6 +1,4 @@
 
-# TODO
-
 We use the board `nucleo-f207zg`.
 Please check the name of the device recognized by your computer.
 Our setting is in the file `config.py`.

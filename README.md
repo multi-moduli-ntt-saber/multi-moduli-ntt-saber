@@ -1,5 +1,5 @@
 
-This repository accompanies the paper **Multi-moduli NTTs for Saber on Cortex-M3 and Cortex-M4** available at https://eprint.iacr.org/2021/995.pdf.
+This repository accompanies the paper **Multi-moduli NTTs for Saber on Cortex-M3 and Cortex-M4** available at https://tches.iacr.org/index.php/TCHES/article/view/9292/8858.
 
 Authors:
 - Amin Abdulrahman `amin.abdulrahman@rub.de`
@@ -9,7 +9,7 @@ Authors:
 - [Matthias J. Kannwischer](https://kannwischer.eu/) `<matthias@kannwischer.eu>`
 - [Bo-Yin Yang](https://homepage.iis.sinica.edu.tw/pages/byyang/) `<by@crypto.tw>`
 
-In this repository, we provide code for unmasked Saber on Cortex-M3 and Cortex-M4 and masked Saber on Cortex-M4. Please `git clone --recursive https://github.com/multi-moduli-ntt-saber/multi-moduli-ntt-saber.git`. You might want to go to `libopencm3` and `make -j4` first.
+In this repository, we provide code for unmasked Saber on Cortex-M3 and Cortex-M4 and masked Saber on Cortex-M4. Please `git clone --recursive https://github.com/multi-moduli-ntt-saber/multi-moduli-ntt-saber.git`, go to `libopencm3`, and type `make -j4` first.
 
 - Unmasked Saber.
     - Cortex-M3. We provide four implementations. Three of them are reported in our paper and the newly included one is claimed in our paper.
@@ -30,9 +30,9 @@ We also provide C functions that are used for developing the assembly code and g
 
 # Requirements
 
-- `libopencm3`. You can just `sh setup_libopencm3.sh`
 - `arm-none-eabi-gcc` with version 10.2.0
-- `python3` with `pyserial`
+- `libopencm3`, commit `6763681c260cf280487d70ca0d1996a8b79fff30`.
+- `python3` with `pyserial` and `numpy`
 - For Cortex-M3:
     - Board `nucleo-f207zg`
     - `openocd`

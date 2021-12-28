@@ -69,7 +69,7 @@ The numbers will be in the files `f_benchmarks.txt`.
 # Interpretation of the numbers (`speed` and `f_speed`)
 
 ## benchmarks.py
-Running `python3 benchmarks.py` will produce benchmarks for the implementations. For each of the parameters `lightsaber`, `saber`, and `firesaber`, we report four different implementations. They are distinguished by the chosen strategy. Each implementation is reported as the following:
+Running `python3 benchmarks.py` will produce benchmarks for the implementations. For each of the parameters `lightsaber`, `saber`, and `firesaber`, we report two different implementations. They are distinguished by the chosen strategy. Each implementation is reported as the following:
 ```
 M4 results for {scheme} (impl={impl})
 {scheme}{impl}keygen: XXXk
@@ -84,6 +84,8 @@ where `scheme` is one of the following:
 and `impl` is one of the following:
 - `m3speed`
 - `m3stack`
+
+All of the implementations are reported in ou paper.
 
 ## `f_benchmarks.py`
 Running `python3 f_benchmarks.py` will prduce the benchmarks for `MatrixVectorMul`, `InnerProd`, and NTT-related functions used in the implementations `m4fspeed` and `m4fstack`.
@@ -100,9 +102,9 @@ The numbers are categorized into two groups:
     - `16-bit NTT`: The cycles of applying one 16-bit NTT over `7681`.
     - `16-bit NTT light`: The cycles of applying one 16-bit NTT over `3329`.
     - `32-bit iNTT`: The cycles of applying one 32-bit iNTT over `3329 * 7681`. The result is then reduced to signed `mod 8192`.
-    - `32-bit base_mul`: The cycles of applying oen 32-bit `base_mul`.
-    - `32x16-bit base_mul`: The cycles of applying oen 16-bit `base_mul`. One of the multiplicand is a 32-bit value over `3329 * 7681` and it is reduced to one of the moduli first without extra memory operations.
-    - `16-bit base_mul`: The cycles of applying oen 16-bit `base_mul`.
+    - `32-bit base_mul`: The cycles of applying one 32-bit `base_mul`.
+    - `32x16-bit base_mul`: The cycles of applying one 16-bit `base_mul`. One of the multiplicand is a 32-bit value over `3329 * 7681` and it is reduced to one of the moduli first without extra memory operations.
+    - `16-bit base_mul`: The cycles of applying one 16-bit `base_mul`.
     - `16x16 CRT`: Solving CRT from the moduli `3329` and `7681`. The result is a value over `3329 * 7681`
     - `One mod`: Reduce a polynomial over `3329 * 7681` to one of the moduli `3329` or `7681`.
 
