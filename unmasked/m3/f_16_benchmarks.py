@@ -26,7 +26,7 @@ def run_bench(scheme, impl, iterations):
         return run_bench(scheme, impl, iterations)
 
     # get serial output and wait for '#'
-    with serial.Serial(Settings.SERIAL_DEVICE, 9600, timeout=10) as dev:
+    with serial.Serial(Settings.SERIAL_DEVICE, Settings.BAUD_RATE, timeout=10) as dev:
         logs = []
         iteration = 0
         log = b""

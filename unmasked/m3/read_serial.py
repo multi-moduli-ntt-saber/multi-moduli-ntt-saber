@@ -2,11 +2,9 @@
 import platform
 import serial
 import sys
+from config import Settings
 
-if platform.system() == "Darwin":
-    dev = serial.Serial("/dev/tty.usbmodem12303", 9600)
-else:
-    dev = serial.Serial("/dev/ttyACM0", 9600)
+dev = serial.Serial(Settings.SERIAL_DEVICE, Settings.BAUD_RATE)
 
 print("> Returned data:", file=sys.stderr)
 

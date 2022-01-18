@@ -6,7 +6,7 @@ If you're using a macOS, the prefix of the name name will be `/dev/tty.usbserial
 
 # How to compile
 ```
-sh makeAll.sh
+make -j4
 ```
 
 # How to test and produce benchmarks manually
