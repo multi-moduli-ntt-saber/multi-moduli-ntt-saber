@@ -152,7 +152,7 @@ int main(void){
 
     int i;
     // marker for automated testing
-    for(i = 0; i < 10; i++){
+    for(i = 0; i < 60; i++){
         hal_send_str("==========================");
     }
 

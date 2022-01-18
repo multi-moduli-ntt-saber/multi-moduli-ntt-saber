@@ -8,6 +8,17 @@ import serial
 import numpy as np
 from config import Settings
 
+benchType = "speed"
+outFileName = "speed.txt"
+iterations = 100
+testedList = [["keygen", "keypair cycles:"],
+              ["encaps", "encaps cycles:"],
+              ["decaps", "decaps cycles:"]
+             ]
+schemeList = ["lightsaber", "saber", "firesaber"]
+impleList = ["speed", "stack"]
+cpu = "m4f"
+
 
 def toLog(name, value, k=None):
   if value > 20000:
@@ -16,14 +27,20 @@ def toLog(name, value, k=None):
     value = f"{value}"
   return f"{name}: {value}\n"
 
-def run_bench(scheme, impl, iterations):
-    binary = f"bin/crypto_kem_{scheme}_{impl}_speed.bin"
+def getBinary(scheme, impl):
+    return f"bin/crypto_kem_{scheme}_{impl}_{benchType}.bin"
+
+def getFlash(binary):
+    return f"st-flash write {binary} 0x8000000"
+
+def run_bench(scheme, impl):
+    binary = getBinary(scheme, impl)
 
     try:
-        subprocess.check_call(f"st-flash write {binary} 0x8000000", shell=True)
+        subprocess.check_call(getFlash(binary), shell=True)
     except:
         print("st-flash failed --> retry")
-        return run_bench(scheme, impl, iterations)
+        return run_bench(scheme, impl)
 
     # get serial output and wait for '#'
     with serial.Serial(Settings.SERIAL_DEVICE, Settings.BAUD_RATE, timeout=10) as dev:
@@ -34,7 +51,7 @@ def run_bench(scheme, impl, iterations):
             device_output = dev.read()
             if device_output == b'':
                 print("timeout --> retry")
-                return run_bench(scheme, impl, iterations)
+                return run_bench(scheme, impl)
             sys.stdout.buffer.write(device_output)
             sys.stdout.flush()
             log += device_output
@@ -65,9 +82,8 @@ def parseLogSpeed(log, ignoreErrors):
         }
 
     return cleanNullTerms({
-        f"keygen":  get(lines, "keypair cycles:"),
-        f"encaps":  get(lines, "encaps cycles:"),
-        f"decaps":  get(lines, "decaps cycles:"),
+            k: get(lines, v)
+            for k, v in testedList
     })
 
 def average(results):
@@ -77,8 +93,8 @@ def average(results):
     return avgs
 
 
-def bench(scheme, texName, impl, iterations, outfile, ignoreErrors=False):
-    logs    = run_bench(scheme, impl, iterations)
+def bench(scheme, texName, impl, outfile, ignoreErrors=False):
+    logs    = run_bench(scheme, impl)
     results = []
     for log in logs:
         try:
@@ -86,11 +102,11 @@ def bench(scheme, texName, impl, iterations, outfile, ignoreErrors=False):
         except:
             breakpoint()
             print("parsing log failed -> retry")
-            return bench(scheme, texName, impl, iterations, outfile)
+            return bench(scheme, texName, impl, outfile)
         results.append(result)
 
     avgResults = average(results)
-    print(f"M4 results for {scheme} (impl={impl})", file=outfile)
+    print(f"{cpu} results for {scheme} (impl={impl})", file=outfile)
 
     for key, value in avgResults.items():
         macro = toLog(f"{texName}{key}", value)
@@ -98,23 +114,19 @@ def bench(scheme, texName, impl, iterations, outfile, ignoreErrors=False):
         print(macro, end='', file=outfile)
     print('', file=outfile, flush=True)
 
-def makeAll(iterations):
+def makeAll():
     subprocess.check_call(f"make clean", shell=True)
     subprocess.check_call(f"make -j4 ITERATIONS={iterations}", shell=True)
 
-
-with open(f"benchmarks.txt", "w") as outfile:
-    iterations = 100
+with open(outFileName, "w") as outfile:
 
     now = datetime.datetime.now(datetime.timezone.utc)
-    print(f"% Benchmarking measurements written on {now}; iterations=100\n", file=outfile)
+    print(f"{benchType} measurements written on {now}; iterations={iterations}\n", file=outfile)
 
-    makeAll(iterations)
+    makeAll()
 
-    for scheme in ["lightsaber", "saber", "firesaber"]:
-        for imple in ["speed", "stack"]:
-            bench(scheme, scheme + "m4f" + imple, "m4f" + imple, 100, outfile)
-
-
+    for scheme in schemeList:
+        for imple in impleList:
+            bench(scheme, scheme + cpu + imple, cpu + imple, outfile)
 
 

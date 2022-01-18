@@ -1,0 +1,32 @@
+stack measurements written on 2022-01-18 08:58:25.367460+00:00; iterations=1
+
+m4f results for lightsaber (impl=m4fspeed)
+lightsaberm4fspeedkeygen: 5756
+lightsaberm4fspeedencaps: 6420
+lightsaberm4fspeeddecaps: 6428
+
+m4f results for lightsaber (impl=m4fstack)
+lightsaberm4fstackkeygen: 3420
+lightsaberm4fstackencaps: 3196
+lightsaberm4fstackdecaps: 3204
+
+m4f results for saber (impl=m4fspeed)
+saberm4fspeedkeygen: 6788
+saberm4fspeedencaps: 7452
+saberm4fspeeddecaps: 7460
+
+m4f results for saber (impl=m4fstack)
+saberm4fstackkeygen: 3932
+saberm4fstackencaps: 3324
+saberm4fstackdecaps: 3332
+
+m4f results for firesaber (impl=m4fspeed)
+firesaberm4fspeedkeygen: 7812
+firesaberm4fspeedencaps: 8484
+firesaberm4fspeeddecaps: 8492
+
+m4f results for firesaber (impl=m4fstack)
+firesaberm4fstackkeygen: 4444
+firesaberm4fstackencaps: 3460
+firesaberm4fstackdecaps: 3468
+

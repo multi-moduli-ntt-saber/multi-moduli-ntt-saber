@@ -56,22 +56,22 @@ We also provide scripts for producing the benchmarks of cycles.
 
 ## Scripts for the schemes
 ```
-python3 benchmarks.py
+python3 speed.py
 ```
-The numbers will be in the file `benchmarks.txt`.
+The numbers will be in the file `speed.txt`.
 
 ## Scripts for individual functions
 ```
-python3 f_benchmarks.py
+python3 f_speed.py
 ```
-The numbers will be in the files `f_benchmarks.txt`.
+The numbers will be in the files `f_speed.txt`.
 
 # Interpretation of the numbers (`speed` and `f_speed`)
 
-## benchmarks.py
-Running `python3 benchmarks.py` will produce benchmarks for the implementations. For each of the parameters `lightsaber`, `saber`, and `firesaber`, we report two different implementations. They are distinguished by the chosen strategy. Each implementation is reported as the following:
+## speed.py
+Running `python3 speed.py` will produce benchmarks for the implementations. For each of the parameters `lightsaber`, `saber`, and `firesaber`, we report two different implementations. They are distinguished by the chosen strategy. Each implementation is reported as the following:
 ```
-M4 results for {scheme} (impl={impl})
+m4f results for {scheme} (impl={impl})
 {scheme}{impl}keygen: XXXk
 {scheme}{impl}encaps: XXXk
 {scheme}{impl}decaps: XXXk
@@ -87,8 +87,8 @@ and `impl` is one of the following:
 
 All of the implementations are reported in ou paper.
 
-## `f_benchmarks.py`
-Running `python3 f_benchmarks.py` will prduce the benchmarks for `MatrixVectorMul`, `InnerProd`, and NTT-related functions used in the implementations `m4fspeed` and `m4fstack`.
+## `f_speed.py`
+Running `python3 f_speed.py` will prduce the benchmarks for `MatrixVectorMul`, `InnerProd`, and NTT-related functions used in the implementations `m4fspeed` and `m4fstack`.
 
 The numbers are categorized into two groups:
 - Saber's `MatrixVectorMul` and `InnerProd`. These numbers are dependent on the chosen security level and optimization strategy.
