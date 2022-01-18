@@ -2,7 +2,6 @@
 We use the board `stm32f4discovery`.
 Please check the name of the device recognized by your computer.
 Our setting is in the file `config.py`.
-If you're using a macOS, the prefix of the name name will be `/dev/tty.usbserial`.
 
 # How to compile
 ```
@@ -54,22 +53,36 @@ OK KEYS
 # Scripts
 We also provide scripts for producing the benchmarks of cycles.
 
-## Scripts for the schemes
+## Script for overall cycles for schemes
 ```
 python3 speed.py
 ```
-The numbers will be in the file `speed.txt`.
+The numbers will be written into the file `speed.txt`.
 
 ## Scripts for individual functions
 ```
 python3 f_speed.py
 ```
-The numbers will be in the files `f_speed.txt`.
+The numbers will be written into the file `f_speed.txt`.
 
-# Interpretation of the numbers (`speed` and `f_speed`)
+## `stack.py`
+```
+python3 stack.py
+```
 
-## speed.py
-Running `python3 speed.py` will produce benchmarks for the implementations. For each of the parameters `lightsaber`, `saber`, and `firesaber`, we report two different implementations. They are distinguished by the chosen strategy. Each implementation is reported as the following:
+The numbers will be written into the file `stack.txt`.
+
+## `test.py`
+```
+python3 test.py
+```
+
+If the python script returns an error, then the key exchange fails. Otherwise, the key exchange is successful.
+
+# Interpretation of the numbers (`speed`, `stack.py`, and `f_speed`)
+
+## `speed.py`
+Running `python3 speed.py` will report the cycles for the implementations. For each of the parameters `lightsaber`, `saber`, and `firesaber`, we report two different implementations. They are distinguished by the chosen strategy. Each implementation is reported as the following:
 ```
 m4f results for {scheme} (impl={impl})
 {scheme}{impl}keygen: XXXk
@@ -85,7 +98,26 @@ and `impl` is one of the following:
 - `m3speed`
 - `m3stack`
 
-All of the implementations are reported in ou paper.
+All of the implementations are reported in our paper.
+
+## `stack.py`
+Running `python3 stack.py` will report the overall stack usage (bytes) for the implementations. For each of the parameters `lightsaber`, `saber`, and `firesaber`, we report two different implementations. They are distinguished by the chosen strategy. Each implementation is reported as the following:
+```
+m4f results for {scheme} (impl={impl})
+{scheme}{impl}keygen: XXXk
+{scheme}{impl}encaps: XXXk
+{scheme}{impl}decaps: XXXk
+```
+where `scheme` is one of the following:
+- `lightsaber`
+- `saber`
+- `firesaber`
+
+and `impl` is one of the following:
+- `m3speed`
+- `m3stack`
+
+All of the implementations are reported in our paper.
 
 ## `f_speed.py`
 Running `python3 f_speed.py` will prduce the benchmarks for `MatrixVectorMul`, `InnerProd`, and NTT-related functions used in the implementations `m4fspeed` and `m4fstack`.
@@ -108,22 +140,15 @@ The numbers are categorized into two groups:
     - `16x16 CRT`: Solving CRT from the moduli `3329` and `7681`. The result is a value over `3329 * 7681`
     - `One mod`: Reduce a polynomial over `3329 * 7681` to one of the moduli `3329` or `7681`.
 
-## `stack.py`
-TBA
-
-## `test.py`
-TBA
-
 # Structure of this folder
 ```
 .
 ├── Makefile
 ├── README.md
-├── benchmarks.py
-├── benchmarks.txt
 ├── common
 │   ├── fips202.c
 │   ├── fips202.h
+│   ├── hal-opencm3.c
 │   ├── hal-stm32f4.c
 │   ├── hal.h
 │   ├── keccakf1600.S
@@ -135,21 +160,26 @@ TBA
 ├── crypto_kem
 │   ├── f_speed.c
 │   ├── firesaber
-│   │   ├── m4fspeed
-│   │   └── m4fstack
 │   ├── lightsaber
-│   │   ├── m4fspeed
-│   │   └── m4fstack
 │   ├── saber
-│   │   ├── m4fspeed
-│   │   └── m4fstack
 │   ├── speed.c
 │   ├── stack.c
 │   └── test.c
-├── f_benchmarks.py
-├── f_benchmarks.txt
+├── f_speed.py
+├── f_speed.txt
 ├── libopencm3 -> ../../libopencm3/
-├── makeAll.sh
+├── mk
+│   ├── config.mk
+│   ├── crypto.mk
+│   ├── opencm3.mk
+│   ├── rules.mk
+│   ├── schemes.mk
+│   └── stm32f4discovery.mk
 ├── read_serial.py
-└── stm32f405x6.ld
+├── speed.py
+├── speed.txt
+├── stack.py
+├── stack.txt
+├── stm32f4discovery.ld
+└── test.py
 ```

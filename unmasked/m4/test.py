@@ -51,7 +51,7 @@ def test(scheme, impl):
                 break
 
     log = log.decode(errors="ignore")
-    assert log.count("ERROR") == 0 and log.count("OK") == 3 * ntests
+    assert log.count("ERROR") == 0 and log.count("OK") == ntests
 
 
 makeAll()
