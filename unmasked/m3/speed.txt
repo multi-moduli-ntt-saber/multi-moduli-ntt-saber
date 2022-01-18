@@ -1,61 +1,61 @@
-% Benchmarking measurements written on 2022-01-18 15:47:06.482443+00:00; iterations=100
+speed measurements written on 2022-01-18 16:04:17.649774+00:00; iterations=100
 
-M3 results for lightsaber (impl=m3speed)
+m3 results for lightsaber (impl=m3speed)
 lightsaberm3speedkeygen: 522k
 lightsaberm3speedencaps: 713k
 lightsaberm3speeddecaps: 752k
 
-M3 results for lightsaber (impl=m3speedstack)
+m3 results for lightsaber (impl=m3speedstack)
 lightsaberm3speedstackkeygen: 568k
 lightsaberm3speedstackencaps: 793k
 lightsaberm3speedstackdecaps: 831k
 
-M3 results for lightsaber (impl=m3stack)
+m3 results for lightsaber (impl=m3stack)
 lightsaberm3stackkeygen: 615k
 lightsaberm3stackencaps: 868k
 lightsaberm3stackdecaps: 907k
 
-M3 results for lightsaber (impl=m3_32bit)
+m3 results for lightsaber (impl=m3_32bit)
 lightsaberm3_32bitkeygen: 576k
 lightsaberm3_32bitencaps: 780k
 lightsaberm3_32bitdecaps: 861k
 
-M3 results for saber (impl=m3speed)
+m3 results for saber (impl=m3speed)
 saberm3speedkeygen: 962k
 saberm3speedencaps: 1225k
 saberm3speeddecaps: 1271k
 
-M3 results for saber (impl=m3speedstack)
+m3 results for saber (impl=m3speedstack)
 saberm3speedstackkeygen: 1101k
 saberm3speedstackencaps: 1398k
 saberm3speedstackdecaps: 1444k
 
-M3 results for saber (impl=m3stack)
+m3 results for saber (impl=m3stack)
 saberm3stackkeygen: 1228k
 saberm3stackencaps: 1597k
 saberm3stackdecaps: 1643k
 
-M3 results for saber (impl=m3_32bit)
+m3 results for saber (impl=m3_32bit)
 saberm3_32bitkeygen: 1037k
 saberm3_32bitencaps: 1312k
 saberm3_32bitdecaps: 1414k
 
-M3 results for firesaber (impl=m3speed)
+m3 results for firesaber (impl=m3speed)
 firesaberm3speedkeygen: 1496k
 firesaberm3speedencaps: 1817k
 firesaberm3speeddecaps: 1884k
 
-M3 results for firesaber (impl=m3speedstack)
+m3 results for firesaber (impl=m3speedstack)
 firesaberm3speedstackkeygen: 1775k
 firesaberm3speedstackencaps: 2122k
 firesaberm3speedstackdecaps: 2189k
 
-M3 results for firesaber (impl=m3stack)
+m3 results for firesaber (impl=m3stack)
 firesaberm3stackkeygen: 2024k
 firesaberm3stackencaps: 2492k
 firesaberm3stackdecaps: 2558k
 
-M3 results for firesaber (impl=m3_32bit)
+m3 results for firesaber (impl=m3_32bit)
 firesaberm3_32bitkeygen: 1591k
 firesaberm3_32bitencaps: 1921k
 firesaberm3_32bitdecaps: 2057k

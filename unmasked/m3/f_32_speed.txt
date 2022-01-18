@@ -1,0 +1,29 @@
+f_speed measurements written on 2022-01-18 17:50:29.743124+00:00; iterations=100
+
+m3 results for lightsaber (impl=m3_32bit)
+lightsaberm3_32bitMatrixVectorMul_A: 249k
+lightsaberm3_32bitInnerProd (Encrypt): 93k
+lightsaberm3_32bitInnerProd (Decrypt): 155k
+lightsaberm3_32bit32-bit NTT: 31k
+lightsaberm3_32bit32-bit NTT_leak: 19357
+lightsaberm3_32bit32-bit iNTT: 37k
+lightsaberm3_32bit32-bit base_mul: 8525
+
+m3 results for saber (impl=m3_32bit)
+saberm3_32bitMatrixVectorMul_A: 458k
+saberm3_32bitInnerProd (Encrypt): 122k
+saberm3_32bitInnerProd (Decrypt): 215k
+saberm3_32bit32-bit NTT: 31k
+saberm3_32bit32-bit NTT_leak: 19356
+saberm3_32bit32-bit iNTT: 37k
+saberm3_32bit32-bit base_mul: 8526
+
+m3 results for firesaber (impl=m3_32bit)
+firesaberm3_32bitMatrixVectorMul_A: 724k
+firesaberm3_32bitInnerProd (Encrypt): 150k
+firesaberm3_32bitInnerProd (Decrypt): 274k
+firesaberm3_32bit32-bit NTT: 31k
+firesaberm3_32bit32-bit NTT_leak: 19356
+firesaberm3_32bit32-bit iNTT: 37k
+firesaberm3_32bit32-bit base_mul: 8526
+

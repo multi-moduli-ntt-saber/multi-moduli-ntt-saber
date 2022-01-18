@@ -8,16 +8,23 @@ import serial
 import numpy as np
 from config import Settings
 
-benchType = "stack"
-outFileName = "stack.txt"
-iterations = 1
-testedList = [["keygen", "keypair stack usage:"],
-              ["encaps", "encaps stack usage:"],
-              ["decaps", "decaps stack usage:"]
+
+benchType = "f_speed"
+outFileName = "f_16_speed.txt"
+iterations = 100
+testedList = [["MatrixVectorMul_A", "16-bit MatrixVectorMul speed opt cycles:"],
+              ["MatrixVectorMul_D", "16-bit MatrixVectorMul stack opt cycles:"],
+              ["InnerProd (Encrypt)", "16-bit InnderProd (Encrypt) speed opt cycles:"],
+              ["InnerProd (Decrypt)", "16-bit InnderProd (Decrypt) speed opt cycles:"],
+              ["InnerProd stack", "16-bit InnderProd stack opt cycles:"],
+              ["two 16-bit NTTs", "two 16-bit NTTs cycles:"],
+              ["two 16-bit base_mul", "two 16-bit base_mul cycles:"],
+              ["two 16-bit iNTTs", "two 16-bit iNTT cycles:"],
+              ["16-bit by 16-bit CRT", "16x16 CRT cycles:"]
              ]
 schemeList = ["lightsaber", "saber", "firesaber"]
-impleList = ["speed", "stack"]
-cpu = "m4f"
+impleList = ["speed", "speedstack", "stack"]
+cpu = "m3"
 
 
 def toLog(name, value, k=None):
@@ -28,10 +35,10 @@ def toLog(name, value, k=None):
   return f"{name}: {value}\n"
 
 def getBinary(scheme, impl):
-    return f"bin/crypto_kem_{scheme}_{impl}_{benchType}.bin"
+    return f"elf/crypto_kem_{scheme}_{impl}_{benchType}.elf"
 
 def getFlash(binary):
-    return f"st-flash write {binary} 0x8000000"
+    return f"openocd -f nucleo-f2.cfg -c \"program {binary} reset exit\" "
 
 def run_bench(scheme, impl):
     binary = getBinary(scheme, impl)
@@ -128,6 +135,8 @@ with open(outFileName, "w") as outfile:
     for scheme in schemeList:
         for imple in impleList:
             bench(scheme, scheme + cpu + imple, cpu + imple, outfile)
+
+
 
 
 

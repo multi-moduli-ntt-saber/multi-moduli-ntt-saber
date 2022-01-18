@@ -8,16 +8,16 @@ import serial
 import numpy as np
 from config import Settings
 
-benchType = "stack"
-outFileName = "stack.txt"
-iterations = 1
-testedList = [["keygen", "keypair stack usage:"],
-              ["encaps", "encaps stack usage:"],
-              ["decaps", "decaps stack usage:"]
+benchType = "speed"
+outFileName = "speed.txt"
+iterations = 100
+testedList = [["keygen", "keypair cycles:"],
+              ["encaps", "encaps cycles:"],
+              ["decaps", "decaps cycles:"]
              ]
 schemeList = ["lightsaber", "saber", "firesaber"]
-impleList = ["speed", "stack"]
-cpu = "m4f"
+impleList = ["speed", "speedstack", "stack", "_32bit"]
+cpu = "m3"
 
 
 def toLog(name, value, k=None):
@@ -28,10 +28,10 @@ def toLog(name, value, k=None):
   return f"{name}: {value}\n"
 
 def getBinary(scheme, impl):
-    return f"bin/crypto_kem_{scheme}_{impl}_{benchType}.bin"
+    return f"elf/crypto_kem_{scheme}_{impl}_{benchType}.elf"
 
 def getFlash(binary):
-    return f"st-flash write {binary} 0x8000000"
+    return f"openocd -f nucleo-f2.cfg -c \"program {binary} reset exit\" "
 
 def run_bench(scheme, impl):
     binary = getBinary(scheme, impl)
@@ -128,6 +128,5 @@ with open(outFileName, "w") as outfile:
     for scheme in schemeList:
         for imple in impleList:
             bench(scheme, scheme + cpu + imple, cpu + imple, outfile)
-
 
 

@@ -9,6 +9,24 @@ import numpy as np
 from config import Settings
 
 
+benchType = "f_16_speed"
+outFileName = "f_16_speed.txt"
+iterations = 100
+testedList = [["MatrixVectorMul_A", "16-bit MatrixVectorMul speed opt cycles:"],
+              ["MatrixVectorMul_D", "16-bit MatrixVectorMul stack opt cycles:"],
+              ["InnerProd (Encrypt)", "16-bit InnderProd (Encrypt) speed opt cycles:"],
+              ["InnerProd (Decrypt)", "16-bit InnderProd (Decrypt) speed opt cycles:"],
+              ["InnerProd stack", "16-bit InnderProd stack opt cycles:"],
+              ["two 16-bit NTTs", "two 16-bit NTTs cycles:"],
+              ["two 16-bit base_mul", "two 16-bit base_mul cycles:"],
+              ["two 16-bit iNTTs", "two 16-bit iNTT cycles:"],
+              ["16-bit by 16-bit CRT", "16x16 CRT cycles:"]
+             ]
+schemeList = ["lightsaber", "saber", "firesaber"]
+impleList = ["speed", "speedstack", "stack"]
+cpu = "m3"
+
+
 def toLog(name, value, k=None):
   if value > 20000:
     value = f"{round(value/1000)}k"
@@ -16,14 +34,20 @@ def toLog(name, value, k=None):
     value = f"{value}"
   return f"{name}: {value}\n"
 
-def run_bench(scheme, impl, iterations):
-    binary = f"elf/crypto_kem_{scheme}_{impl}_f_speed.elf"
+def getBinary(scheme, impl):
+    return f"elf/crypto_kem_{scheme}_{impl}_{benchType}.elf"
+
+def getFlash(binary):
+    return f"openocd -f nucleo-f2.cfg -c \"program {binary} reset exit\" "
+
+def run_bench(scheme, impl):
+    binary = getBinary(scheme, impl)
 
     try:
-        subprocess.check_call(f"openocd -f nucleo-f2.cfg -c \"program {binary} reset exit\" ", shell=True)
+        subprocess.check_call(getFlash(binary), shell=True)
     except:
-        print("openocd failed --> retry")
-        return run_bench(scheme, impl, iterations)
+        print("st-flash failed --> retry")
+        return run_bench(scheme, impl)
 
     # get serial output and wait for '#'
     with serial.Serial(Settings.SERIAL_DEVICE, Settings.BAUD_RATE, timeout=10) as dev:
@@ -34,7 +58,7 @@ def run_bench(scheme, impl, iterations):
             device_output = dev.read()
             if device_output == b'':
                 print("timeout --> retry")
-                return run_bench(scheme, impl, iterations)
+                return run_bench(scheme, impl)
             sys.stdout.buffer.write(device_output)
             sys.stdout.flush()
             log += device_output
@@ -65,18 +89,9 @@ def parseLogSpeed(log, ignoreErrors):
         }
 
     return cleanNullTerms({
-        f"MatrixVectorMul_A": get(lines, "16-bit MatrixVectorMul speed opt cycles:"),
-        f"MatrixVectorMul_D": get(lines, "16-bit MatrixVectorMul stack opt cycles:"),
-        f"InnerProd (Encrypt)": get(lines, "16-bit InnderProd (Encrypt) speed opt cycles:"),
-        f"InnerProd (Decrypt)": get(lines, "16-bit InnderProd (Decrypt) speed opt cycles:"),
-        f"InnerProd stack": get(lines, "16-bit InnderProd stack opt cycles:"),
-        f"two 16-bit NTTs": get(lines, "two 16-bit NTTs cycles:"),
-        f"two 16-bit base_mul": get(lines, "two 16-bit base_mul cycles:"),
-        f"two 16-bit iNTTs": get(lines, "two 16-bit iNTT cycles:"),
-        f"16-bit by 16-bit CRT": get(lines, "16x16 CRT cycles:"),
+            k: get(lines, v)
+            for k, v in testedList
     })
-
-
 
 def average(results):
     avgs = dict()
@@ -85,8 +100,8 @@ def average(results):
     return avgs
 
 
-def bench(scheme, texName, impl, iterations, outfile, ignoreErrors=False):
-    logs    = run_bench(scheme, impl, iterations)
+def bench(scheme, texName, impl, outfile, ignoreErrors=False):
+    logs    = run_bench(scheme, impl)
     results = []
     for log in logs:
         try:
@@ -94,34 +109,33 @@ def bench(scheme, texName, impl, iterations, outfile, ignoreErrors=False):
         except:
             breakpoint()
             print("parsing log failed -> retry")
-            return bench(scheme, texName, impl, iterations, outfile)
+            return bench(scheme, texName, impl, outfile)
         results.append(result)
 
     avgResults = average(results)
-    print(f"M3 results for {scheme} (impl={impl})", file=outfile)
+    print(f"{cpu} results for {scheme} (impl={impl})", file=outfile)
 
     for key, value in avgResults.items():
-        macro = toLog(f"{key}", value)
+        macro = toLog(f"{texName}{key}", value)
         print(macro.strip())
         print(macro, end='', file=outfile)
     print('', file=outfile, flush=True)
 
-def makeAll(iterations):
+def makeAll():
     subprocess.check_call(f"make clean", shell=True)
     subprocess.check_call(f"make -j4 ITERATIONS={iterations}", shell=True)
 
-
-with open(f"f_16_benchmarks.txt", "w") as outfile:
-    iterations = 100
+with open(outFileName, "w") as outfile:
 
     now = datetime.datetime.now(datetime.timezone.utc)
-    print(f"% Benchmarking measurements written on {now}; iterations={iterations}\n", file=outfile)
+    print(f"{benchType} measurements written on {now}; iterations={iterations}\n", file=outfile)
 
-    makeAll(iterations)
+    makeAll()
 
-    for scheme in ["lightsaber", "saber", "firesaber"]:
-        for imple in ["speed"]:
-            bench(scheme, scheme, "m3" + imple, iterations, outfile)
+    for scheme in schemeList:
+        for imple in impleList:
+            bench(scheme, scheme + cpu + imple, cpu + imple, outfile)
+
 
 
 

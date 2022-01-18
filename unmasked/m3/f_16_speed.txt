@@ -1,0 +1,101 @@
+f_speed measurements written on 2022-01-18 17:38:42.958441+00:00; iterations=100
+
+m3 results for lightsaber (impl=m3speed)
+lightsaberm3speedMatrixVectorMul_A: 199k
+lightsaberm3speedMatrixVectorMul_D: 279k
+lightsaberm3speedInnerProd (Encrypt): 83k
+lightsaberm3speedInnerProd (Decrypt): 116k
+lightsaberm3speedInnerProd stack: 140k
+lightsaberm3speedtwo 16-bit NTTs: 16768
+lightsaberm3speedtwo 16-bit base_mul: 11931
+lightsaberm3speedtwo 16-bit iNTTs: 19056
+lightsaberm3speed16-bit by 16-bit CRT: 4639
+
+m3 results for lightsaber (impl=m3speedstack)
+lightsaberm3speedstackMatrixVectorMul_A: 199k
+lightsaberm3speedstackMatrixVectorMul_D: 279k
+lightsaberm3speedstackInnerProd (Encrypt): 83k
+lightsaberm3speedstackInnerProd (Decrypt): 116k
+lightsaberm3speedstackInnerProd stack: 140k
+lightsaberm3speedstacktwo 16-bit NTTs: 16768
+lightsaberm3speedstacktwo 16-bit base_mul: 11931
+lightsaberm3speedstacktwo 16-bit iNTTs: 19056
+lightsaberm3speedstack16-bit by 16-bit CRT: 4639
+
+m3 results for lightsaber (impl=m3stack)
+lightsaberm3stackMatrixVectorMul_A: 199k
+lightsaberm3stackMatrixVectorMul_D: 279k
+lightsaberm3stackInnerProd (Encrypt): 83k
+lightsaberm3stackInnerProd (Decrypt): 116k
+lightsaberm3stackInnerProd stack: 140k
+lightsaberm3stacktwo 16-bit NTTs: 16768
+lightsaberm3stacktwo 16-bit base_mul: 11931
+lightsaberm3stacktwo 16-bit iNTTs: 19056
+lightsaberm3stack16-bit by 16-bit CRT: 4639
+
+m3 results for saber (impl=m3speed)
+saberm3speedMatrixVectorMul_A: 391k
+saberm3speedMatrixVectorMul_D: 631k
+saberm3speedInnerProd (Encrypt): 114k
+saberm3speedInnerProd (Decrypt): 164k
+saberm3speedInnerProd stack: 210k
+saberm3speedtwo 16-bit NTTs: 16768
+saberm3speedtwo 16-bit base_mul: 11926
+saberm3speedtwo 16-bit iNTTs: 19056
+saberm3speed16-bit by 16-bit CRT: 4636
+
+m3 results for saber (impl=m3speedstack)
+saberm3speedstackMatrixVectorMul_A: 391k
+saberm3speedstackMatrixVectorMul_D: 631k
+saberm3speedstackInnerProd (Encrypt): 114k
+saberm3speedstackInnerProd (Decrypt): 164k
+saberm3speedstackInnerProd stack: 210k
+saberm3speedstacktwo 16-bit NTTs: 16768
+saberm3speedstacktwo 16-bit base_mul: 11926
+saberm3speedstacktwo 16-bit iNTTs: 19056
+saberm3speedstack16-bit by 16-bit CRT: 4636
+
+m3 results for saber (impl=m3stack)
+saberm3stackMatrixVectorMul_A: 391k
+saberm3stackMatrixVectorMul_D: 631k
+saberm3stackInnerProd (Encrypt): 114k
+saberm3stackInnerProd (Decrypt): 164k
+saberm3stackInnerProd stack: 210k
+saberm3stacktwo 16-bit NTTs: 16768
+saberm3stacktwo 16-bit base_mul: 11926
+saberm3stacktwo 16-bit iNTTs: 19056
+saberm3stack16-bit by 16-bit CRT: 4636
+
+m3 results for firesaber (impl=m3speed)
+firesaberm3speedMatrixVectorMul_A: 644k
+firesaberm3speedMatrixVectorMul_D: 1123k
+firesaberm3speedInnerProd (Encrypt): 144k
+firesaberm3speedInnerProd (Decrypt): 211k
+firesaberm3speedInnerProd stack: 281k
+firesaberm3speedtwo 16-bit NTTs: 16767
+firesaberm3speedtwo 16-bit base_mul: 11926
+firesaberm3speedtwo 16-bit iNTTs: 19055
+firesaberm3speed16-bit by 16-bit CRT: 4636
+
+m3 results for firesaber (impl=m3speedstack)
+firesaberm3speedstackMatrixVectorMul_A: 644k
+firesaberm3speedstackMatrixVectorMul_D: 1123k
+firesaberm3speedstackInnerProd (Encrypt): 144k
+firesaberm3speedstackInnerProd (Decrypt): 211k
+firesaberm3speedstackInnerProd stack: 281k
+firesaberm3speedstacktwo 16-bit NTTs: 16767
+firesaberm3speedstacktwo 16-bit base_mul: 11926
+firesaberm3speedstacktwo 16-bit iNTTs: 19055
+firesaberm3speedstack16-bit by 16-bit CRT: 4636
+
+m3 results for firesaber (impl=m3stack)
+firesaberm3stackMatrixVectorMul_A: 644k
+firesaberm3stackMatrixVectorMul_D: 1123k
+firesaberm3stackInnerProd (Encrypt): 144k
+firesaberm3stackInnerProd (Decrypt): 211k
+firesaberm3stackInnerProd stack: 281k
+firesaberm3stacktwo 16-bit NTTs: 16767
+firesaberm3stacktwo 16-bit base_mul: 11926
+firesaberm3stacktwo 16-bit iNTTs: 19055
+firesaberm3stack16-bit by 16-bit CRT: 4636
+

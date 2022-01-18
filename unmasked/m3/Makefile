@@ -13,7 +13,6 @@ clean: libclean
 	rm -rf elf/
 	rm -rf bin/
 	rm -rf obj/
-	rm -rf testvectors/
 	rm -rf benchmarks/
 
 .SECONDARY:
