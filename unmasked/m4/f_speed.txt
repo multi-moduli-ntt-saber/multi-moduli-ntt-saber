@@ -1,92 +1,98 @@
-f_speed measurements written on 2022-01-18 09:01:45.557888+00:00; iterations=100
+f_speed measurements written on 2022-01-18 14:24:41.386040+00:00; iterations=100
 
 m4f results for lightsaber (impl=m4fspeed)
-lightsaberm4fspeedMatrixVectorMul_A: 70k
-lightsaberm4fspeedMatrixVectorMul_D: 133k
-lightsaberm4fspeedInnerProd (Encrypt): 29k
-lightsaberm4fspeedInnerProd (Decrypt): 41k
-lightsaberm4fspeedInnerProd stack: 66k
-lightsaberm4fspeed32-bit NTT: 5988
-lightsaberm4fspeed16-bit NTT: 4882
-lightsaberm4fspeed16-bit NTT light: 4435
-lightsaberm4fspeed32-bit iNTT: 7311
-lightsaberm4fspeed32-bit base_mul: 4253
-lightsaberm4fspeed32x16-bit base_mul: 3802
-lightsaberm4fspeed16-bit base_mul: 3034
-lightsaberm4fspeed16x16 CRT: 2586
-lightsaberm4fspeedOne mod: 1212
+lightsaberm4fspeedMatrixVectorMul_A: 68k
+lightsaberm4fspeedMatrixVectorMul_D: 130k
+lightsaberm4fspeedInnerProd (Encrypt): 28k
+lightsaberm4fspeedInnerProd (Decrypt): 40k
+lightsaberm4fspeedInnerProd stack: 65k
+lightsaberm4fspeed32-bit NTT: 5854
+lightsaberm4fspeed16-bit NTT: 4819
+lightsaberm4fspeed16-bit NTT light: 4373
+lightsaberm4fspeed32-bit iNTT: 7138
+lightsaberm4fspeed32-bit base_mul: 4182
+lightsaberm4fspeed32x16-bit base_mul: 3733
+lightsaberm4fspeed16-bit base_mul: 2963
+lightsaberm4fspeed16x16 CRT: 2437
+lightsaberm4fspeedOne mod: 1171
 
 m4f results for lightsaber (impl=m4fstack)
-lightsaberm4fstackMatrixVectorMul_A: 70k
-lightsaberm4fstackMatrixVectorMul_D: 133k
-lightsaberm4fstackInnerProd (Encrypt): 29k
-lightsaberm4fstackInnerProd (Decrypt): 41k
-lightsaberm4fstackInnerProd stack: 66k
-lightsaberm4fstack32-bit NTT: 5988
-lightsaberm4fstack16-bit NTT: 4882
-lightsaberm4fstack16-bit NTT light: 4435
-lightsaberm4fstack32-bit iNTT: 7311
-lightsaberm4fstack32-bit base_mul: 4253
-lightsaberm4fstack32x16-bit base_mul: 3802
-lightsaberm4fstack16-bit base_mul: 3034
-lightsaberm4fstack16x16 CRT: 2586
-lightsaberm4fstackOne mod: 1212
+lightsaberm4fstackMatrixVectorMul_A: 68k
+lightsaberm4fstackMatrixVectorMul_D: 130k
+lightsaberm4fstackInnerProd (Encrypt): 28k
+lightsaberm4fstackInnerProd (Decrypt): 40k
+lightsaberm4fstackInnerProd stack: 65k
+lightsaberm4fstack32-bit NTT: 5854
+lightsaberm4fstack16-bit NTT: 4819
+lightsaberm4fstack16-bit NTT light: 4373
+lightsaberm4fstack32-bit iNTT: 7138
+lightsaberm4fstack32-bit base_mul: 4182
+lightsaberm4fstack32x16-bit base_mul: 3733
+lightsaberm4fstack16-bit base_mul: 2963
+lightsaberm4fstack16x16 CRT: 2437
+lightsaberm4fstackOne mod: 1171
 
 m4f results for saber (impl=m4fspeed)
-saberm4fspeedMatrixVectorMul_A: 139k
-saberm4fspeedMatrixVectorMul_D: 300k
-saberm4fspeedInnerProd (Encrypt): 40k
-saberm4fspeedInnerProd (Decrypt): 58k
-saberm4fspeedInnerProd stack: 100k
-saberm4fspeed32-bit NTT: 5988
-saberm4fspeed16-bit NTT: 4883
-saberm4fspeed16-bit NTT light: 4436
-saberm4fspeed32-bit iNTT: 7311
-saberm4fspeed32-bit base_mul: 4253
-saberm4fspeed32x16-bit base_mul: 3802
-saberm4fspeed16-bit base_mul: 3034
-saberm4fspeed16x16 CRT: 2586
-saberm4fspeedOne mod: 1212
+saberm4fspeedMatrixVectorMul_A: 136k
+saberm4fspeedMatrixVectorMul_D: 293k
+saberm4fspeedInnerProd (Encrypt): 39k
+saberm4fspeedInnerProd (Decrypt): 57k
+saberm4fspeedInnerProd stack: 98k
+saberm4fspeed32-bit NTT: 5854
+saberm4fspeed16-bit NTT: 4820
+saberm4fspeed16-bit NTT light: 4374
+saberm4fspeed32-bit iNTT: 7139
+saberm4fspeed32-bit base_mul: 4182
+saberm4fspeed32x16-bit base_mul: 3732
+saberm4fspeed16-bit base_mul: 2964
+saberm4fspeed16x16 CRT: 2437
+saberm4fspeedOne mod: 1171
 
 m4f results for saber (impl=m4fstack)
-saberm4fstackMatrixVectorMul_A: 139k
-saberm4fstackMatrixVectorMul_D: 300k
-saberm4fstackInnerProd (Encrypt): 40k
-saberm4fstackInnerProd (Decrypt): 58k
-saberm4fstackInnerProd stack: 100k
-saberm4fstack32-bit NTT: 5988
-saberm4fstack16-bit NTT: 4883
-saberm4fstack16-bit NTT light: 4436
-saberm4fstack32-bit iNTT: 7311
-saberm4fstack32-bit base_mul: 4253
-saberm4fstack32x16-bit base_mul: 3802
-saberm4fstack16-bit base_mul: 3034
-saberm4fstack16x16 CRT: 2586
-saberm4fstackOne mod: 1212
+saberm4fstackMatrixVectorMul_A: 136k
+saberm4fstackMatrixVectorMul_D: 293k
+saberm4fstackInnerProd (Encrypt): 39k
+saberm4fstackInnerProd (Decrypt): 57k
+saberm4fstackInnerProd stack: 98k
+saberm4fstack32-bit NTT: 5854
+saberm4fstack16-bit NTT: 4820
+saberm4fstack16-bit NTT light: 4374
+saberm4fstack32-bit iNTT: 7139
+saberm4fstack32-bit base_mul: 4182
+saberm4fstack32x16-bit base_mul: 3732
+saberm4fstack16-bit base_mul: 2964
+saberm4fstack16x16 CRT: 2437
+saberm4fstackOne mod: 1171
 
 m4f results for firesaber (impl=m4fspeed)
-firesaberm4fspeed16-bit NTT: 4881
-firesaberm4fspeed16-bit NTT light: 4434
-firesaberm4fspeed32-bit iNTT: 7310
-firesaberm4fspeed32-bit base_mul: 4254
-firesaberm4fspeed32x16-bit base_mul: 3802
-firesaberm4fspeed16-bit base_mul: 3034
-firesaberm4fspeed16x16 CRT: 2585
-firesaberm4fspeedOne mod: 1212
+firesaberm4fspeedMatrixVectorMul_A: 225k
+firesaberm4fspeedMatrixVectorMul_D: 522k
+firesaberm4fspeedInnerProd (Encrypt): 51k
+firesaberm4fspeedInnerProd (Decrypt): 74k
+firesaberm4fspeedInnerProd stack: 130k
+firesaberm4fspeed32-bit NTT: 5855
+firesaberm4fspeed16-bit NTT: 4819
+firesaberm4fspeed16-bit NTT light: 4372
+firesaberm4fspeed32-bit iNTT: 7138
+firesaberm4fspeed32-bit base_mul: 4183
+firesaberm4fspeed32x16-bit base_mul: 3732
+firesaberm4fspeed16-bit base_mul: 2964
+firesaberm4fspeed16x16 CRT: 2436
+firesaberm4fspeedOne mod: 1171
 
 m4f results for firesaber (impl=m4fstack)
-firesaberm4fstackMatrixVectorMul_A: 231k
-firesaberm4fstackMatrixVectorMul_D: 534k
-firesaberm4fstackInnerProd (Encrypt): 52k
-firesaberm4fstackInnerProd (Decrypt): 76k
-firesaberm4fstackInnerProd stack: 134k
-firesaberm4fstack32-bit NTT: 5990
-firesaberm4fstack16-bit NTT: 4881
-firesaberm4fstack16-bit NTT light: 4434
-firesaberm4fstack32-bit iNTT: 7310
-firesaberm4fstack32-bit base_mul: 4254
-firesaberm4fstack32x16-bit base_mul: 3802
-firesaberm4fstack16-bit base_mul: 3034
-firesaberm4fstack16x16 CRT: 2585
-firesaberm4fstackOne mod: 1212
+firesaberm4fstackMatrixVectorMul_A: 225k
+firesaberm4fstackMatrixVectorMul_D: 522k
+firesaberm4fstackInnerProd (Encrypt): 51k
+firesaberm4fstackInnerProd (Decrypt): 74k
+firesaberm4fstackInnerProd stack: 130k
+firesaberm4fstack32-bit NTT: 5855
+firesaberm4fstack16-bit NTT: 4819
+firesaberm4fstack16-bit NTT light: 4372
+firesaberm4fstack32-bit iNTT: 7138
+firesaberm4fstack32-bit base_mul: 4183
+firesaberm4fstack32x16-bit base_mul: 3732
+firesaberm4fstack16-bit base_mul: 2964
+firesaberm4fstack16x16 CRT: 2436
+firesaberm4fstackOne mod: 1171
 

@@ -29,7 +29,6 @@ $(CONFIG):
 ###############
 objs = $(addprefix obj/,$(addsuffix .o,$(1)))
 hashprofobjs = $(addprefix obj/hashprof/,$(addsuffix .o,$(1)))
-hostobjs = $(addprefix obj-host/,$(addsuffix .o,$(1)))
 
 Q ?= @
 
@@ -50,10 +49,6 @@ RETAINED_VARS += PLATFORM
 
 Q ?= @
 
-HOST_CC := cc
-HOST_AR := ar
-HOST_LD := $(HOST_CC)
-
 ################
 # Common Flags #
 ################
@@ -64,13 +59,13 @@ CFLAGS += \
 	-std=gnu99 \
 	--sysroot=$(SYSROOT) \
 	-I$(SRCDIR)/common \
-	-I$(SRCDIR)/mupq/common
+# 	-I$(SRCDIR)/mupq/common
 
 DEBUG ?=
 OPT_SIZE ?=
 LTO ?=
 AIO ?= 1
-ITERATIONS ?= 1
+ITERATIONS ?= 100
 
 RETAINED_VARS += DEBUG OPT_SIZE LTO AIO ITERATIONS
 
@@ -101,17 +96,6 @@ LDFLAGS += \
 
 LDLIBS += -lm
 
-HOST_CFLAGS += \
-	-O2 -g3 \
-	-I$(SRCDIR)/mupq/common \
-	-Wall -Wextra -Wshadow \
-	-MMD \
-	-fno-common \
-	$(HOST_CPPFLAGS)
-
-HOST_LDFLAGS += \
-	-Lobj-host
-
 # Check if the retained variables have been changed
 define VAR_CHECK
 ifneq ($$(origin LAST_$(1)),undefined)
@@ -124,5 +108,3 @@ endef
 
 $(foreach VAR,$(RETAINED_VARS),$(eval $(call VAR_CHECK,$(VAR))))
 endif
-
-

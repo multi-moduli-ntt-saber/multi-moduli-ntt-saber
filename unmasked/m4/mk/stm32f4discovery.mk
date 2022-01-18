@@ -6,3 +6,4 @@ EXCLUDED_SCHEMES = \
 	mupq/pqclean/crypto_sign/rainbow%
 
 include mk/opencm3.mk
+

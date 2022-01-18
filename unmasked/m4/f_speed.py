@@ -139,5 +139,3 @@ with open(outFileName, "w") as outfile:
     for scheme in schemeList:
         for imple in impleList:
             bench(scheme, scheme + cpu + imple, cpu + imple, outfile)
-
-

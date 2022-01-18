@@ -78,12 +78,12 @@ const struct rcc_clock_scale benchmarkclock = {
 void _rcc_set_main_pll(uint32_t source, uint32_t pllm, uint32_t plln, uint32_t pllp,
                        uint32_t pllq, uint32_t pllr)
 {
-    RCC_PLLCFGR = (RCC_PLLCFGR_PLLM(pllm) << RCC_PLLCFGR_PLLM_SHIFT) |
-        (plln << RCC_PLLCFGR_PLLN_SHIFT) |
-        ((pllp & 0x1Fu) << 27u) | /* NEWER PLLP */
-        (source << RCC_PLLCFGR_PLLSRC_SHIFT) |
-        (pllq << RCC_PLLCFGR_PLLQ_SHIFT) |
-        (pllr << RCC_PLLCFGR_PLLR_SHIFT) | RCC_PLLCFGR_PLLREN;
+	RCC_PLLCFGR = (RCC_PLLCFGR_PLLM(pllm) << RCC_PLLCFGR_PLLM_SHIFT) |
+		(plln << RCC_PLLCFGR_PLLN_SHIFT) |
+		((pllp & 0x1Fu) << 27u) | /* NEWER PLLP */
+		(source << RCC_PLLCFGR_PLLSRC_SHIFT) |
+		(pllq << RCC_PLLCFGR_PLLQ_SHIFT) |
+		(pllr << RCC_PLLCFGR_PLLR_SHIFT) | RCC_PLLCFGR_PLLREN;
 }
 
 #else
@@ -355,6 +355,6 @@ void* __wrap__sbrk (int incr)
 size_t hal_get_stack_size(void)
 {
   register char* cur_stack;
-    __asm__ volatile ("mov %0, sp" : "=r" (cur_stack));
+	__asm__ volatile ("mov %0, sp" : "=r" (cur_stack));
   return cur_stack - heap_end;
 }

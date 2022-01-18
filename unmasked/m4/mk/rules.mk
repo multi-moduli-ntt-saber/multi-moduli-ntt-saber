@@ -59,28 +59,3 @@ obj/hashprof/%.s.o: %.s $(CONFIG)
 	@echo "  AS      $@"
 	$(Q)[ -d $(@D) ] || mkdir -p $(@D)
 	$(Q)$(CC) -c -o $@ $(CFLAGS) $<
-
-bin-host/%: $(HOST_LIBDEPS) $(CONFIG)
-	@echo "  HOST-LD $@"
-	$(Q)[ -d $(@D) ] || mkdir -p $(@D)
-	$(Q)$(HOST_LD) $(HOST_LDFLAGS) -o $@ $(filter %.o,$^) $(HOST_LDLIBS)
-
-obj-host/%.a: $(CONFIG)
-	@echo "  HOST-AR $@"
-	$(Q)[ -d $(@D) ] || mkdir -p $(@D)
-	$(Q)$(HOST_AR) rcs $@ $(filter %.o,$^)
-
-obj-host/%.c.o: %.c $(CONFIG)
-	@echo "  HOST-CC $@"
-	$(Q)[ -d $(@D) ] || mkdir -p $(@D)
-	$(Q)$(HOST_CC) -c -o $@ $(HOST_CFLAGS) $<
-
-obj-host/%.c.S: %.c $(CONFIG)
-	@echo "  HOST-CC $@"
-	$(Q)[ -d $(@D) ] || mkdir -p $(@D)
-	$(Q)$(HOST_CC) -S -o $@ $(HOST_CFLAGS) $<
-
-obj-host/%.S.o: %.S $(CONFIG)
-	@echo "  HOST-AS $@"
-	$(Q)[ -d $(@D) ] || mkdir -p $(@D)
-	$(Q)$(HOST_CC) -c -o $@ $(HOST_CFLAGS) $<
