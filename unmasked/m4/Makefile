@@ -6,12 +6,12 @@ include mk/crypto.mk
 include mk/rules.mk
 include mk/schemes.mk
 
-
 .PHONY: clean libclean
 
 clean: libclean
 	rm -rf elf/
 	rm -rf bin/
+	rm -rf bin-host/
 	rm -rf obj/
 	rm -rf testvectors/
 	rm -rf benchmarks/
