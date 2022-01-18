@@ -1,4 +1,4 @@
-speed measurements written on 2022-01-18 14:45:28.896650+00:00; iterations=100
+speed measurements written on 2022-01-18 15:03:54.419868+00:00; iterations=100
 
 m4f results for lightsaber (impl=m4fspeed)
 lightsaberm4fspeedkeygen: 352k

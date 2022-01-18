@@ -114,12 +114,10 @@ The numbers are categorized into two groups:
 .
 ├── Makefile
 ├── README.md
-├── benchmarks.py
-├── benchmarks.txt
 ├── common
 │   ├── fips202.c
 │   ├── fips202.h
-│   ├── hal-stm32f4.c
+│   ├── hal-opencm3.c
 │   ├── hal.h
 │   ├── keccakf1600.S
 │   ├── keccakf1600.h
@@ -130,21 +128,28 @@ The numbers are categorized into two groups:
 ├── crypto_kem
 │   ├── f_speed.c
 │   ├── firesaber
-│   │   ├── m4fspeed
-│   │   └── m4fstack
 │   ├── lightsaber
-│   │   ├── m4fspeed
-│   │   └── m4fstack
 │   ├── saber
-│   │   ├── m4fspeed
-│   │   └── m4fstack
 │   ├── speed.c
 │   ├── stack.c
 │   └── test.c
-├── f_benchmarks.py
-├── f_benchmarks.txt
+├── f_speed.py
+├── f_speed.txt
+├── ldscripts
+│   ├── devices.data
+│   └── stm32f4discovery.ld
 ├── libopencm3 -> ../../libopencm3/
-├── makeAll.sh
+├── mk
+│   ├── config.mk
+│   ├── crypto.mk
+│   ├── opencm3.mk
+│   ├── rules.mk
+│   ├── schemes.mk
+│   └── stm32f4discovery.mk
 ├── read_serial.py
-└── stm32f405x6.ld
+├── speed.py
+├── speed.txt
+├── stack.py
+├── stack.txt
+└── test.py
 ```
