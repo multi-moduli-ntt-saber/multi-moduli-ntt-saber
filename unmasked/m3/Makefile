@@ -6,11 +6,6 @@ include mk/crypto.mk
 include mk/rules.mk
 include mk/schemes.mk
 
-.PHONY: tests
-
-# Now, for all schemes, the template above is evaluated.
-$(foreach scheme,$(KEM_SCHEMES), \
-	$(eval $(call schemelib,$(scheme),$(call schemename,$(scheme)),kem)))
 
 .PHONY: clean libclean
 

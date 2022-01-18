@@ -31,7 +31,7 @@ int main(void){
         hal_send_str("==========================");
     }
 
-    for(crypto_i = 0; crypto_i < CRYPTO_ITERATIONS; crypto_i++){
+    for(crypto_i = 0; crypto_i < ITERATIONS; crypto_i++){
 
         uint32_t s_NTT[SABER_N];
         uint32_t acc_NTT[SABER_L * SABER_N];

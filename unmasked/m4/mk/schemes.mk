@@ -1,17 +1,11 @@
 
 IMPLEMENTATION_PATH = \
-	crypto_kem/saber/m3speed \
-	crypto_kem/saber/m3speedstack \
-	crypto_kem/saber/m3stack \
-	crypto_kem/saber/m3_32bit \
-	crypto_kem/lightsaber/m3speed \
-	crypto_kem/lightsaber/m3speedstack \
-	crypto_kem/lightsaber/m3stack \
-	crypto_kem/lightsaber/m3_32bit \
-	crypto_kem/firesaber/m3speed \
-	crypto_kem/firesaber/m3speedstack \
-	crypto_kem/firesaber/m3stack \
-	crypto_kem/firesaber/m3_32bit
+	crypto_kem/lightsaber/m4fspeed \
+	crypto_kem/lightsaber/m4fstack \
+	crypto_kem/saber/m4fspeed \
+	crypto_kem/saber/m4fstack \
+	crypto_kem/firesaber/m4fspeed \
+	crypto_kem/firesaber/m4fstack
 
 # If, however, the IMPLEMENTAION_PATH is defined, only the path it points to
 # will be added to the {KEM,SIGN}_SCHEMES lists. Since the python scripts for
@@ -50,6 +44,7 @@ elf/$(2)_%.elf: crypto_$(3)/%.c obj/lib$(2).a $$(LINKDEPS) $$(CONFIG)
 
 # Add the elf,bin and hex files to the tests target.
 tests: elf/$(2)_test.elf elf/$(2)_speed.elf elf/$(2)_stack.elf elf/$(2)_f_speed.elf
+tests-bin: bin/$(2)_test.bin bin/$(2)_speed.bin bin/$(2)_stack.bin bin/$(2)_f_speed.bin
 
 endef
 
@@ -57,6 +52,5 @@ endef
 $(foreach scheme,$(KEM_SCHEMES), \
 	$(eval $(call schemelib,$(scheme),$(call schemename,$(scheme)),kem)))
 
-.PHONY: tests
-
+.PHONY: tests tests-bin
 
