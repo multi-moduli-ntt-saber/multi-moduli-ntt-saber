@@ -2,11 +2,9 @@
 import platform
 import serial
 import sys
+from config import Settings
 
-if platform.system() == "Darwin":
-    dev = serial.Serial("/dev/tty.usbserial-0001", 38400)
-else:
-    dev = serial.Serial("/dev/ttyUSB0", 38400)
+dev = serial.Serial(Settings.SERIAL_DEVICE, Settings.BAUD_RATE)
 
 print("> Returned data:", file=sys.stderr)
 

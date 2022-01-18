@@ -26,7 +26,7 @@ def run_bench(scheme, impl, iterations):
         return run_bench(scheme, impl, iterations)
 
     # get serial output and wait for '#'
-    with serial.Serial(Settings.SERIAL_DEVICE, 115200, timeout=10) as dev:
+    with serial.Serial(Settings.SERIAL_DEVICE, Settings.BAUD_RATE, timeout=10) as dev:
         logs = []
         iteration = 0
         log = b""
@@ -98,17 +98,18 @@ def bench(scheme, texName, impl, iterations, outfile, ignoreErrors=False):
         print(macro, end='', file=outfile)
     print('', file=outfile, flush=True)
 
-def makeAll():
+def makeAll(iterations):
     subprocess.check_call(f"make clean", shell=True)
-    subprocess.check_call(f"sh makeAll.sh", shell=True)
+    subprocess.check_call(f"make -j4 ITERATIONS={iterations}", shell=True)
 
 
 with open(f"benchmarks.txt", "w") as outfile:
+    iterations = 100
 
     now = datetime.datetime.now(datetime.timezone.utc)
     print(f"% Benchmarking measurements written on {now}; iterations=100\n", file=outfile)
 
-    makeAll()
+    makeAll(iterations)
 
     for scheme in ["lightsaber", "saber", "firesaber"]:
         for imple in ["speed", "stack"]:

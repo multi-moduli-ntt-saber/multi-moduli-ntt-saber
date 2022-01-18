@@ -1,32 +1,32 @@
-% Benchmarking measurements written on 2021-10-26 05:47:10.045757+00:00; iterations=100
+% Benchmarking measurements written on 2022-01-18 01:02:17.545866+00:00; iterations=100
 
 M4 results for lightsaber (impl=m4fspeed)
-lightsaberm4fspeedkeygen: 357k
-lightsaberm4fspeedencaps: 488k
-lightsaberm4fspeeddecaps: 457k
+lightsaberm4fspeedkeygen: 403k
+lightsaberm4fspeedencaps: 547k
+lightsaberm4fspeeddecaps: 505k
 
 M4 results for lightsaber (impl=m4fstack)
-lightsaberm4fstackkeygen: 427k
-lightsaberm4fstackencaps: 598k
-lightsaberm4fstackdecaps: 585k
+lightsaberm4fstackkeygen: 476k
+lightsaberm4fstackencaps: 661k
+lightsaberm4fstackdecaps: 637k
 
 M4 results for saber (impl=m4fspeed)
-saberm4fspeedkeygen: 650k
-saberm4fspeedencaps: 829k
-saberm4fspeeddecaps: 780k
+saberm4fspeedkeygen: 723k
+saberm4fspeedencaps: 916k
+saberm4fspeeddecaps: 852k
 
 M4 results for saber (impl=m4fstack)
-saberm4fstackkeygen: 825k
-saberm4fstackencaps: 1065k
-saberm4fstackdecaps: 1042k
+saberm4fstackkeygen: 903k
+saberm4fstackencaps: 1160k
+saberm4fstackdecaps: 1122k
 
 M4 results for firesaber (impl=m4fspeed)
-firesaberm4fspeedkeygen: 999k
-firesaberm4fspeedencaps: 1212k
-firesaberm4fspeeddecaps: 1156k
+firesaberm4fspeedkeygen: 1102k
+firesaberm4fspeedencaps: 1331k
+firesaberm4fspeeddecaps: 1257k
 
 M4 results for firesaber (impl=m4fstack)
-firesaberm4fstackkeygen: 1324k
-firesaberm4fstackencaps: 1622k
-firesaberm4fstackdecaps: 1600k
+firesaberm4fstackkeygen: 1437k
+firesaberm4fstackencaps: 1753k
+firesaberm4fstackdecaps: 1714k
 
