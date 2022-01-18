@@ -2,17 +2,16 @@
 We use the board `nucleo-f207zg`.
 Please check the name of the device recognized by your computer.
 Our setting is in the file `config.py`.
-If you're using a macOS, the prefix of the name name will be `/dev/tty.usbmodem`.
 
-# How to Compile
+# How to compile
 ```
 make -j4
 ```
 
 # How to test and produce benchmarks manually
-You can produce the benchmark manually.
+You can test and produce the benchmarks manually.
 
-## One terminal reading from board
+## One terminal reading from the board
 ```
 python3 read_serial.py
 ```
@@ -26,10 +25,8 @@ openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_{lightsaber, saber, firesabe
 
 ### Benchmark for speed
 ```
-openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_{lightsaber, saber, firesaber}_{m3speed, m3speedstack, m3stack, m3_32bit}_{speed, f_speed}.elf reset exit"
+openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_{lightsaber, saber, firesaber}_{m3speed, m3speedstack, m3stack, m3_32bit}_{speed, f_16_speed, f_32_speed}.elf reset exit"
 ```
-
-For the interpretations of the numbers, please go to the Section Interpretation of the numbers (`speed` and `f_speed`).
 
 ### Benchmark for stack
 ```
@@ -37,27 +34,41 @@ openocd -f nucleo-f2.cfg -c "program elf/crypto_kem_{lightsaber, saber, firesabe
 ```
 
 # Scripts
-We also provide scripts for producing the benchmarks of cycles.
+We also provide scripts for testing and producing the benchmarks of cycles.
 
-## Scripts for the schemes
+## Scipt for testing key exchange
 ```
-python3 benchmarks.py
+python3 test.py
 ```
-The numbers will be in the file `benchmarks.txt`.
+If the python script returns an error, then the key exchange fails. Otherwise, the key exchange is successful.
 
-## Scripts for individual functions
+## Script for overall cycles for schemes
+```
+python3 speed.py
+```
+The numbers will be written into the file `speed.txt`.
+
+## Script for individual functions
 ```
 python3 f_16_benchmarks.py
 python3 f_32_benchmarks.py
 ```
-The numbers will be in the files `f_16_benchmarks.txt` for `f_16_benchmarks.py` and `f_32_benchmarks.txt` for `f_32_benchmarks.py`.
+The numbers will be written into the files `f_16_speed.txt` and `f_32_speed.txt`.
 
-# Interpretation of the numbers (`speed` and `f_speed`)
-
-## `benchmarks.py`
-Running `python3 benchmarks.py` will produce benchmarks for the implementations. For each of the parameters `lightsaber`, `saber`, and `firesaber`, we report four different implementations. They are distinguished by the chosen strategy and the size of the arithmetic (16-bit or 32-bit). Each implementation is reported as the following:
+## Script for stack usage in bytes
 ```
-M3 results for {scheme} (impl={impl})
+python3 stack.py
+```
+The numbers will be written into the file `stack.txt`.
+
+For the interpretations of the numbers, please go to the Section Interpretation of the numbers (`speed.py`, `f_16_speed.py`, `f_32_speed.py`, and `stack.py`).
+
+# Interpretation of the numbers (`speed.py`, `f_16_speed.py`, `f_32_speed.py`, and `stack.py`)
+
+## `speed.py`
+Running `python3 speed.py` will produce benchmarks for the implementations. For each of the parameters `lightsaber`, `saber`, and `firesaber`, we report four different implementations. They are distinguished by the chosen strategy and the size of the arithmetic (16-bit or 32-bit). Each implementation is reported as the following:
+```
+m3 results for {scheme} (impl={impl})
 {scheme}{impl}keygen: XXXk
 {scheme}{impl}encaps: XXXk
 {scheme}{impl}decaps: XXXk
@@ -75,8 +86,8 @@ and `impl` is one of the following:
 
 Note that in our paper, we only report `m3speed`, `m3stack`, and `m3_32bit`. Implementations tagged with `m3speedstack` are benchmarked for illustrating a better resolution of time-memory trade-offs.
 
-## `f_16_benchmarks.py`
-Running `python3 f_16_benchmarks.py` will prduce the benchmarks for `MatrixVectorMul`, `InnerProd`, and NTT-related functions used in the implementations `m3speed`, `m3speedstack`, and `m3stack`.
+## `f_16_speed.py`
+Running `python3 f_16_speed.py` will produce the benchmarks for `MatrixVectorMul`, `InnerProd`, and NTT-related functions used in the implementations `m3speed`, `m3speedstack`, and `m3stack`.
 
 The numbers are categorized into two groups:
 - Saber's `MatrixVectorMul` and `InnerProd`. These numbers are dependent on the chosen security level and optimization strategy.
@@ -92,8 +103,8 @@ The numbers are categorized into two groups:
     - `16-bit by 16-bit CRT`: The cycles of solving `CRT` from `3329` and `7681`. The 16-bit results in signed `mod 8192` are derived.
 
 
-## `f_32_benchmarks.py`
-Running `python3 f_32_benchmarks.py` will produce the benchmarks for `MatrixVectorMul`, `InnerProd`, and NTT-related functions used in the implementation `m3_32bit`.
+## `f_32_speed.py`
+Running `python3 f_32_speed.py` will produce the benchmarks for `MatrixVectorMul`, `InnerProd`, and NTT-related functions used in the implementation `m3_32bit`.
 
 The numbers are categorized into two groups:
 - Saber's `MatrixVectorMul` and `InnerProd`. These numbers are dependent on the chosen security level and optimization strategy.
@@ -106,14 +117,31 @@ The numbers are categorized into two groups:
     - `32-bit base_mul`: The cycles of applying one `base_mul` with constant time emulation for 32-bit arithmetic.
     - `32-bit iNTT`: The cycles of applying oen iNTT with constant time emulation for 32-bit arithmetic.
 
+## `stack.py`
+Running `python3 stack.py` will report the overall stack usage (bytes) for the implementations. For each of the parameters `lightsaber`, `saber`, and `firesaber`, we report two different implementations. They are distinguished by the chosen strategy. Each implementation is reported as the following:
+```
+m3 results for {scheme} (impl={impl})
+{scheme}{impl}keygen: XXX
+{scheme}{impl}encaps: XXX
+{scheme}{impl}decaps: XXX
+```
+where `scheme` is one of the following:
+- `lightsaber`
+- `saber`
+- `firesaber`
 
+and `impl` is one of the following:
+- `m3speed`
+- `m3speedstack`
+- `m3stack`
+- `m3_32bit`
+
+Note that in our paper, we only report `m3speed`, `m3stack`, and `m3_32bit`. Implementations tagged with `m3speedstack` are benchmarked for illustrating a better resolution of time-memory trade-offs.
 
 ```
 .
 ├── Makefile
 ├── README.md
-├── benchmarks.py
-├── benchmarks.txt
 ├── common
 │   ├── fips202.c
 │   ├── fips202.h
@@ -130,33 +158,30 @@ The numbers are categorized into two groups:
 ├── crypto_kem
 │   ├── f_speed.c
 │   ├── firesaber
-│   │   ├── m3_32bit
-│   │   ├── m3speed
-│   │   ├── m3speedstack
-│   │   └── m3stack
 │   ├── lightsaber
-│   │   ├── m3_32bit
-│   │   ├── m3speed
-│   │   ├── m3speedstack
-│   │   └── m3stack
 │   ├── saber
-│   │   ├── m3_32bit
-│   │   ├── m3speed
-│   │   ├── m3speedstack
-│   │   └── m3stack
 │   ├── speed.c
 │   ├── stack.c
 │   └── test.c
-├── f_16_benchmarks.py
-├── f_16_benchmarks.txt
-├── f_32_benchmarks.py
-├── f_32_benchmarks.txt
+├── f_16_speed.py
+├── f_16_speed.txt
+├── f_32_speed.py
+├── f_32_speed.txt
 ├── libopencm3 -> ../../libopencm3/
 ├── mk
+│   ├── config.mk
+│   ├── crypto.mk
 │   ├── nucleo-f207zg.mk
-│   └── opencm3.mk
+│   ├── opencm3.mk
+│   ├── rules.mk
+│   └── schemes.mk
 ├── nucleo-f2.cfg
-└── read_serial.py
+├── read_serial.py
+├── speed.py
+├── speed.txt
+├── stack.py
+├── stack.txt
+└── test.py
 ```
 
 

@@ -1,0 +1,62 @@
+stack measurements written on 2022-01-18 17:58:19.566734+00:00; iterations=1
+
+m3 results for lightsaber (impl=m3speed)
+lightsaberm3speedkeygen: 5756
+lightsaberm3speedencaps: 6428
+lightsaberm3speeddecaps: 6428
+
+m3 results for lightsaber (impl=m3speedstack)
+lightsaberm3speedstackkeygen: 4724
+lightsaberm3speedstackencaps: 3716
+lightsaberm3speedstackdecaps: 3716
+
+m3 results for lightsaber (impl=m3stack)
+lightsaberm3stackkeygen: 3412
+lightsaberm3stackencaps: 3204
+lightsaberm3stackdecaps: 3340
+
+m3 results for lightsaber (impl=m3_32bit)
+lightsaberm3_32bitkeygen: 5724
+lightsaberm3_32bitencaps: 6404
+lightsaberm3_32bitdecaps: 6404
+
+m3 results for saber (impl=m3speed)
+saberm3speedkeygen: 6780
+saberm3speedencaps: 7460
+saberm3speeddecaps: 7460
+
+m3 results for saber (impl=m3speedstack)
+saberm3speedstackkeygen: 5236
+saberm3speedstackencaps: 3844
+saberm3speedstackdecaps: 3844
+
+m3 results for saber (impl=m3stack)
+saberm3stackkeygen: 3924
+saberm3stackencaps: 3332
+saberm3stackdecaps: 3340
+
+m3 results for saber (impl=m3_32bit)
+saberm3_32bitkeygen: 6756
+saberm3_32bitencaps: 7436
+saberm3_32bitdecaps: 7436
+
+m3 results for firesaber (impl=m3speed)
+firesaberm3speedkeygen: 7804
+firesaberm3speedencaps: 8484
+firesaberm3speeddecaps: 8484
+
+m3 results for firesaber (impl=m3speedstack)
+firesaberm3speedstackkeygen: 5748
+firesaberm3speedstackencaps: 3972
+firesaberm3speedstackdecaps: 3972
+
+m3 results for firesaber (impl=m3stack)
+firesaberm3stackkeygen: 4436
+firesaberm3stackencaps: 3460
+firesaberm3stackdecaps: 3460
+
+m3 results for firesaber (impl=m3_32bit)
+firesaberm3_32bitkeygen: 7780
+firesaberm3_32bitencaps: 8460
+firesaberm3_32bitdecaps: 8460
+

@@ -72,7 +72,9 @@ int main(void) {
   hal_setup(CLOCK_FAST);
 
   // marker for automated benchmarks
-  hal_send_str("==========================");
+  for(i = 0; i < 60; i++){
+    hal_send_str("==========================");
+  }
   canary_size = 0x1000;
   while(test_keys()){
     canary_size += 0x1000;
