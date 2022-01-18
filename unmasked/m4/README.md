@@ -9,7 +9,7 @@ make -j4
 ```
 
 # How to test and produce benchmarks manually
-You can produce the benchmark manually.
+You can produce the benchmarks manually.
 
 ## One terminal reading from the board
 ```
@@ -34,7 +34,13 @@ st-flash write bin/crypto_kem_{lightsaber, saber, firesaber}_{m4fspeed, m4fstack
 ```
 
 # Scripts
-We also provide scripts for producing the benchmarks of cycles.
+We also provide scripts for producing the benchmarks.
+
+## Scipt for testing key exchange
+```
+python3 test.py
+```
+If the python script returns an error, then the key exchange fails. Otherwise, the key exchange is successful.
 
 ## Script for overall cycles for schemes
 ```
@@ -42,24 +48,17 @@ python3 speed.py
 ```
 The numbers will be written into the file `speed.txt`.
 
-## Scripts for individual functions
+## Script for individual functions
 ```
 python3 f_speed.py
 ```
 The numbers will be written into the file `f_speed.txt`.
 
-## `stack.py`
+## Script for stack usage in bytes
 ```
 python3 stack.py
 ```
-
 The numbers will be written into the file `stack.txt`.
-
-## `test.py`
-```
-python3 test.py
-```
-If the python script returns an error, then the key exchange fails. Otherwise, the key exchange is successful.
 
 For the interpretations of the numbers, please go to the Section Interpretation of the numbers (`speed.py`, `stack.py` and `f_speed.py`).
 
@@ -68,25 +67,6 @@ In this Section, we explain the meaning of the numbers produced by the scripts. 
 
 ## `speed.py`
 Running `python3 speed.py` will report the cycles for the implementations. For each of the parameters `lightsaber`, `saber`, and `firesaber`, we report two different implementations. They are distinguished by the chosen strategy. Each implementation is reported as the following:
-```
-m4f results for {scheme} (impl={impl})
-{scheme}{impl}keygen: XXXk
-{scheme}{impl}encaps: XXXk
-{scheme}{impl}decaps: XXXk
-```
-where `scheme` is one of the following:
-- `lightsaber`
-- `saber`
-- `firesaber`
-
-and `impl` is one of the following:
-- `m3speed`
-- `m3stack`
-
-All of the implementations are reported in our paper.
-
-## `stack.py`
-Running `python3 stack.py` will report the overall stack usage (bytes) for the implementations. For each of the parameters `lightsaber`, `saber`, and `firesaber`, we report two different implementations. They are distinguished by the chosen strategy. Each implementation is reported as the following:
 ```
 m4f results for {scheme} (impl={impl})
 {scheme}{impl}keygen: XXXk
@@ -124,6 +104,25 @@ The numbers are categorized into two groups:
     - `16-bit base_mul`: The cycles of applying one 16-bit `base_mul`.
     - `16x16 CRT`: Solving CRT from the moduli `3329` and `7681`. The result is a value over `3329 * 7681`
     - `One mod`: Reduce a polynomial over `3329 * 7681` to one of the moduli `3329` or `7681`.
+
+## `stack.py`
+Running `python3 stack.py` will report the overall stack usage (bytes) for the implementations. For each of the parameters `lightsaber`, `saber`, and `firesaber`, we report two different implementations. They are distinguished by the chosen strategy. Each implementation is reported as the following:
+```
+m4f results for {scheme} (impl={impl})
+{scheme}{impl}keygen: XXXk
+{scheme}{impl}encaps: XXXk
+{scheme}{impl}decaps: XXXk
+```
+where `scheme` is one of the following:
+- `lightsaber`
+- `saber`
+- `firesaber`
+
+and `impl` is one of the following:
+- `m3speed`
+- `m3stack`
+
+All of the implementations are reported in our paper.
 
 # Structure of this folder
 ```
