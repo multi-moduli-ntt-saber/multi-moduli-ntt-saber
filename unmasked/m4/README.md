@@ -28,26 +28,9 @@ st-flash write bin/crypto_kem_{lightsaber, saber, firesaber}_{m4fspeed, m4fstack
 st-flash write bin/crypto_kem_{lightsaber, saber, firesaber}_{m4fspeed, m4fstack}_{speed, f_speed}.bin 0x8000000
 ```
 
-For the interpretations of the numbers, please go to the Section Interpretation of the numbers (`speed` and `f_speed`).
-
 ### Benchmark for stack
 ```
 st-flash write bin/crypto_kem_{lightsaber, saber, firesaber}_{m4fspeed, m4fstack}_stack.bin 0x8000000
-```
-
-After flashing with `st-flash write bin/crypto_kem_saber_m4fspeed_stack.bin 0x8000000`, we'll get something close to the following.
-
-```
-==========================
-keypair stack usage:
-6780
-encaps stack usage:
-7444
-decaps stack usage:
-7452
-OK KEYS
-
-#
 ```
 
 # Scripts
@@ -76,10 +59,12 @@ The numbers will be written into the file `stack.txt`.
 ```
 python3 test.py
 ```
-
 If the python script returns an error, then the key exchange fails. Otherwise, the key exchange is successful.
 
-# Interpretation of the numbers (`speed`, `stack.py`, and `f_speed`)
+For the interpretations of the numbers, please go to the Section Interpretation of the numbers (`speed.py`, `stack.py` and `f_speed.py`).
+
+# Interpretation of the numbers (`speed.py`, `stack.py`, and `f_speed.py`)
+In this Section, we explain the meaning of the numbers produced by the scripts. Although the explanation is only for numbers by scripts, one can also derive the numbers by manually benchmarking them and there is a one-to-one correspondence between numbers reported by the programs and the scripts. The one-to-one correspondence is the list `testedList` in the beginning of the scripts.
 
 ## `speed.py`
 Running `python3 speed.py` will report the cycles for the implementations. For each of the parameters `lightsaber`, `saber`, and `firesaber`, we report two different implementations. They are distinguished by the chosen strategy. Each implementation is reported as the following:
