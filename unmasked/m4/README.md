@@ -108,6 +108,8 @@ The numbers are categorized into two groups:
     - `16x16 CRT`: Solving CRT from the moduli `3329` and `7681`. The result is a value over `3329 * 7681`
     - `One mod`: Reduce a polynomial over `3329 * 7681` to one of the moduli `3329` or `7681`.
 
+## `stack.py`
+TBA
 
 # Structure of this folder
 ```

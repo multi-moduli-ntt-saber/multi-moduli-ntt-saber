@@ -23,7 +23,7 @@ int main(void)
 
   hal_setup(CLOCK_BENCHMARK);
 
-  for(i = 0; i < 40; i++){
+  for(i = 0; i < 60; i++){
     hal_send_str("==========================");
   }
 
