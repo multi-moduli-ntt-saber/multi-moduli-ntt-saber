@@ -9,7 +9,7 @@ make -j4
 ```
 
 # How to test and produce benchmarks manually
-You can produce the benchmarks manually.
+You can test and produce the benchmarks manually.
 
 ## One terminal reading from the board
 ```
@@ -34,7 +34,7 @@ st-flash write bin/crypto_kem_{lightsaber, saber, firesaber}_{m4fspeed, m4fstack
 ```
 
 # Scripts
-We also provide scripts for producing the benchmarks.
+We also provide scripts for testing and producing the benchmarks.
 
 ## Scipt for testing key exchange
 ```
