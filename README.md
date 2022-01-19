@@ -31,14 +31,21 @@ We also provide C functions that are used for developing the assembly code and g
 # Requirements
 
 - `arm-none-eabi-gcc` with version 10.2.0
-- `libopencm3`, commit `6763681c260cf280487d70ca0d1996a8b79fff30`.
 - `python3` with `pyserial` and `numpy`
 - For Cortex-M3:
     - Board `nucleo-f207zg`
-    - `openocd`
-- For Cortex-M4:
-    - Board `stm32f4discovery`
+    - `openocd` version 0.11.0, see https://openocd.org/openocd-0-11-0-released.html
+- For Cortex-M4F:
+    - Board `stm32f4discovery` (we use floating-point registers)
     - `stlink`
+
+# `libopencm3`
+The `libopencm3` in this repository is the commit `6763681c260cf280487d70ca0d1996a8b79fff30` of https://github.com/libopencm3/libopencm3.
+
+
+
+
+
 
 
 
