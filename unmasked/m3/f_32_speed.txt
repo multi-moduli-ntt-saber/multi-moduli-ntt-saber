@@ -1,4 +1,4 @@
-f_speed measurements written on 2022-01-18 17:50:29.743124+00:00; iterations=100
+f_speed measurements written on 2022-01-19 06:10:41.767435+00:00; iterations=100
 
 m3 results for lightsaber (impl=m3_32bit)
 lightsaberm3_32bitMatrixVectorMul_A: 249k

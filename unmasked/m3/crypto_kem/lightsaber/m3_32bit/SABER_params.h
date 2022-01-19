@@ -8,7 +8,7 @@
 
 /* Store the secret key as 4-bit value in [-mu/2, mu/2]
     Not compatible with testvectors that check the secret key for its reference value. */
-#define SABER_COMPRESS_SECRETKEY
+// #define SABER_COMPRESS_SECRETKEY
 
 /* Don't change anything below this line */
 #if SABER_L == 2

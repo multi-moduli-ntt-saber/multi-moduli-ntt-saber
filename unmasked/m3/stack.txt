@@ -1,4 +1,4 @@
-stack measurements written on 2022-01-18 17:58:19.566734+00:00; iterations=1
+stack measurements written on 2022-01-19 05:54:06.615358+00:00; iterations=1
 
 m3 results for lightsaber (impl=m3speed)
 lightsaberm3speedkeygen: 5756
