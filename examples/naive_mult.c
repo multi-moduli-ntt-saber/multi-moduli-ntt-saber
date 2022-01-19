@@ -1,0 +1,1 @@
+../gen_table/common/naive_mult.c

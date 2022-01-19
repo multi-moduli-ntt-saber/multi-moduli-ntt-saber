@@ -1,0 +1,1 @@
+../gen_table/common/ntt_c.c

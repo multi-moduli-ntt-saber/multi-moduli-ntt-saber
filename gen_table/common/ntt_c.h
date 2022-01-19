@@ -3,11 +3,26 @@
 
 #include "tools.h"
 
+void CT_butterfly_int16(
+    void *src,
+    size_t indx_a, size_t indx_b,
+    void *twiddle,
+    void *mod,
+    size_t size
+    );
 
 void CT_butterfly_int32(
     void *src,
     size_t indx_a, size_t indx_b,
     void *twiddle,
+    void *mod,
+    size_t size
+    );
+
+void m_layer_CT_butterfly_int16(
+    void *src,
+    size_t layers, size_t step,
+    void *_root_table,
     void *mod,
     size_t size
     );

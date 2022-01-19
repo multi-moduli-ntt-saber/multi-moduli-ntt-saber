@@ -58,6 +58,25 @@ void mulmod_int16(void *des, void *src1, void *src2, void *mod){
 
 }
 
+void addmod_int16(void *des, void *src1, void *src2, void *mod){
+
+    int32_t src1_v;
+    int32_t src2_v;
+    int32_t tmp_v;
+    int32_t mod_v;
+    int32_t des_v;
+
+    src1_v = (int32_t)(*(int16_t*)src1);
+    src2_v = (int32_t)(*(int16_t*)src2);
+    tmp_v = src1_v + src2_v;
+    mod_v = (int32_t)(*(int16_t*)mod);
+
+    cmod_int32(&des_v, &tmp_v, &mod_v);
+
+    *(int16_t*)des = (int16_t)des_v;
+
+}
+
 void addmod_int32(void *des, void *src1, void *src2, void *mod){
 
     int64_t src1_v;
@@ -74,6 +93,25 @@ void addmod_int32(void *des, void *src1, void *src2, void *mod){
     cmod_int64(&des_v, &tmp_v, &mod_v);
 
     *(int32_t*)des = (int32_t)des_v;
+
+}
+
+void submod_int16(void *des, void *src1, void *src2, void *mod){
+
+    int64_t src1_v;
+    int64_t src2_v;
+    int64_t tmp_v;
+    int64_t mod_v;
+    int64_t des_v;
+
+    src1_v = (int32_t)(*(int16_t*)src1);
+    src2_v = (int32_t)(*(int16_t*)src2);
+    tmp_v = src1_v - src2_v;
+    mod_v = (int32_t)(*(int16_t*)mod);
+
+    cmod_int32(&des_v, &tmp_v, &mod_v);
+
+    *(int16_t*)des = (int16_t)des_v;
 
 }
 

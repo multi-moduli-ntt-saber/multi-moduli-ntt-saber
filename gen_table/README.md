@@ -32,6 +32,20 @@ void expmod(void*, void*, size_t, void*);
 
 > Can be interleaved freely with assembly functions for testing units.
 
+# Requirement
+A C compiler
+
+# Reserved symbols
+```
+ARRAY_N
+NTT_N
+LOGNTT_N
+```
+
+Notice that `NTT_N` must be a power of 2 and `NTT_N = 1 << LOGNTT_N`.
+Furthermore, `NTT_N` must divide `ARRAY_N`.
+However, `ARRAY_N` need not to be a power of 2.
+
 ```
 .
 ├── README.md
