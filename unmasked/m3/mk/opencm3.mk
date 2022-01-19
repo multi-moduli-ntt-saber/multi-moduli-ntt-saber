@@ -17,8 +17,6 @@ LDLIBS += -lc -lgcc
 
 export OPENCM3_DIR := $(CURDIR)/libopencm3
 
-_git_submodule_update_opencm3 := $(shell git submodule update --init --recursive $(OPENCM3_DIR))
-
 ifeq ($(DEVICE),)
 $(warning no DEVICE specified for linker script generator)
 endif

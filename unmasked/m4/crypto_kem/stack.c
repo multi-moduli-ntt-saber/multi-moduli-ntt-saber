@@ -72,6 +72,9 @@ int main(void) {
   hal_setup(CLOCK_FAST);
 
   // marker for automated benchmarks
+
+  int i;
+
   for(i = 0; i < 60; i++){
     hal_send_str("==========================");
   }
