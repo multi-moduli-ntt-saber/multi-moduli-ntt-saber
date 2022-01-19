@@ -59,7 +59,7 @@ int main(void){
     int16_t scale_int16;
 
 // ================================
-// generate polynomials and compute their product in C,
+// generate polynomials and compute their product in C
 // the result will be used as the reference implementation for comparison
 
     for(size_t i = 0; i < ARRAY_N; i++){
@@ -84,12 +84,12 @@ int main(void){
 // first example
 
 // ================
-// call assembly for NTT
+// call assembly for the 32-bit NTT
 
     NTT_forward_32(poly1_NTT_Q1Q2, poly1_int16);
 
 // ================
-// generate twiddle factors for NTT in C
+// generate twiddle factors for the NTT in C
 
     profile.compressed_layers = 2;
     profile.merged_layers[0] = 3;
@@ -113,7 +113,7 @@ int main(void){
         );
 
 // ================
-// call the C function for NTT
+// call the C function for the NTT
 
     // since the C function is in-place, we first copy the 16-bit polynomial
     // poly2_int16 to the 32-bit array poly2_NTT_Q1Q2
@@ -134,12 +134,12 @@ int main(void){
         );
 
 // ================
-// call assembly for base multiplication
+// call assembly for the base multiplication
 
     NTT_mul_32(res_NTT_Q1Q2, poly1_NTT_Q1Q2, poly2_NTT_Q1Q2);
 
 // ================
-// call assembly for iNTT
+// call assembly for the iNTT
 
     NTT_inv_32(res_NTT, res_NTT_Q1Q2);
 
@@ -161,14 +161,14 @@ int main(void){
 // second example
 
 // ================
-// call assembly for 32-bit NTT and transforming the result to 16-bit
+// call assembly for the 32-bit NTT and transforming the result to 16-bit
 
     NTT_forward_32(poly1_NTT_Q1Q2, poly1_int16);
     MOD_1(poly1_NTT_Q1, poly1_NTT_Q1Q2);
     MOD_2(poly1_NTT_Q2, poly1_NTT_Q1Q2);
 
 // ================
-// generate twiddle factors used for 16-bit NTT
+// generate twiddle factors used for the 16-bit NTT
 
     profile.compressed_layers = 2;
     profile.merged_layers[0] = 3;
@@ -189,7 +189,7 @@ int main(void){
     __asm_negacyclic_ntt_16(poly2_NTT_Q1, table_int16, Q1Q1prime, poly2_int16, RmodQ1);
 
 // ================
-// generate twiddle factors for 16-bit NTT over another prime
+// generate twiddle factors for the 16-bit NTT over another prime
 
     profile.compressed_layers = 2;
     profile.merged_layers[0] = 3;
@@ -208,14 +208,14 @@ int main(void){
         );
 
 // ================
-// call assembly for the first three layers of NTT
-// this assembly is not in our implementation, but it is involved in the development
+// call assembly for the first three layers of the NTT
+// this assembly is not in our implementation, but it was involved in the development
 
     __asm_negacyclic_ntt_16_light_0_1_2(poly2_NTT_Q2, table_int16, Q2Q2prime, poly2_int16, RmodQ2);
 
 // ================
 // we can also switch to another strategy for merging layers
-// as long as the computation is computing the right layer
+// as long as the computation is computing the right layers
 
     profile.compressed_layers = 4;
     profile.merged_layers[0] = 2;
@@ -239,10 +239,10 @@ int main(void){
         );
 
 // ================
-// call the C function for NTT,
+// call the C function for the NTT,
 // note that we call the computation
 // from layer sum_{i = 0}^{start_level -1} profile.merged_layers[i]
-// to layer sum_{i = 0}^{end_level} profile.merged_layers[i] ) - 1
+// to layer sum_{i = 0}^{end_level} profile.merged_layers[i] - 1
 // where start_level = 2 and end_level = 3
 
     mod_int16 = Q2;
@@ -257,7 +257,7 @@ int main(void){
     );
 
 // ================
-// call assembly for base multiplications
+// call assembly for the base multiplications
 
     NTT_mul_16_1(res_NTT_Q1, poly1_NTT_Q1, poly2_NTT_Q1);
     NTT_mul_16_2(res_NTT_Q2, poly1_NTT_Q2, poly2_NTT_Q2);
