@@ -39,19 +39,11 @@ static int test_keys(void) {
   volatile unsigned char a;
 
   // Alice generates a public key
-  FILL_STACK()
   crypto_kem_keypair(pk, sk);
   crypto_kem_keypair_sk_masked(&sk_masked, sk);
-  CHECK_STACK()
-  if(c >= canary_size) return -1;
-  stack_key_gen_masked = c;
 
   // Bob derives a secret key and creates a response
-  FILL_STACK()
   crypto_kem_enc(sendb, key_d, pk);
-  CHECK_STACK()
-  if(c >= canary_size) return -1;
-  stack_encaps_masked = c;
 
   // Alice uses Bobs response to get her secret key (masked)
   FILL_STACK()
@@ -63,8 +55,6 @@ static int test_keys(void) {
   if (memcmp(key_c, key_d, CRYPTO_BYTES)) {
     return -1;
   } else {
-    send_stack_usage("masked keypair stack usage:", stack_key_gen_masked);
-    send_stack_usage("masked encaps stack usage:", stack_encaps_masked);
     send_stack_usage("masked decaps stack usage:", stack_decaps_masked);
     hal_send_str("OK KEYS\n");
     return 0;
@@ -75,7 +65,13 @@ int main(void) {
   hal_setup(CLOCK_FAST);
 
   // marker for automated benchmarks
-  hal_send_str("==========================");
+
+  int i;
+
+  for(i = 0; i < 60; i++){
+    hal_send_str("==========================");
+  }
+
   canary_size = 0x1000;
   while(test_keys()){
     canary_size += 0x1000;

@@ -19,7 +19,12 @@ int main(void)
 
   hal_setup(CLOCK_BENCHMARK);
 
-  hal_send_str("==========================");
+  int i;
+  int crypto_i;
+
+  for(i = 0; i < 60; i++){
+    hal_send_str("==========================");
+  }
 
   // declare arrays
 
@@ -28,44 +33,49 @@ int main(void)
 
 // benchmark for individual functions
 
-  t0 = hal_get_time();
-  NTT_forward_32(s_NTT_32[0][0], s_NTT_16[0][0]);
-  t1 = hal_get_time();
-  printcycles("32-bit NTT cycles:", t1 - t0);
+  for(crypto_i = 0; crypto_i < ITERATIONS; crypto_i++){
 
-  t0 = hal_get_time();
-  NTT_mul_32(s_NTT_32[0][0], s_NTT_32[0][0], s_NTT_32[0][0]);
-  t1 = hal_get_time();
-  printcycles("32-bit NTT_mul cycles:", t1 - t0);
+    t0 = hal_get_time();
+    NTT_forward_32(s_NTT_32[0][0], s_NTT_16[0][0]);
+    t1 = hal_get_time();
+    printcycles("32-bit NTT cycles:", t1 - t0);
 
-  t0 = hal_get_time();
-  NTT_inv_32(s_NTT_32[0][0]);
-  t1 = hal_get_time();
-  printcycles("32-bit NTT_inv cycles:", t1 - t0);
+    t0 = hal_get_time();
+    NTT_mul_32(s_NTT_32[0][0], s_NTT_32[0][0], s_NTT_32[0][0]);
+    t1 = hal_get_time();
+    printcycles("32-bit NTT_mul cycles:", t1 - t0);
 
-  t0 = hal_get_time();
-  NTT_forward_16(s_NTT_16[0][0], s_NTT_16[0][0]);
-  t1 = hal_get_time();
-  printcycles("16-bit NTT cycles:", t1 - t0);
+    t0 = hal_get_time();
+    NTT_inv_32(s_NTT_32[0][0]);
+    t1 = hal_get_time();
+    printcycles("32-bit NTT_inv cycles:", t1 - t0);
 
-  t0 = hal_get_time();
-  NTT_mul_16(s_NTT_16[0][0], s_NTT_16[0][0], s_NTT_16[0][0]);
-  t1 = hal_get_time();
-  printcycles("16-bit NTT_mul cycles:", t1 - t0);
+    t0 = hal_get_time();
+    NTT_forward_16(s_NTT_16[0][0], s_NTT_16[0][0]);
+    t1 = hal_get_time();
+    printcycles("16-bit NTT cycles:", t1 - t0);
 
-  t0 = hal_get_time();
-  NTT_inv_16(s_NTT_16[0][0]);
-  t1 = hal_get_time();
-  printcycles("16-bit NTT_inv cycles:", t1 - t0);
+    t0 = hal_get_time();
+    NTT_mul_16(s_NTT_16[0][0], s_NTT_16[0][0], s_NTT_16[0][0]);
+    t1 = hal_get_time();
+    printcycles("16-bit NTT_mul cycles:", t1 - t0);
 
-  t0 = hal_get_time();
-  solv_CRT(s_NTT_16[0][0], s_NTT_32[0][0], s_NTT_16[0][0]);
-  t1 = hal_get_time();
-  printcycles("CRT for 32x16 cycles:", t1 - t0);
+    t0 = hal_get_time();
+    NTT_inv_16(s_NTT_16[0][0]);
+    t1 = hal_get_time();
+    printcycles("16-bit NTT_inv cycles:", t1 - t0);
 
-  hal_send_str("OK KEYS\n");
+    t0 = hal_get_time();
+    solv_CRT(s_NTT_16[0][0], s_NTT_32[0][0], s_NTT_16[0][0]);
+    t1 = hal_get_time();
+    printcycles("CRT for 32x16 cycles:", t1 - t0);
 
-  hal_send_str("#");
+    hal_send_str("OK KEYS\n");
+
+    hal_send_str("#");
+
+  }
+
   while(1);
   return 0;
 }

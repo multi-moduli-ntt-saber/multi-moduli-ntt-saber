@@ -1,0 +1,11 @@
+f_speed measurements written on 2022-01-19 09:32:20.596125+00:00; iterations=100
+
+m4f results for saber (impl=m4fspeed-masked)
+saberm4fspeed-masked32-bit NTT: 6113
+saberm4fspeed-masked32-bit base_mul: 4183
+saberm4fspeed-masked32-bit iNTT: 5870
+saberm4fspeed-masked16-bit NTT: 4847
+saberm4fspeed-masked16-bit base_mul: 2963
+saberm4fspeed-masked16-bit iNTT: 4815
+saberm4fspeed-masked32x16 CRT: 4504
+

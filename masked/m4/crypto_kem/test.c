@@ -89,92 +89,6 @@ static int test_keys(void)
   return 0;
 }
 
-static int test_invalid_sk_a(void)
-{
-  unsigned char key_c[CRYPTO_BYTES], key_d[CRYPTO_BYTES], key_cca_c[CRYPTO_BYTES];
-  unsigned char pk[CRYPTO_PUBLICKEYBYTES];
-  unsigned char sk[CRYPTO_SECRETKEYBYTES];
-  unsigned char sendb[CRYPTO_CIPHERTEXTBYTES];
-  uint8_t kr[64]; // Will contain key, coins
-  sk_masked_s sk_masked;
-  int i;
-
-  for(i=0; i<NTESTS; i++)
-  {
-
-    //Alice generates a public key
-    crypto_kem_keypair(pk, sk);
-    crypto_kem_keypair_sk_masked(&sk_masked, sk);
-
-    //Bob derives a secret key and creates a response
-    crypto_kem_enc(sendb, key_d, pk);
-
-    //Replace secret key with random values
-    randombytes((uint8_t*)(void*)(&sk_masked), 2 * SABER_SHARES * SABER_L * SABER_N
-                          + SABER_INDCPA_PUBLICKEYBYTES
-                          + SABER_SHARES * 32
-                          + SABER_KEYBYTES);
-
-    //Alice uses Bobs response to get her secret key (masked)
-    crypto_kem_dec_masked(key_c, sendb, &sk_masked);
-
-    // The following part is specific to SABER's CCA transform
-    sha3_256(kr + 32, sendb, CRYPTO_CIPHERTEXTBYTES); // overwrite coins in kr with h(c)
-    memcpy(kr, sk_masked.z, CRYPTO_BYTES);
-    sha3_256(key_cca_c, kr, 64); // hash concatenation of pre-k and h(c) to k
-
-    if((!memcmp(key_c, key_d, CRYPTO_BYTES)) | memcmp(key_c, key_cca_c, CRYPTO_BYTES)){
-      hal_send_str("ERROR invalid sk_a (masked)\n");
-    }else{
-      hal_send_str("OK invalid sk_a\n");
-    }
-  }
-
-  return 0;
-}
-
-static int test_invalid_ciphertext(void)
-{
-  unsigned char key_c[CRYPTO_BYTES], key_d[CRYPTO_BYTES], key_cca_c[CRYPTO_BYTES];
-  unsigned char pk[CRYPTO_PUBLICKEYBYTES];
-  unsigned char sk[CRYPTO_SECRETKEYBYTES];
-  unsigned char sendb[CRYPTO_CIPHERTEXTBYTES];
-  uint8_t kr[64]; // Will contain key, coins
-  sk_masked_s sk_masked;
-  int i;
-  size_t pos;
-
-  for(i=0; i<NTESTS; i++)
-  {
-    randombytes((unsigned char *)&pos, sizeof(size_t));
-
-    //Alice generates a public key
-    crypto_kem_keypair(pk, sk);
-    crypto_kem_keypair_sk_masked(&sk_masked, sk);
-
-    //Bob derives a secret key and creates a response
-    crypto_kem_enc(sendb, key_d, pk);
-
-    // Change ciphertext to random value
-    randombytes(sendb, sizeof(sendb));
-
-    //Alice uses Bobs response to get her secret key (masked)
-    crypto_kem_dec_masked(key_c, sendb, &sk_masked);
-
-    // The following part is specific to SABER's CCA transform
-    sha3_256(kr + 32, sendb, CRYPTO_CIPHERTEXTBYTES); // overwrite coins in kr with h(c)
-    memcpy(kr, sk_masked.z, CRYPTO_BYTES);
-    sha3_256(key_cca_c, kr, 64); // hash concatenation of pre-k and h(c) to k
-
-    if((!memcmp(key_c, key_d, CRYPTO_BYTES)) | memcmp(key_c, key_cca_c, CRYPTO_BYTES)){
-      hal_send_str("ERROR invalid ciphertext (masked)\n");
-    }else{
-      hal_send_str("OK invalid ciphertext\n");
-    }
-  }
-
-  return 0;
-}
 
 int main(void){
 
@@ -182,13 +96,11 @@ int main(void){
 
     int i;
     // marker for automated testing
-    for(i = 0; i < 10; i++){
+    for(i = 0; i < 60; i++){
         hal_send_str("==========================");
     }
 
     test_keys();
-    test_invalid_sk_a();
-    test_invalid_ciphertext();
 
 
     hal_send_str("#");

@@ -1,0 +1,11 @@
+stack measurements written on 2022-01-19 09:30:26.885012+00:00; iterations=1
+
+m4f results for saber (impl=m4fspeed-masked)
+saberm4fspeed-maskeddecaps: 16108
+
+m4f results for saber (impl=m4fspeedstack-masked)
+saberm4fspeedstack-maskeddecaps: 10560
+
+m4f results for saber (impl=m4fstack-masked)
+saberm4fstack-maskeddecaps: 8504
+

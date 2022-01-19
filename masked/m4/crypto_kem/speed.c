@@ -20,39 +20,42 @@ int main(void)
   unsigned char sk[CRYPTO_SECRETKEYBYTES];
   unsigned char ct[CRYPTO_CIPHERTEXTBYTES];
   unsigned long long t0, t1;
+  int i;
+  int crypto_i;
   sk_masked_s sk_masked;
 
   hal_setup(CLOCK_BENCHMARK);
 
-  hal_send_str("==========================");
-
-  // Masked key-pair generation
-  t0 = hal_get_time();
-  crypto_kem_keypair(pk, sk);
-  crypto_kem_keypair_sk_masked(&sk_masked, sk);
-  t1 = hal_get_time();
-  printcycles("masked keypair cycles:", t1-t0);
-
-  // Encapsulation
-  t0 = hal_get_time();
-  crypto_kem_enc(ct, key_d, pk);
-  t1 = hal_get_time();
-  printcycles("masked encaps cycles:", t1-t0);
-
-  // Masked decapsulation
-  t0 = hal_get_time();
-  crypto_kem_dec_masked(key_c, ct, &sk_masked);
-  t1 = hal_get_time();
-  printcycles("masked decaps cycles:", t1-t0);
-
-  if(memcmp(key_c, key_d, CRYPTO_BYTES)){
-    hal_send_str("ERROR KEYS (masked)\n");
-  }
-  else {
-    hal_send_str("OK KEYS\n");
+  for(i = 0; i < 60; i++){
+      hal_send_str("==========================");
   }
 
-  hal_send_str("#");
+  for(crypto_i = 0; crypto_i < ITERATIONS; i++){
+
+    // Masked key-pair generation
+    crypto_kem_keypair(pk, sk);
+    crypto_kem_keypair_sk_masked(&sk_masked, sk);
+
+    // Encapsulation
+    crypto_kem_enc(ct, key_d, pk);
+
+    // Masked decapsulation
+    t0 = hal_get_time();
+    crypto_kem_dec_masked(key_c, ct, &sk_masked);
+    t1 = hal_get_time();
+    printcycles("masked decaps cycles:", t1-t0);
+
+    if(memcmp(key_c, key_d, CRYPTO_BYTES)){
+      hal_send_str("ERROR KEYS (masked)\n");
+    }
+    else {
+      hal_send_str("OK KEYS\n");
+    }
+
+    hal_send_str("#");
+
+  }
+
   while(1);
   return 0;
 }
