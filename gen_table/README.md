@@ -42,8 +42,7 @@ NTT_N
 LOGNTT_N
 ```
 
-Notice that `NTT_N` must be a power of 2 and `NTT_N = 1 << LOGNTT_N`.
-Furthermore, `NTT_N` must divide `ARRAY_N`.
+Notice that we must have `NTT_N = 1 << LOGNTT_N` and `NTT_N` dividing `ARRAY_N`.
 However, `ARRAY_N` need not to be a power of 2.
 
 ```

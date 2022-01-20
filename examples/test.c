@@ -51,6 +51,7 @@ int main(void){
     int32_t mod_int32;
     int32_t omega_int32;
     int32_t scale_int32;
+    int32_t scale2_int32;
 
     int16_t tmp_int16;
     int16_t mod_int16;
@@ -79,6 +80,9 @@ int main(void){
         ARRAY_N, &twiddle_int16, &mod_int16,
         sizeof(int16_t), addmod_int16, mulmod_int16
     );
+
+// notice that for Saber implementation, we only need to check the correctness
+// of the lower 13 bits
 
 // ================================
 // first example
@@ -159,6 +163,19 @@ int main(void){
 
 // ================================
 // second example
+
+    // overwrite all the arrays
+    for(size_t i = 0; i < ARRAY_N; i++){
+        poly1_NTT_Q1Q2[i] = rand();
+        poly1_NTT_Q1[i] = rand();
+        poly1_NTT_Q2[i] = rand();
+        poly2_NTT_Q1[i] = rand();
+        poly2_NTT_Q2[i] = rand();
+        res_NTT_Q1[i] = rand();
+        res_NTT_Q2[i] = rand();
+        res_NTT_Q1Q2[i] = rand();
+        res_NTT[i] = rand();
+    }
 
 // ================
 // call assembly for the 32-bit NTT and transforming the result to 16-bit
@@ -268,8 +285,75 @@ int main(void){
     solv_CRT(res_NTT_Q1Q2, res_NTT_Q1, res_NTT_Q2);
 
 // ================
+// generate the twiddle factors for the cyclic iNTT in C
 
-    NTT_inv_32(res_NTT, res_NTT_Q1Q2);
+    profile.compressed_layers = 2;
+    profile.merged_layers[0] = 3;
+    profile.merged_layers[1] = 3;
+
+    scale_int32 = 1;
+    omega_int32 = invomegaQ1Q2;
+    mod_int32 = Q1Q2;
+    expmod_int32(&omega_int32, &omega_int32, 2, &mod_int32);
+    gen_streamlined_inv_CT_table_generic(
+        table_int32,
+        &scale_int32, &omega_int32,
+        &mod_int32,
+        sizeof(int32_t),
+        mulmod_int32,
+        expmod_int32,
+        &profile, 0
+    );
+
+// ================
+// call the C for cyclic iNTT with CT butterflies
+
+    compressed_inv_CT_NTT_generic(
+        res_NTT_Q1Q2,
+        0, 1,
+        table_int32,
+        &mod_int32,
+        &profile,
+        sizeof(int32_t),
+        m_layer_inv_CT_butterfly_int32
+    );
+
+// ================
+// generate twiddle factors for twisting (x^NTT_N + 1) back to (x^NTT_N - 1)
+
+    scale_int32 = RmodQ1Q2;
+    scale2_int32 = invNQ1Q2;
+    omega_int32 = invomegaQ1Q2;
+    mod_int32 = Q1Q2;
+    mulmod_int32(&scale2_int32, &scale2_int32, &scale_int32, &mod_int32);
+    gen_twist_table_generic(
+        table_int32,
+        &scale2_int32, &omega_int32,
+        &mod_int32,
+        sizeof(int32_t),
+        mulmod_int32
+    );
+
+// ================
+// twisting (x^NTT_N + 1) back to (x^NTT_N - 1) in C
+// notice that we are actually twisting
+// (x^(ARRAY_N / NTT_N) - y, y^NTT_N - 1) to
+// (x^(ARRAY_N / NTT_N) - y, y^NTT_N + 1) = (x^ARRAY_N + 1)
+
+    mod_int32 = Q1Q2;
+    point_mul(
+        res_NTT_Q1Q2,
+        res_NTT_Q1Q2, table_int32,
+        NTT_N, ARRAY_N >> LOGNTT_N,
+        &mod_int32,
+        sizeof(int32_t),
+        mulmod_int32
+    );
+
+    // copy the 32-bit result to the 16-bit array
+    for(size_t i = 0; i < ARRAY_N; i++){
+        res_NTT[i] = res_NTT_Q1Q2[i];
+    }
 
 // ================
 // test for correctness
