@@ -7,6 +7,17 @@
 #include "tools.h"
 #include "gen_table.h"
 
+// ================================
+// functions in this file can be more generic:
+// gen_CT_table_generic and gen_CT_negacyclic_table_generic can be merged
+// as generating DWT tables
+// gen_streamlined_CT_table_generic and gen_streamlined_CT_negacyclic_table_generic
+// can also be merged as streamlined generation for DWT tables
+// these are left for future work
+
+// ================================
+// generate twiddle factors for cyclic NTT with Cooley-Tukey butterflies
+
 void gen_CT_table_generic(
     void *des,
     void *scale, void *omega,
@@ -32,6 +43,8 @@ void gen_CT_table_generic(
 
 }
 
+// ================================
+// generate twiddle factors for negacyclic NTT with Cooley-Tukey butterflies
 
 void gen_CT_negacyclic_table_generic(
     void *des,
@@ -58,6 +71,9 @@ void gen_CT_negacyclic_table_generic(
 
 }
 
+// ================================
+// generate twiddle factors for cyclic iNTT with Cooley-Tukey butterflies
+
 void gen_inv_CT_table_generic(
     void *des,
     void *scale, void *omega,
@@ -81,6 +97,10 @@ void gen_inv_CT_table_generic(
     }
 
 }
+
+// ================================
+// generate twiddle factors for cyclic NTT with Cooley-Tukey butterflies
+// the table is re-ordered according to _profile
 
 void gen_streamlined_CT_table_generic(
     void *des,
@@ -131,6 +151,10 @@ void gen_streamlined_CT_table_generic(
 
 }
 
+// ================================
+// generate twiddle factors for negacyclic NTT with Cooley-Tukey butterflies
+// the table is re-ordered according to _profile
+
 void gen_streamlined_CT_negacyclic_table_generic(
     void *des,
     void *scale, void *omega,
@@ -180,28 +204,9 @@ void gen_streamlined_CT_negacyclic_table_generic(
 
 }
 
-
-void gen_twist_table_generic(
-    void *des,
-    void *scale, void *omega,
-    void *mod,
-    size_t size,
-    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)
-    ){
-
-    char zeta[size];
-    char twiddle[size];
-
-    memcpy(zeta, omega, size);
-
-    memcpy(twiddle, scale, size);
-    for(size_t i = 0; i < NTT_N; i++){
-        memcpy(des, twiddle, size);
-        des += size;
-        mulmod(twiddle, twiddle, zeta, mod);
-    }
-
-}
+// ================================
+// generate twiddle factors for cyclic iNTT with Cooley-Tukey butterflies
+// the table is re-ordered according to _profile
 
 void gen_streamlined_inv_CT_table_generic(
     void *des,
@@ -255,6 +260,34 @@ void gen_streamlined_inv_CT_table_generic(
 
 }
 
+// ================================
+// generate twiddle factors for twisting (x^NTT_N - omega^NTT_N) to (x^NTT_N - 1)
+
+void gen_twist_table_generic(
+    void *des,
+    void *scale, void *omega,
+    void *mod,
+    size_t size,
+    void (*mulmod)(void *_des, void *_src1, void *_src2, void *_mod)
+    ){
+
+    char zeta[size];
+    char twiddle[size];
+
+    memcpy(zeta, omega, size);
+
+    memcpy(twiddle, scale, size);
+    for(size_t i = 0; i < NTT_N; i++){
+        memcpy(des, twiddle, size);
+        des += size;
+        mulmod(twiddle, twiddle, zeta, mod);
+    }
+
+}
+
+// ================================
+// generate twiddle factors for negacyclic iNTT with Cooley-Tukey butterflies
+// the table is re-ordered according to _profile
 
 void gen_streamlined_inv_CT_negacyclic_table_generic(
     void *des,
@@ -330,6 +363,9 @@ void gen_streamlined_inv_CT_negacyclic_table_generic(
 
 }
 
+// ================================
+// generate twiddle factors for multiplication in
+// x^(ARRAY_N / NTT_N) +- omega^i
 
 void gen_mul_table_generic(
     void *des,

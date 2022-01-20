@@ -3,6 +3,7 @@
 
 #include "tools.h"
 
+
 void CT_butterfly_int16(
     void *src,
     size_t indx_a, size_t indx_b,
@@ -43,6 +44,9 @@ void m_layer_inv_CT_butterfly_int32(
     size_t size
     );
 
+// ================================
+// Cooley-Tukey butterfly
+
 void CT_butterfly_generic(
     void *src,
     size_t indx_a, size_t indx_b,
@@ -53,6 +57,9 @@ void CT_butterfly_generic(
     void (*submod)(void *des, void *src1, void *src2, void *mod),
     void (*mulmod)(void *des, void *src1, void *src2, void *mod)
     );
+
+// ================================
+// multi-layer Cooley-Tukey butterfly for the forward transformation
 
 void m_layer_CT_butterfly_generic(
     void *src,
@@ -69,6 +76,9 @@ void m_layer_CT_butterfly_generic(
         )
     );
 
+// ================================
+// multi-layer Cooley-Tukey butterfly for the inverse transformation
+
 void m_layer_inv_CT_butterfly_generic(
     void *src,
     size_t layers, size_t step,
@@ -83,6 +93,10 @@ void m_layer_inv_CT_butterfly_generic(
         size_t size
         )
     );
+
+// ================================
+// NTT with Cooley-Tukey butterfly
+// we must use m_layer_CT_butterfly here
 
 void compressed_CT_NTT_generic(
     void *src,
@@ -100,6 +114,10 @@ void compressed_CT_NTT_generic(
         )
     );
 
+// ================================
+// iNTT with Cooley-Tukey butterfly
+// we must use m_layer_inv_CT_butterfly here
+
 void compressed_inv_CT_NTT_generic(
     void *src,
     size_t start_level, size_t end_level,
@@ -116,14 +134,6 @@ void compressed_inv_CT_NTT_generic(
         )
     );
 
-
-// void _CT_butterfly(int *src, int indx_a, int indx_b, int twiddle, int _Q);
-
-// void _m_layer_CT_butterfly(int *src, int layers, int step, int *_root_table, int _Q);
-// void _m_layer_inv_CT_butterfly(int *src, int layers, int step, int *_root_table, int Q);
-
-// void _compressed_CT_NTT(int *src, int start_level, int end_level, int *_root_table, int _Q, struct compress_profile *_profile);
-// void compressed_inv_CT_NTT(int *src, int start_level, int end_level, int *_root_table, int _Q, struct compress_profile *_profile);
 
 #endif
 

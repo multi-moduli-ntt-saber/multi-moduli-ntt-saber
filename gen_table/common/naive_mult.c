@@ -5,6 +5,10 @@
 #include "tools.h"
 #include "naive_mult.h"
 
+// ================================
+// multiplication in R[x] / (x^len - twiddle)
+// where R is the ring defined by mod, addmod, mulmod
+
 void naive_mulR(
     void *des,
     void *src1, void *src2,
@@ -35,6 +39,10 @@ void naive_mulR(
 
 }
 
+// ================================
+// point-wise multiplication of src1[len * jump] by src2[len]
+// in particular, for i in {0, ..., len} and j in {0, ..., jump},
+// src1[i * jump + j] is multiplied by src2[i]
 
 void point_mul(
     void *des,

@@ -2,6 +2,8 @@
 
 #include "tools.h"
 
+// ================================
+// reducing elements to mod mod_v
 
 void cmod_int16(void *des, void *src, void *mod){
     int16_t mod_v = *(int16_t*)mod;
@@ -39,24 +41,8 @@ void cmod_int64(void *des, void *src, void *mod){
     *(int64_t*)des = t;
 }
 
-void mulmod_int16(void *des, void *src1, void *src2, void *mod){
-
-    int32_t src1_v;
-    int32_t src2_v;
-    int32_t tmp_v;
-    int32_t mod_v;
-    int32_t des_v;
-
-    src1_v = (int32_t)(*(int16_t*)src1);
-    src2_v = (int32_t)(*(int16_t*)src2);
-    tmp_v = src1_v * src2_v;
-    mod_v = (int32_t)(*(int16_t*)mod);
-
-    cmod_int32(&des_v, &tmp_v, &mod_v);
-
-    *(int16_t*)des = (int16_t)des_v;
-
-}
+// ================================
+// addition in mod mov_v
 
 void addmod_int16(void *des, void *src1, void *src2, void *mod){
 
@@ -96,6 +82,9 @@ void addmod_int32(void *des, void *src1, void *src2, void *mod){
 
 }
 
+// ================================
+// subtraction in mod mov_v
+
 void submod_int16(void *des, void *src1, void *src2, void *mod){
 
     int64_t src1_v;
@@ -134,6 +123,28 @@ void submod_int32(void *des, void *src1, void *src2, void *mod){
 
 }
 
+// ================================
+// multiplication in mod mov_v
+
+void mulmod_int16(void *des, void *src1, void *src2, void *mod){
+
+    int32_t src1_v;
+    int32_t src2_v;
+    int32_t tmp_v;
+    int32_t mod_v;
+    int32_t des_v;
+
+    src1_v = (int32_t)(*(int16_t*)src1);
+    src2_v = (int32_t)(*(int16_t*)src2);
+    tmp_v = src1_v * src2_v;
+    mod_v = (int32_t)(*(int16_t*)mod);
+
+    cmod_int32(&des_v, &tmp_v, &mod_v);
+
+    *(int16_t*)des = (int16_t)des_v;
+
+}
+
 
 void mulmod_int32(void *des, void *src1, void *src2, void *mod){
 
@@ -153,6 +164,9 @@ void mulmod_int32(void *des, void *src1, void *src2, void *mod){
     *(int32_t*)des = (int32_t)des_v;
 
 }
+
+// ================================
+// exponentiation in mod mov_v
 
 void expmod_int16(void *des, void *src, size_t e, void *mod){
 
@@ -187,6 +201,9 @@ void expmod_int32(void *des, void *src, size_t e, void *mod){
     memcpy(des, &tmp_v, sizeof(int32_t));
 
 }
+
+// ================================
+// in-place bit-reversing the array
 
 void bitreverse(void *src, size_t len, size_t size){
 

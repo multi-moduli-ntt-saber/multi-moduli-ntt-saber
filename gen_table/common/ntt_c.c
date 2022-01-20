@@ -102,6 +102,9 @@ void m_layer_inv_CT_butterfly_int32(
 
 }
 
+// ================================
+// Cooley-Tukey butterfly
+
 void CT_butterfly_generic(
     void *src,
     size_t indx_a, size_t indx_b,
@@ -120,6 +123,9 @@ void CT_butterfly_generic(
     addmod(src + indx_a * size, src + indx_a * size, tmp, mod);
 
 }
+
+// ================================
+// multi-layer Cooley-Tukey butterfly for the forward transformation
 
 void m_layer_CT_butterfly_generic(
     void *src,
@@ -167,6 +173,8 @@ void m_layer_CT_butterfly_generic(
 
 }
 
+// ================================
+// multi-layer Cooley-Tukey butterfly for the inverse transformation
 
 void m_layer_inv_CT_butterfly_generic(
     void *src,
@@ -213,6 +221,10 @@ void m_layer_inv_CT_butterfly_generic(
     }
 
 }
+
+// ================================
+// NTT with Cooley-Tukey butterfly
+// we must use m_layer_CT_butterfly here
 
 void compressed_CT_NTT_generic(
     void *src,
@@ -277,6 +289,9 @@ void compressed_CT_NTT_generic(
 
 }
 
+// ================================
+// iNTT with Cooley-Tukey butterfly
+// we must use m_layer_inv_CT_butterfly here
 
 void compressed_inv_CT_NTT_generic(
     void *src,
