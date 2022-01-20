@@ -33,7 +33,9 @@ void expmod(void*, void*, size_t, void*);
 > Can be interleaved freely with assembly functions for testing units.
 
 # Requirement
-A C compiler
+- A C compiler
+
+A C compiler suffices for the generating the tables and testing the correctness of the generation. Files `ntt_c.c` and `ntt_c.h` also only require a C compiler and they are designed to be interleaved with assembly implementations. Examples can be found in the folder `../examples`.
 
 # Reserved symbols
 ```

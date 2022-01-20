@@ -148,7 +148,6 @@ Note that in our paper, we only report `m3speed`, `m3stack`, and `m3_32bit`. Imp
 │   ├── hal-opencm3.c
 │   ├── hal.h
 │   ├── keccakf1600.S
-│   ├── keccakf1600.c
 │   ├── keccakf1600.h
 │   ├── randombytes.c
 │   ├── randombytes.h

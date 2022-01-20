@@ -9,7 +9,12 @@ Authors:
 - [Matthias J. Kannwischer](https://kannwischer.eu/) `<matthias@kannwischer.eu>`
 - [Bo-Yin Yang](https://homepage.iis.sinica.edu.tw/pages/byyang/) `<by@crypto.tw>`
 
-In this repository, we provide code for unmasked Saber on Cortex-M3 and Cortex-M4 and masked Saber on Cortex-M4. Please `git clone --recursive https://github.com/multi-moduli-ntt-saber/multi-moduli-ntt-saber.git`, go to `libopencm3`, and type `make -j4` first.
+In this repository, we provide code for unmasked Saber on Cortex-M3 and Cortex-M4 and masked Saber on Cortex-M4. Please go to `libopencm3`, and type `make -j4` first.
+If you acquire this package by downloading the artifact, then this package contains all files required.
+If you are github user, please clone with
+```
+git clone --recursive https://github.com/multi-moduli-ntt-saber/multi-moduli-ntt-saber.git
+```
 
 - Unmasked Saber.
     - Cortex-M3. We provide four implementations. Three of them are reported in our paper and the newly included one is claimed in our paper.

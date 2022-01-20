@@ -7,31 +7,37 @@ Please refer to the `README.md`'s in folders `m3` and `m4`.
 ├── m3
 │   ├── Makefile
 │   ├── README.md
-│   ├── benchmarks.py
-│   ├── benchmarks.txt
 │   ├── common
 │   ├── config.py
 │   ├── crypto_kem
-│   ├── f_16_benchmarks.py
-│   ├── f_16_benchmarks.txt
-│   ├── f_32_benchmarks.py
-│   ├── f_32_benchmarks.txt
+│   ├── f_16_speed.py
+│   ├── f_16_speed.txt
+│   ├── f_32_speed.py
+│   ├── f_32_speed.txt
 │   ├── libopencm3 -> ../../libopencm3/
 │   ├── mk
 │   ├── nucleo-f2.cfg
-│   └── read_serial.py
+│   ├── read_serial.py
+│   ├── speed.py
+│   ├── speed.txt
+│   ├── stack.py
+│   ├── stack.txt
+│   └── test.py
 └── m4
     ├── Makefile
     ├── README.md
-    ├── benchmarks.py
-    ├── benchmarks.txt
     ├── common
     ├── config.py
     ├── crypto_kem
-    ├── f_benchmarks.py
-    ├── f_benchmarks.txt
+    ├── f_speed.py
+    ├── f_speed.txt
+    ├── ldscripts
     ├── libopencm3 -> ../../libopencm3/
-    ├── makeAll.sh
+    ├── mk
     ├── read_serial.py
-    └── stm32f405x6.ld
+    ├── speed.py
+    ├── speed.txt
+    ├── stack.py
+    ├── stack.txt
+    └── test.py
 ```

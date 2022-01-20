@@ -81,7 +81,7 @@ int main(void){
         sizeof(int16_t), addmod_int16, mulmod_int16
     );
 
-// notice that for Saber implementation, we only need to check the correctness
+// note that for Saber implementation, we only need to check the correctness
 // of the lower 13 bits
 
 // ================================
@@ -93,7 +93,7 @@ int main(void){
     NTT_forward_32(poly1_NTT_Q1Q2, poly1_int16);
 
 // ================
-// generate twiddle factors for the NTT in C
+// generate twiddle factors for the 32-bit negacyclic NTT in C
 
     profile.compressed_layers = 2;
     profile.merged_layers[0] = 3;
@@ -117,7 +117,7 @@ int main(void){
         );
 
 // ================
-// call the C function for the NTT
+// call the C function for the 32-bit NTT
 
     // since the C function is in-place, we first copy the 16-bit polynomial
     // poly2_int16 to the 32-bit array poly2_NTT_Q1Q2
@@ -125,7 +125,7 @@ int main(void){
         poly2_NTT_Q1Q2[i] = poly2_int16[i];
     }
 
-    // call the C function for NTT
+    // call the C function for the NTT
     mod_int32 = Q1Q2;
     compressed_CT_NTT_generic(
         poly2_NTT_Q1Q2,
@@ -153,10 +153,11 @@ int main(void){
     mod_int16 = SABER_Q;
     for(size_t i = 0; i < ARRAY_N; i++){
         cmod_int16(&tmp_int16, res_NTT + i, &mod_int16);
-        if(res_int16[i] != tmp_int16){
-            sprintf(out, "%4zu: %12d, %12d\n", i, res_int16[i], tmp_int16);
-            hal_send_str(out);
-        }
+        assert(res_int16[i] == tmp_int16);
+        // if(res_int16[i] != tmp_int16){
+            // sprintf(out, "%4zu: %12d, %12d\n", i, res_int16[i], tmp_int16);
+            // hal_send_str(out);
+        // }
     }
 
     hal_send_str("polymul passed!\n");
@@ -185,12 +186,13 @@ int main(void){
     MOD_2(poly1_NTT_Q2, poly1_NTT_Q1Q2);
 
 // ================
-// generate twiddle factors used for the 16-bit NTT
+// generate twiddle factors used for the 16-bit negacyclic NTT
 
     profile.compressed_layers = 2;
     profile.merged_layers[0] = 3;
     profile.merged_layers[1] = 3;
 
+    // note that we pad zeros here
     scale_int16 = RmodQ1;
     omega_int16 = omegaQ1;
     mod_int16 = Q1;
@@ -202,6 +204,9 @@ int main(void){
         mulmod_int16,
         &profile, 1
         );
+
+// ================
+// call assembly for the 16-bit NTT
 
     __asm_negacyclic_ntt_16(poly2_NTT_Q1, table_int16, Q1Q1prime, poly2_int16, RmodQ1);
 
@@ -226,7 +231,8 @@ int main(void){
 
 // ================
 // call assembly for the first three layers of the NTT
-// this assembly is not in our implementation, but it was involved in the development
+// this assembly is not presented in our implementation,
+// but it was involved in the development
 
     __asm_negacyclic_ntt_16_light_0_1_2(poly2_NTT_Q2, table_int16, Q2Q2prime, poly2_int16, RmodQ2);
 
@@ -306,7 +312,7 @@ int main(void){
     );
 
 // ================
-// call the C for cyclic iNTT with CT butterflies
+// call the C for cyclic iNTT
 
     compressed_inv_CT_NTT_generic(
         res_NTT_Q1Q2,
@@ -336,7 +342,7 @@ int main(void){
 
 // ================
 // twisting (x^NTT_N + 1) back to (x^NTT_N - 1) in C
-// notice that we are actually twisting
+// note that we are actually twisting
 // (x^(ARRAY_N / NTT_N) - y, y^NTT_N - 1) to
 // (x^(ARRAY_N / NTT_N) - y, y^NTT_N + 1) = (x^ARRAY_N + 1)
 
