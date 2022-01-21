@@ -16,6 +16,8 @@ If you are github user, please clone with
 git clone --recursive https://github.com/multi-moduli-ntt-saber/multi-moduli-ntt-saber.git
 ```
 
+Our contribution is listed as follows.
+
 - Unmasked Saber.
     - Cortex-M3. We provide four implementations. Three of them are reported in our paper and the newly included one is claimed in our paper.
         - `m3speed`: 16-bit NTT approach with strategy A for KeyGen, Encap, and Decap. This is the fastest approach for Saber on Cortex-M3.
@@ -31,10 +33,16 @@ git clone --recursive https://github.com/multi-moduli-ntt-saber/multi-moduli-ntt
         - `m4speedstack`: Strategy C.
         - `m4stack`: Strategy D. This is the implementations with the smallest stack usage for Saber on Cortex-M4.
 
-We also provide C functions that are used for developing the assembly code and generating the tables. Please refer to the folder `gen_table`. You can find examples of how the tables are generated.
+Additionally, we also provide C functions that are used for developing the assembly code and generating the tables.
+
+# Structure of this repository
+- `unmasked` contains our implementations for unmasked Saber.
+- `masked` contains our implementation for masked Saber.
+- `gen_table` contains the files for generating the tables.
+- `examples` contains examples about how we use the code in `gen_table` for developing assembly code.
+
 
 # Requirements
-
 - `arm-none-eabi-gcc` with version 10.2.0
 - `python3` with `pyserial` and `numpy`
 - For Cortex-M3:
