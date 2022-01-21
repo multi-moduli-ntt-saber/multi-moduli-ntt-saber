@@ -79,8 +79,8 @@ where `scheme` is one of the following:
 - `firesaber`
 
 and `impl` is one of the following:
-- `m3speed`
-- `m3stack`
+- `m4fspeed`
+- `m4fstack`
 
 All of the implementations are reported in our paper.
 
@@ -102,7 +102,7 @@ The numbers are categorized into two groups:
     - `32-bit base_mul`: The cycles of applying one 32-bit `base_mul`.
     - `32x16-bit base_mul`: The cycles of applying one 16-bit `base_mul`. One of the multiplicand is a 32-bit value over `3329 * 7681` and it is reduced to one of the moduli first without extra memory operations.
     - `16-bit base_mul`: The cycles of applying one 16-bit `base_mul`.
-    - `16x16 CRT`: Solving CRT from the moduli `3329` and `7681`. The result is a value over `3329 * 7681`
+    - `16x16 CRT`: Solving CRT from the moduli `3329` and `7681`. The result is a value over `3329 * 7681`.
     - `One mod`: Reduce a polynomial over `3329 * 7681` to one of the moduli `3329` or `7681`.
 
 ## `stack.py`
@@ -119,8 +119,8 @@ where `scheme` is one of the following:
 - `firesaber`
 
 and `impl` is one of the following:
-- `m3speed`
-- `m3stack`
+- `m4fspeed`
+- `m4fstack`
 
 All of the implementations are reported in our paper.
 
