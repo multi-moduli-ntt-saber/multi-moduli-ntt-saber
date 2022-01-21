@@ -154,13 +154,9 @@ int main(void){
     for(size_t i = 0; i < ARRAY_N; i++){
         cmod_int16(&tmp_int16, res_NTT + i, &mod_int16);
         assert(res_int16[i] == tmp_int16);
-        // if(res_int16[i] != tmp_int16){
-            // sprintf(out, "%4zu: %12d, %12d\n", i, res_int16[i], tmp_int16);
-            // hal_send_str(out);
-        // }
     }
 
-    hal_send_str("polymul passed!\n");
+    hal_send_str("first example passed!\n");
 
 // ================================
 // second example
@@ -367,13 +363,10 @@ int main(void){
     mod_int16 = SABER_Q;
     for(size_t i = 0; i < ARRAY_N; i++){
         cmod_int16(&tmp_int16, res_NTT + i, &mod_int16);
-        if(res_int16[i] != tmp_int16){
-            sprintf(out, "%4zu: %12d, %12d\n", i, res_int16[i], tmp_int16);
-            hal_send_str(out);
-        }
+        assert(res_int16[i] == tmp_int16);
     }
 
-    hal_send_str("polymul passed!\n");
+    hal_send_str("second example passed!\n");
 
 
 }
