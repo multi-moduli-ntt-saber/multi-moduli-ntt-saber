@@ -37,7 +37,7 @@ Additionally, we also provide C functions that are used for developing the assem
 
 # Structure of this repository
 - `unmasked` contains our implementations for unmasked Saber.
-- `masked` contains our implementation for masked Saber.
+- `masked` contains our implementations for masked Saber.
 - `gen_table` contains the files for generating the tables.
 - `examples` contains examples about how we use the code in `gen_table` for developing assembly code.
 

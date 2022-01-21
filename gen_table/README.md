@@ -1,6 +1,6 @@
 
 This folder is about how to generate the tables of twiddle factors.
-The codes are currently functioning as expected and samples for generating tables for our implementations are in the corresponding folders.
+The code is currently functioning as expected and examples for generating tables for our implementations are in the corresponding folders.
 
 # Supported features
 
@@ -32,19 +32,25 @@ void expmod(void*, void*, size_t, void*);
 
 > Can be interleaved freely with assembly functions for testing units.
 
+# What is not supported
+The programs in this folder are not designed for
+- speed
+- security
+
 # Requirement
 - A C compiler
 
-A C compiler suffices for the generating the tables and testing the correctness of the generation. Files `ntt_c.c` and `ntt_c.h` also only require a C compiler and they are designed to be interleaved with assembly implementations. Examples can be found in the folder `../examples`.
+A C compiler suffices for the generating the tables and testing the correctness of the generation. The generation of tables is contained in the folders `m3_unmasked`, `m4_masked`, `m4_unmasked`.
+Furthermore, examples for testing the correctness can be found in the folder `../examples`.
 
 # Reserved symbols
+One must define the following:
 ```
 ARRAY_N
 NTT_N
 LOGNTT_N
 ```
-
-Notice that we must have `NTT_N = 1 << LOGNTT_N` and `NTT_N` dividing `ARRAY_N`.
+Note that we must have `NTT_N = 1 << LOGNTT_N` and `NTT_N` dividing `ARRAY_N`.
 However, `ARRAY_N` need not to be a power of 2.
 
 ```
