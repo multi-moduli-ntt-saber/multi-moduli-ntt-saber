@@ -56,7 +56,7 @@ Additionally, we also provide C functions that are used for developing the assem
 The `libopencm3` in this repository is the commit `6763681c260cf280487d70ca0d1996a8b79fff30` of https://github.com/libopencm3/libopencm3.
 
 # License
-Several masked non-linear functions for masked Saber in the folder `masked` are covered by MIT license by https://github.com/KULeuven-COSIC/SABER-masking. The MIT license is added at the beginning of the files.
+Several masked non-linear functions for masked Saber in the folder `masked` are covered by MIT license by https://github.com/KULeuven-COSIC/SABER-masking. The MIT license is added at the beginning of the files. `libopencm3` is licensed under GPL version 3, see https://github.com/libopencm3/libopencm3.
 
 All remaining code is covered by CC0
 
