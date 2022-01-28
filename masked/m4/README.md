@@ -105,6 +105,15 @@ and `impl` is one of the following:
 
 All of the implementations are reported in our paper.
 
+# Important Notice
+The experiment reported in our paper is about a version that no longer exists.
+We re-do the experiment for `iNTT` and `keccak`.
+
+
+
+
+
+
 
 
 

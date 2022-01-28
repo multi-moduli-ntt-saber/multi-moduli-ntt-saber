@@ -429,8 +429,11 @@ void InnerProdDec_masked(uint8_t m[SABER_SHARES][SABER_KEYBYTES], const uint8_t 
 
         BS2POLp(&ciphertext[i * SABER_POLYCOMPRESSEDBYTES], cipher_NTT_16);
 
+        // NTT
+        // trigger_high();
         NTT_forward_32(cipher_NTT_32, cipher_NTT_16);
         NTT_forward_16(cipher_NTT_16, cipher_NTT_16);
+        // trigger_low();
 
         for(j = 0; j < SABER_SHARES; j++){
 
@@ -438,8 +441,11 @@ void InnerProdDec_masked(uint8_t m[SABER_SHARES][SABER_KEYBYTES], const uint8_t 
             NTT_forward_16(s_NTT_16[j], s[j][i]);
 
             if(i == 0){
+                // MUL
+                // if (j == 0) trigger_high();
                 NTT_mul_32(acc_32[j], cipher_NTT_32, s_NTT_32[j]);
                 NTT_mul_16(acc_16[j], cipher_NTT_16, s_NTT_16[j]);
+                // if (j == 0) trigger_low();
             }else{
                 NTT_mul_acc_32(acc_32[j], cipher_NTT_32, s_NTT_32[j]);
                 NTT_mul_acc_16(acc_16[j], cipher_NTT_16, s_NTT_16[j]);
@@ -450,9 +456,12 @@ void InnerProdDec_masked(uint8_t m[SABER_SHARES][SABER_KEYBYTES], const uint8_t 
     }
 
     for(j = 0; j < SABER_SHARES; j++){
+        // iNTT
+        // trigger_high();
         NTT_inv_32(acc_32[j]);
         NTT_inv_16(acc_16[j]);
         solv_CRT(acc_16[j], acc_32[j], acc_16[j]);
+        // trigger_low();
     }
 
     BS2POLT(ciphertext + SABER_POLYVECCOMPRESSEDBYTES, cipher_NTT_16);
