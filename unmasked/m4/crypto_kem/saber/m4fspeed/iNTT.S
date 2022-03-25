@@ -68,10 +68,27 @@ __asm_negacyclic_intt_32:
 
 .rept 2
 
-    ldrstr4 ldr.w r0, r8, r5, r10, r7, #128*ldrwidth, #160*ldrwidth, #192*ldrwidth, #224*ldrwidth
-    _3_layer_inv_butterfly_light_fast_first r4, r5, r6, r7, r8, r9, r10, r11, s4, s5, s6, s7, s8, s9, s10, r1, r2, r3, r12, r14
-    ldrstr4jump ldr.w r0, r4, r5, r6, r7, #32*ldrwidth, #64*ldrwidth, #96*ldrwidth, #ldrwidth
-    _3_layer_inv_butterfly_light_fast_second r4, r5, r6, r7, r8, r9, r10, r11, s4, s5, s6, s7, s8, s9, s10, r1, r2, r3, r12, r14
+    ldrstrvecjump ldr.w, r0, r4, r5, r6, r7, r8, r9, r10, r11, #32*ldrwidth, #64*ldrwidth, #96*ldrwidth, #128*ldrwidth, #160*ldrwidth, #192*ldrwidth, #224*ldrwidth, #ldrwidth
+
+    addSub4 r4, r5, r6, r7, r8, r9, r10, r11
+
+    vmov.w r1, s5
+    montgomery_mul_32 r6, r1, r2, r3, r12, r14
+    montgomery_mul_32 r10, r1, r2, r3, r12, r14
+    vmov.w r1, s6
+    montgomery_mul_32 r7, r1, r2, r3, r12, r14
+    montgomery_mul_32 r11, r1, r2, r3, r12, r14
+    addSub4 r4, r6, r5, r7, r8, r10, r9, r11
+
+    vmov.w r1, s7
+    montgomery_mul_32 r8, r1, r2, r3, r12, r14
+    vmov.w r1, s8
+    montgomery_mul_32 r9, r1, r2, r3, r12, r14
+    vmov.w r1, s9
+    montgomery_mul_32 r10, r1, r2, r3, r12, r14
+    vmov.w r1, s10
+    montgomery_mul_32 r11, r1, r2, r3, r12, r14
+    addSub4 r4, r8, r5, r9, r6, r10, r7, r11
 
     vmov.w r1, s11
     montgomery_mul_32 r4, r1, r2, r3, r12, r14
