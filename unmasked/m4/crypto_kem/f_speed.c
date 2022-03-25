@@ -56,8 +56,7 @@ int main(void){
                 if(i == 0){
                     NTT_mul_32(acc_NTT + j * SABER_N, A_NTT, s_NTT);
                 }else{
-                    NTT_mul_32(A_NTT, A_NTT, s_NTT);
-                    __asm_poly_add_32(acc_NTT + j * SABER_N, acc_NTT + j * SABER_N, A_NTT);
+                    NTT_mul_acc_32(acc_NTT + j * SABER_N, A_NTT, s_NTT);
                 }
             }
         }
@@ -162,6 +161,11 @@ int main(void){
         NTT_mul_32(buff1_32, buff1_32, buff1_32);
         t1 = hal_get_time();
         printcycles("32-bit base_mul cycles:", t1 - t0);
+
+        t0 = hal_get_time();
+        NTT_mul_acc_32(buff1_32, buff1_32, buff1_32);
+        t1 = hal_get_time();
+        printcycles("32-bit base_mul_acc cycles:", t1 - t0);
 
         t0 = hal_get_time();
         NTT_mul_32x16_2(buff1_32, buff1_32, buff2_32);

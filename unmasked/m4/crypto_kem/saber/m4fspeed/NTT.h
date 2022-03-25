@@ -52,7 +52,8 @@ extern void __asm_negacyclic_ntt_16_light(uint32_t *des, const int16_t *root_tab
 extern void __asm_mod(uint32_t *des, uint32_t QQprime, uint32_t *src);
 extern void __asm_mod_dual(uint32_t *des1, uint32_t *des2, uint32_t _Q1Q1prime, uint32_t _Q2Q2prime, uint32_t *src);
 
-extern void __asm_base_mul_32(uint32_t *des, const int32_t *mul_Rmod_table, uint32_t Qprime, uint32_t Q, uint32_t *src1, uint32_t *src2);
+extern void __asm_base_mul_32(uint32_t *des, const int32_t *mul_Rmod_table, int32_t Qprime, int32_t Q, uint32_t *src1, uint32_t *src2);
+extern void __asm_base_mul_acc_32(uint32_t *des, const int32_t *mul_Rmod_table, int32_t Qprime, int32_t Q, uint32_t *src1, uint32_t *src2, int32_t RmodQ);
 extern void __asm_base_mul_16(uint32_t *des, const int16_t *mul_Rmod_table, uint32_t QQprime, uint32_t *src1, uint32_t *src2);
 extern void __asm_base_mul_32x16(uint32_t *des, const int16_t *mul_Rmod_table, uint32_t QQprime, uint32_t *src_32, uint32_t *src_16);
 
@@ -75,6 +76,7 @@ extern void __asm_negacyclic_intt_32(uint16_t *des, const int32_t *root_table, u
 #define NTT_mul_32x16_2(out, in_32, in_16) __asm_base_mul_32x16(out, mul_Rmod_table_Q2, Q2Q2prime, in_32, in_16)
 
 #define NTT_mul_32(out, in1, in2) __asm_base_mul_32(out, mul_Rmod_table_Q1Q2, Q1Q2prime, Q1Q2, in1, in2)
+#define NTT_mul_acc_32(out, in1, in2) __asm_base_mul_acc_32(out, mul_Rmod_table_Q1Q2, Q1Q2prime, Q1Q2, in1, in2, RmodQ1Q2)
 
 #define NTT_inv_32(out, in) __asm_negacyclic_intt_32(out, streamlined_inv_CT_negacyclic_table_Q1Q2, Q1Q2prime, Q1Q2, in)
 

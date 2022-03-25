@@ -315,6 +315,220 @@ __asm_base_mul_32:
 
     pop.w {r4-r12, pc}
 
+.global __asm_base_mul_acc_32
+.type __asm_base_mul_acc_32, %function
+__asm_base_mul_acc_32:
+    push.w {r4-r12, lr}
+
+    vldr.w s12, [sp, #40]
+    vldr.w s13, [sp, #44]
+    vldr.w s10, [sp, #48]
+
+    .equ width, 4
+
+    vmov.w s0, s1, r0, r1
+
+#ifdef LOOP
+    add.w r12, r0, #256*width
+    vmov.w s2, r12
+    _mul_acc_32:
+#else
+.rept 32
+#endif
+
+    vmov.w r12, r14, s12, s13
+    ldrstr4jump ldr.w, r12, r4, r5, r6, r7, #4, #8, #12, #16
+    ldrstr4jump ldr.w, r14, r8, r9, r10, r11, #4, #8, #12, #16
+    vmov.w s12, s13, r12, r14
+
+    vmov.w r12, s1
+    ldr.w r1, [r12], #4
+    vmov.w s1, r12
+
+    // c3_4x4_acc
+
+    vmov.w r14, s0
+    ldr.w r0, [r14, #12]
+    vmov.w r14, s10
+
+    smull r0, r14, r0, r14
+    smlal r0, r14, r4, r11
+    smlal r0, r14, r5, r10
+    smlal r0, r14, r6, r9
+    smlal r0, r14, r7, r8
+    mul.w r12, r0, r2
+    smlal r0, r14, r12, r3
+
+    vmov.w r0, s0
+    str.w r14, [r0, #12]
+
+    // c2_4x4_acc
+
+    smull r0, r12, r7, r11
+    mul.w r14, r0, r2
+    smlal r0, r12, r14, r3
+
+    vmov.w r14, s0
+    ldr.w r0, [r14, #8]
+    vmov.w r14, s10
+
+    smull r0, r14, r0, r14
+    smlal r0, r14, r12, r1
+    smlal r0, r14, r4, r10
+    smlal r0, r14, r5, r9
+    smlal r0, r14, r6, r8
+    mul.w r12, r0, r2
+    smlal r0, r14, r12, r3
+
+    vmov.w r0, s0
+    str.w r14, [r0, #8]
+
+    // c1_4x4_acc
+
+    smull r0, r12, r6, r11
+    smlal r0, r12, r7, r10
+    mul.w r14, r0, r2
+    smlal r0, r12, r14, r3
+
+    vmov.w r14, s0
+    ldr.w r0, [r14, #4]
+    vmov.w r14, s10
+
+    smull r0, r14, r0, r14
+    smlal r0, r14, r12, r1
+    smlal r0, r14, r4, r9
+    smlal r0, r14, r5, r8
+    mul.w r12, r0, r2
+    smlal r0, r14, r12, r3
+
+    vmov.w r0, s0
+    str.w r14, [r0, #4]
+
+    // c0_4x4_acc
+
+    smull r0, r12, r5, r11
+    smlal r0, r12, r6, r10
+    smlal r0, r12, r7, r9
+    mul.w r14, r0, r2
+    smlal r0, r12, r14, r3
+
+    vmov.w r14, s0
+    ldr.w r0, [r14]
+    vmov.w r14, s10
+
+    smull r0, r14, r0, r14
+    smlal r0, r14, r12, r1
+    smlal r0, r14, r4, r8
+    mul.w r12, r0, r2
+    smlal r0, r14, r12, r3
+
+    vmov.w r0, s0
+    str.w r14, [r0], #16
+    vmov.w s0, r0
+
+// ================================
+
+    vmov.w r12, r14, s12, s13
+    ldrstr4jump ldr.w, r12, r4, r5, r6, r7, #4, #8, #12, #16
+    ldrstr4jump ldr.w, r14, r8, r9, r10, r11, #4, #8, #12, #16
+    vmov.w s12, s13, r12, r14
+
+    neg.w r1, r1
+
+    // c3_4x4_acc
+
+    vmov.w r14, s0
+    ldr.w r0, [r14, #12]
+    vmov.w r14, s10
+
+    smull r0, r14, r0, r14
+    smlal r0, r14, r4, r11
+    smlal r0, r14, r5, r10
+    smlal r0, r14, r6, r9
+    smlal r0, r14, r7, r8
+    mul.w r12, r0, r2
+    smlal r0, r14, r12, r3
+
+    vmov.w r0, s0
+    str.w r14, [r0, #12]
+
+    // c2_4x4_acc
+
+    smull r0, r12, r7, r11
+    mul.w r14, r0, r2
+    smlal r0, r12, r14, r3
+
+    vmov.w r14, s0
+    ldr.w r0, [r14, #8]
+    vmov.w r14, s10
+
+    smull r0, r14, r0, r14
+    smlal r0, r14, r12, r1
+    smlal r0, r14, r4, r10
+    smlal r0, r14, r5, r9
+    smlal r0, r14, r6, r8
+    mul.w r12, r0, r2
+    smlal r0, r14, r12, r3
+
+    vmov.w r0, s0
+    str.w r14, [r0, #8]
+
+    // c1_4x4_acc
+
+    smull r0, r12, r6, r11
+    smlal r0, r12, r7, r10
+    mul.w r14, r0, r2
+    smlal r0, r12, r14, r3
+
+    vmov.w r14, s0
+    ldr.w r0, [r14, #4]
+    vmov.w r14, s10
+
+    smull r0, r14, r0, r14
+    smlal r0, r14, r12, r1
+    smlal r0, r14, r4, r9
+    smlal r0, r14, r5, r8
+    mul.w r12, r0, r2
+    smlal r0, r14, r12, r3
+
+    vmov.w r0, s0
+    str.w r14, [r0, #4]
+
+    // c0_4x4_acc
+
+    smull r0, r12, r5, r11
+    smlal r0, r12, r6, r10
+    smlal r0, r12, r7, r9
+    mul.w r14, r0, r2
+    smlal r0, r12, r14, r3
+
+    vmov.w r14, s0
+    ldr.w r0, [r14]
+    vmov.w r14, s10
+
+    smull r0, r14, r0, r14
+    smlal r0, r14, r12, r1
+    smlal r0, r14, r4, r8
+    mul.w r12, r0, r2
+    smlal r0, r14, r12, r3
+
+    vmov.w r0, s0
+    str.w r14, [r0], #16
+    vmov.w s0, r0
+
+#ifdef LOOP
+    vmov.w r12, s2
+    cmp.w r0, r12
+    bne.w _mul_acc_32
+#else
+.endr
+#endif
+
+    pop.w {r4-r12, pc}
+
+
+
+
 
 
 

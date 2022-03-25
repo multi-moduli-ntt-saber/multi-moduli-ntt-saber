@@ -61,8 +61,7 @@ void MatrixVectorMulKeyPairNTT_A(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_
             if(i == 0){
                 NTT_mul_32(acc_NTT + j * SABER_N, A_NTT, s_NTT);
             }else{
-                NTT_mul_32(A_NTT, A_NTT, s_NTT);
-                __asm_poly_add_32(acc_NTT + j * SABER_N, acc_NTT + j * SABER_N, A_NTT);
+                NTT_mul_acc_32(acc_NTT + j * SABER_N, A_NTT, s_NTT);
             }
 
         }
@@ -124,8 +123,8 @@ uint32_t MatrixVectorMulEncNTT_A(uint8_t ct0[SABER_POLYVECCOMPRESSEDBYTES], uint
             if (j == 0) {
                 NTT_mul_32(acc_NTT, A_NTT, s_NTT + j * SABER_N);
             } else {
-                NTT_mul_32(A_NTT, A_NTT, s_NTT + j * SABER_N);
-                __asm_poly_add_32(acc_NTT, acc_NTT, A_NTT);
+
+                NTT_mul_acc_32(acc_NTT, A_NTT, s_NTT + j * SABER_N);
             }
         }
 
@@ -153,8 +152,7 @@ uint32_t MatrixVectorMulEncNTT_A(uint8_t ct0[SABER_POLYVECCOMPRESSEDBYTES], uint
         if(j == 0){
             NTT_mul_32(acc_NTT, A_NTT, s_NTT + j * SABER_N);
         }else{
-            NTT_mul_32(A_NTT, A_NTT, s_NTT + j * SABER_N);
-            __asm_poly_add_32(acc_NTT, acc_NTT, A_NTT);
+            NTT_mul_acc_32(acc_NTT, A_NTT, s_NTT + j * SABER_N);
         }
 
     }
@@ -204,8 +202,7 @@ void InnerProdDecNTT(uint8_t m[SABER_KEYBYTES], const uint8_t ciphertext[SABER_B
         if (i == 0) {
             NTT_mul_32(acc_NTT, poly_NTT, buff_NTT);
         } else {
-            NTT_mul_32(poly_NTT, poly_NTT, buff_NTT);
-            __asm_poly_add_32(acc_NTT, acc_NTT, poly_NTT);
+            NTT_mul_acc_32(acc_NTT, poly_NTT, buff_NTT);
         }
     }
 
