@@ -94,8 +94,7 @@ int main(void){
             if(j == 0){
                 NTT_mul_32(acc_NTT, A_NTT, s_NTT + j * SABER_N);
             }else{
-                NTT_mul_32(A_NTT, A_NTT, s_NTT + j * SABER_N);
-                __asm_poly_add_32(acc_NTT, acc_NTT, A_NTT);
+                NTT_mul_acc_32(acc_NTT, A_NTT, s_NTT + j * SABER_N);
             }
 
         }
@@ -110,8 +109,7 @@ int main(void){
             if(j == 0){
                 NTT_mul_32(acc_NTT, A_NTT, s_NTT + j * SABER_N);
             }else{
-                NTT_mul_32(A_NTT, A_NTT, s_NTT + j * SABER_N);
-                __asm_poly_add_32(acc_NTT, acc_NTT, A_NTT);
+                NTT_mul_acc_32(acc_NTT, A_NTT, s_NTT + j * SABER_N);
             }
         }
         NTT_inv_32(acc, acc_NTT);
